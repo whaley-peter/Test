@@ -10,18 +10,22 @@ by.id
 #我 tap button
 mybase = "com.snailvr.manager:id/tv_user"
 
+"""设置界面及二级目录"""
 #设置按钮
 settingbutton = "com.snailvr.manager:id/iv_setting"
 
+#清除缓存
 setting_clean_cache = "com.snailvr.manager:id/setting_clean_cache"
 
+#切换到debug模式
 debugswith = "com.snailvr.manager:id/layout_debug"
 
 
 
-
+"""本地界面及二级目录"""
 #本地视频
 localvideo = "com.snailvr.manager:id/layout_local"
+
 
 #我的播单
 mycollection = "com.snailvr.manager:id/layout_collect"

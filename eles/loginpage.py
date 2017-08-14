@@ -18,10 +18,10 @@ leapfrog = "com.snailvr.manager:id/iv_leapfrog"
 """登录主界面"""
 #by.id
 #输入账号框//------注册界面输入手机号框
-username = "com.snailvr.manager:id/et_user_name"
+usernameinput = "com.snailvr.manager:id/et_user_name"
 
 #输入密码框
-password = "com.snailvr.manager:id/et_password"
+passwordinput = "com.snailvr.manager:id/et_password"
 
 #短信快捷登录
 safe_login = "com.snailvr.manager:id/btn_safe_login"
@@ -30,7 +30,11 @@ safe_login = "com.snailvr.manager:id/btn_safe_login"
 forget_pwd = "com.snailvr.manager:id/btn_forget_pwd"
 
 #跳转到注册界面按钮//-------注册界面跳转到登录界面按钮
-rigister = "com.snailvr.manager:id/btn_right"
+jump_to_login_or_register = "com.snailvr.manager:id/btn_right"
 
 """注册主界面"""
+#输入验证码框
+msm_code_input = "com.snailvr.manager:id/et_msm_code"
 
+#点击下一步
+next_step = "com.snailvr.manager:id/btn_next"
