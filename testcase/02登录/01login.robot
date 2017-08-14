@@ -1,15 +1,14 @@
 *** Settings ***
 Library    libs/AppiumExtend.py
-Variables  libs/cfg.py
 Variables  eles/homepage.py
-Variables  eles/login.py
+Variables  eles/loginpage.py
 Variables  eles/globaleles.py
+Documentation   测试登录功能、登录界面跳转到其他界面功能
 
 *** Test Cases ***
 登录界面跳转到注册--testdenglu001
-    open application    ${remote_server}    ${desired_caps}
     click element until no error        id=${loginbutton}
-    click element until no error        id=${rigister}
+    click element until no error        id=${jump_to_login_or_register}
     element should contain text         id=${title}     注册微鲸账户
     click back nth      1
 
@@ -23,11 +22,8 @@ Variables  eles/globaleles.py
     element should contain text     id=${title}     找回密码
     click back nth      1
 
-登录app---testdenglu001
-    click element       id=${loginbutton}
-    Input Text          id=${user_name}    ${username}
-    Input Text          id=${password}     ${password}
-    click element       id=${loginbutton}
+登录app---testdenglu004
+    login       13636423651     a123456
     wait until element is visible       id=${homebase}      10
 
 
