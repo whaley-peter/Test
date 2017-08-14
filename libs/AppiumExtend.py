@@ -7,11 +7,12 @@ from AppiumLibrary import *
 from appium import webdriver
 from robot import utils
 from robot.api import logger
-from cfg import *
+from eles.globaleles import *
 from launchManagerment import *
-from eles.login import *
+from eles.loginpage import *
 from eles.minepage import *
 from eles.globaleles import *
+from eles.homepage import *
 
 
 # set default timeout
@@ -24,18 +25,6 @@ class AppiumExtend(AppiumLibrary):
 
     def __init__(self):
         AppiumLibrary.__init__(self)
-
-    # def preInstall(self):
-    #     """创建函数用于处理应用安装过程中，处理各种系统弹框问题
-    #        bat_path为可执行的用来调用uiautomator脚本的路径
-    #     """
-    #     p = subprocess.Popen("cmd.exe /c" + bat_path, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    #     curline = p.stdout.readline()
-    #     while (curline != b''):
-    #         logger.console(curline)
-    #         curline = p.stdout.readline()
-    #     p.wait()
-    #     logger.console(p.returncode)
 
     def preInstall(self):
         """create function using for dealing with alert during install the app
@@ -52,7 +41,7 @@ class AppiumExtend(AppiumLibrary):
         logger.console(outter)
         logger.console(outter1)
 
-    def open_application(self, remote_url, alias=None,**kwargs):
+    def open_application(self, remote_url,desired_caps,alias=None):
         """Opens a new application to given Appium server.
         Capabilities of appium server, Android and iOS,
         Please check http://appium.io/slate/en/master/?python#appium-server-capabilities
@@ -65,38 +54,78 @@ class AppiumExtend(AppiumLibrary):
         """
         preinstallThread = threading.Thread(target=self.preInstall)
         preinstallThread.start()
-        desired_caps = kwargs
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
 
+    def login(self,username=username,password=password):
+        """login app
 
+        Example:
+        | login |
+        | login | 18616512272 | a123456 |
+        """
+        self.click_element('id='+loginbutton)
+        locator1 = 'id=' + usernameinput
+        locator2= 'id=' + passwordinput
+        self.input_text(locator1,username)
+        self.input_text(locator2,password)
+        self.click_element(loginbutton)
+        self.wait_until_element_is_visible('id='+homebase)
 
-    def jump_to_homepage(self, loginOrnot, remote_servers=remote_server, alias=None, desired_capss=desired_caps, username1='18616512272', password1="a123456"):
-        """Opens a new application to given Appium server using defult settings in cfg.py file
-           if loginOrnot is True then run login,else open app without login
+    def skip_login(self):
+        try:
+            self.click_element('id='+leapfrog)
+        except :
+            raise   "can't find element by given locator %S"%leapfrog
+
+    def swith_to_debug_mode(self):
+        """swith the app to debug mode
+
+        """
+        self.back_to_homepage()
+        self.wait_until_element_is_visible("id=" + mybase, 10)
+        self.click_element("id=" + mybase)
+        self.click_element("id=" + settingbutton)
+        debugbutton = "id=" + debugswith
+        debug = self.get_text("id=com.snailvr.manager:id/tv_debug")
+        if debug == u'是':
+            self.back_to_homepage()
+        else:
+            self.click_element(debugbutton)
+            self.go_back()
+            self.go_back()
+            self.go_back()
+            cmd = "adb shell am start -n com.snailvr.manager/com.whaley.vr.module.launcher.activitys.SplashActivity"
+            subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        time.sleep(TIMEOUT)
+
+    def login_and_swith_to_debug_mode(self,username=username,password=password):
+        """login app adn swith app to debugmode
+        if loginOrnot is False,then swith app to debugmode without login
 
         Examples:
-        |loginApp |${True} |
-        |loginApp |${False} |
-        |loginApp |${false} |${remote_server} |${desired_capss} |${username} |${password} |
+        | login and swith to debug mode |
+        | login and swith to debug mode | 18616512272 | a123456 |
         """
-        preinstallThread = threading.Thread(target=self.preInstall)
-        preinstallThread.start()
-        application = webdriver.Remote(command_executor=remote_servers,desired_capabilities=desired_capss)
-        while loginOrnot:
-            application.find_element_by_id(loginbutton).click()
-            application.find_element_by_id(username).send_keys(username1)
-            application.find_element_by_id(password).send_keys(password1)
-            time.sleep(1)
-            application.find_element_by_id(loginbutton).click()
-            break
+        self.login(username,password)
 
-        application.find_element_by_id(leapfrog).click()
+        self.swith_to_debug_mode()
 
-        self._debug('Opened application with session id %s' % application.session_id)
-        return self._cache.register(application, alias)
+    def skip_login_and_swith_to_debug_mode(self,message="",timeout=TIMEOUT):
+        """skip login app and swith to debug mode
+
+        :param message:
+        :param timeout:
+        :return:
+        Example:
+        | skip login and swith to debug mode |
+        """
+        self.skip_login()
+        self.swith_to_debug_mode()
+        locator = 'id='+leapfrog
+        self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 
     def back_to_homepage(self,message="",timeout=TIMEOUT):
         """click backbutton go back to homepage using for setup or treadown test
@@ -119,48 +148,9 @@ class AppiumExtend(AppiumLibrary):
 
         """
         locator = "id=" + backbutton
+        nth = int(nth)
         for one in range(nth):
             self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
-
-
-    def swith_to_debug_mode(self):
-        """swith the app to debug mode
-
-        """
-        self.back_to_homepage()
-        self.wait_until_element_is_visible("id="+mybase,10)
-        self.click_element("id="+mybase)
-        self.click_element("id="+settingbutton)
-        debugbutton = "id="+debugswith
-        debug = self.get_text("id=com.snailvr.manager:id/tv_debug")
-        if debug == u'是':
-            self.back_to_homepage()
-        else:
-            self.click_element(debugbutton)
-            self.go_back()
-            self.go_back()
-            self.go_back()
-            cmd = "adb shell am start -n com.snailvr.manager/com.whaley.vr.module.launcher.activitys.SplashActivity"
-            subprocess.Popen(cmd,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#        self._wait_until_no_error_fixed(timeout,True,message,self.page_should_contain_element,"id="+mybase)
-
-    def jump_to_homepage_and_swith_to_debug_mode(self,loginOrnot):
-        """login app adn swith app to debugmode
-        if loginOrnot is False,then swith app to debugmode without login
-
-        Examples:
-        | login and swith to debug mode | ${False} |
-        | login and swith to debug mode | ${True} |
-        """
-        self.jump_to_homepage(loginOrnot)
-        self.swith_to_debug_mode()
-        locator = "id="+leapfrog
-        time.sleep(3)
-        while not loginOrnot:
-            # self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
-            self.click_element(locator)
-            break
-
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
@@ -210,7 +200,7 @@ class AppiumExtend(AppiumLibrary):
         """
         size = self.getsize()
         x1 = int(size[0]*0.75)
-        y1 = int(size[1]*0.5)
+        y1 = int(size[1]*0.6)
         x2 = int(size[0]*0.05)
         nth = int(nth)
         for one in range(nth):
@@ -225,7 +215,7 @@ class AppiumExtend(AppiumLibrary):
         """
         size = self.getsize()
         x1 = int(size[0]*0.05)
-        y1 = int(size[1]*0.5)
+        y1 = int(size[1]*0.6)
         x2 = int(size[0]*0.75)
         nth = int(nth)
         for one in range(nth):
