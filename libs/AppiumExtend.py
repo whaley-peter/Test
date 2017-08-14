@@ -11,7 +11,7 @@ from cfg import *
 from launchManagerment import *
 from eles.login import *
 from eles.minepage import *
-from eles.globalEles import *
+from eles.globaleles import *
 
 
 # set default timeout
@@ -71,7 +71,9 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    def loginApp_or_not(self,loginOrnot, remote_servers=remote_server,alias=None,desired_capss=desired_caps,username1='18616512272',password1="a123456"):
+
+
+    def jump_to_homepage(self, loginOrnot, remote_servers=remote_server, alias=None, desired_capss=desired_caps, username1='18616512272', password1="a123456"):
         """Opens a new application to given Appium server using defult settings in cfg.py file
            if loginOrnot is True then run login,else open app without login
 
@@ -106,6 +108,21 @@ class AppiumExtend(AppiumLibrary):
         while self.is_element_present(locator):
             self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 
+    def click_back_nth(self,nth,message="",timeout=TIMEOUT):
+        """click backbutton nth times
+        :param nth:
+        :param message:
+        :param timeout:
+        :return:
+        Example:
+        | click back nth | 2 |
+
+        """
+        locator = "id=" + backbutton
+        for one in range(nth):
+            self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+
+
     def swith_to_debug_mode(self):
         """swith the app to debug mode
 
@@ -127,7 +144,7 @@ class AppiumExtend(AppiumLibrary):
             subprocess.Popen(cmd,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 #        self._wait_until_no_error_fixed(timeout,True,message,self.page_should_contain_element,"id="+mybase)
 
-    def login_and_swith_to_debug_mode(self,loginOrnot):
+    def jump_to_homepage_and_swith_to_debug_mode(self,loginOrnot):
         """login app adn swith app to debugmode
         if loginOrnot is False,then swith app to debugmode without login
 
@@ -135,7 +152,7 @@ class AppiumExtend(AppiumLibrary):
         | login and swith to debug mode | ${False} |
         | login and swith to debug mode | ${True} |
         """
-        self.loginApp_or_not(loginOrnot)
+        self.jump_to_homepage(loginOrnot)
         self.swith_to_debug_mode()
         locator = "id="+leapfrog
         time.sleep(3)
