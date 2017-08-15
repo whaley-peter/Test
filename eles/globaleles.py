@@ -41,6 +41,6 @@ username = '18616512272'
 password = 'a123456'
 usernickname = "ABCD"
 
-username1 = '13636423651'
-password1 = 'a123456'
-usernickname1 = '5451'
+username1 = '13764205429'
+password1 = 'lang123456'
+usernickname1 = 'lang'
