@@ -59,6 +59,20 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
+    def kill_uiautomator(self):
+        """kill uiautomator process manual
+
+        :return:
+        """
+        time.sleep(5)
+        cmd = "adb shell ps |find " + r'"uiautomator"'
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out, err = p.communicate()
+        if out:
+            a = out.split(" ")[5]
+            kill = "adb shell kill " + a
+            subprocess.Popen(kill, shell=True)
+
     def login(self,username=username,password=password):
         """login app
 
