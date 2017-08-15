@@ -113,7 +113,7 @@ class AppiumExtend(AppiumLibrary):
         except:
             raise logger.console("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
 
-    def swith_to_debug_mode(self):
+    def switch_to_debug_mode(self):
         """swith the app to debug mode
 
         Example:
@@ -136,7 +136,7 @@ class AppiumExtend(AppiumLibrary):
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(TIMEOUT)
 
-    def login_and_swith_to_debug_mode(self,username=username,password=password):
+    def login_and_switch_to_debug_mode(self,username=username,password=password):
         """login app adn swith app to debugmode
         if loginOrnot is False,then swith app to debugmode without login
 
@@ -146,9 +146,9 @@ class AppiumExtend(AppiumLibrary):
         """
         self.login(username,password)
 
-        self.swith_to_debug_mode()
+        self.switch_to_debug_mode()
 
-    def skip_login_and_swith_to_debug_mode(self,message="",timeout=TIMEOUT):
+    def skip_login_and_switch_to_debug_mode(self,message="",timeout=TIMEOUT):
         """skip login app and swith to debug mode
 
         :param message:
@@ -158,7 +158,7 @@ class AppiumExtend(AppiumLibrary):
         | skip login and swith to debug mode |
         """
         self.skip_login()
-        self.swith_to_debug_mode()
+        self.switch_to_debug_mode()
         locator = 'id='+leapfrog
         self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 

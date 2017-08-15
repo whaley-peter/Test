@@ -1,4 +1,4 @@
 *** Settings ***
 Library     libs/AppiumExtend.py
-Suite Setup     swith to debug mode
+Suite Setup     switch to debug mode
 Force Tags      wodebodan
