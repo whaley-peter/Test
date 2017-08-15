@@ -3,6 +3,7 @@ Library    libs/AppiumExtend.py
 Variables  eles/homepage.py
 Variables  eles/loginpage.py
 Variables  eles/globaleles.py
+Variables  eles/minepage.py
 Documentation   测试登录功能、登录界面跳转到其他界面功能
 
 *** Test Cases ***
@@ -20,11 +21,15 @@ Documentation   测试登录功能、登录界面跳转到其他界面功能
 登录界面跳转到忘记密码--testdenglu003
     click element until no error    id=${forget_pwd}
     element should contain text     id=${title}     找回密码
-    click back nth      1
+    click back nth      2
 
 登录app---testdenglu004
-    login       13636423651     a123456
+    login       ${username1}     ${password1}
     wait until element is visible       id=${homebase}      10
+    click element until no error        id=${mybase}
+    element should contain text     id=${nickname}      ${usernickname1}
+    logout
+
 
 
 
