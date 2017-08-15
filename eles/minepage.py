@@ -10,6 +10,9 @@ by.id
 #我 tap button
 mybase = "com.snailvr.manager:id/tv_user"
 
+nickname = "com.snailvr.manager:id/tv_nick_name"
+
+
 """设置界面及二级目录"""
 #设置按钮
 settingbutton = "com.snailvr.manager:id/iv_setting"
@@ -20,6 +23,8 @@ setting_clean_cache = "com.snailvr.manager:id/setting_clean_cache"
 #切换到debug模式
 debugswith = "com.snailvr.manager:id/layout_debug"
 
+#退出登录
+logoutbutton = "com.snailvr.manager:id/btn_logout"
 
 
 """本地界面及二级目录"""
