@@ -30,3 +30,11 @@ posterfans = "com.snailvr.manager:id/tv_poster_fans"
 #关注发布者
 posterfollow = "com.snailvr.manager:id/tv_follow"
 
+#分享
+share = "com.snailvr.manager:id/layout_share"
+
+#返回
+back = "com.snailvr.manager:id/btn_back"
+
+#即将播放
+loadingtext = "com.snailvr.manager:id/tv_loading_text"
