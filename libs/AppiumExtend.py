@@ -66,23 +66,58 @@ class AppiumExtend(AppiumLibrary):
         | login |
         | login | 18616512272 | a123456 |
         """
-        self.click_element('id='+loginbutton)
-        locator1 = 'id=' + usernameinput
-        locator2= 'id=' + passwordinput
-        self.input_text(locator1,username)
-        self.input_text(locator2,password)
-        self.click_element(loginbutton)
-        self.wait_until_element_is_visible('id='+homebase)
+        login = 'id='+loginbutton
+        nickname1 = 'id=' + nickname
+        leapforg1 = "id=" +leapfrog
+        self.back_to_homepage()
+        def login_app():
+            self.click_element(login)
+            locator1 = 'id=' + usernameinput
+            locator2 = 'id=' + passwordinput
+            self.input_text(locator1, username)
+            self.input_text(locator2, password)
+            self.click_element(loginbutton)
+            self.wait_until_element_is_visible('id=' + homebase)
+
+        if self.is_element_present(leapforg1):
+            login_app()
+        else:
+            self.back_to_homepage()
+            self.click_element("id="+mybase)
+            if not self.is_element_present(nickname1):
+                login_app()
+            else:
+                print "app already login"
 
     def skip_login(self):
         try:
             self.click_element('id='+leapfrog)
         except :
-            raise   "can't find element by given locator %S"%leapfrog
+            raise   logger.console("can't find element by given locator %s"%leapfrog)
 
-    def swith_to_debug_mode(self):
+    def logout(self):
+        """logout app
+
+        :return:
+        Example:
+        | logout |
+        """
+        self.back_to_homepage()
+        nickname1 = 'id=' + nickname
+        try:
+            self.click_element("id="+mybase)
+            if self.is_element_present(nickname1):
+                self.click_element("id="+settingbutton)
+                self.click_element("id="+logoutbutton)
+                self.click_element("id=" + confirmbutton)
+        except:
+            raise logger.console("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
+
+    def switch_to_debug_mode(self):
         """swith the app to debug mode
 
+        Example:
+        | swith to debug mode |
         """
         self.back_to_homepage()
         self.wait_until_element_is_visible("id=" + mybase, 10)
@@ -101,7 +136,7 @@ class AppiumExtend(AppiumLibrary):
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(TIMEOUT)
 
-    def login_and_swith_to_debug_mode(self,username=username,password=password):
+    def login_and_switch_to_debug_mode(self,username=username,password=password):
         """login app adn swith app to debugmode
         if loginOrnot is False,then swith app to debugmode without login
 
@@ -111,9 +146,9 @@ class AppiumExtend(AppiumLibrary):
         """
         self.login(username,password)
 
-        self.swith_to_debug_mode()
+        self.switch_to_debug_mode()
 
-    def skip_login_and_swith_to_debug_mode(self,message="",timeout=TIMEOUT):
+    def skip_login_and_switch_to_debug_mode(self,message="",timeout=TIMEOUT):
         """skip login app and swith to debug mode
 
         :param message:
@@ -123,7 +158,7 @@ class AppiumExtend(AppiumLibrary):
         | skip login and swith to debug mode |
         """
         self.skip_login()
-        self.swith_to_debug_mode()
+        self.switch_to_debug_mode()
         locator = 'id='+leapfrog
         self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 
@@ -426,6 +461,7 @@ class AppiumExtend(AppiumLibrary):
         Examples:
         | ${isPresent}= | Is Element Present | name=Login |
         """
+        time.sleep(2)
         return self._is_element_present(locator)
 
     def get_element_attribute_in_time(self, locator, attribute, message="", timeout=TIMEOUT):
