@@ -1,5 +1,4 @@
 *** Settings ***
 Library     libs/AppiumExtend.py
-Variables       libs/cfg.py
-Suite Setup     jump to homepage    ${False}
+Suite Setup     login
 Force Tags      mypage

@@ -5,7 +5,7 @@ Variables   eles/videodetailspage.py
 Documentation   测试全景视频详情页功能，下载、加入播单、关注发布者、跳转到发布者详情页
 
 *** Test Cases ***
-跳转到全景视频详情页
+跳转到全景视频详情页--testqjspxqy001
     wait until element is visible       id=${homebase}
     swipe left nth   1
     swipe up nth    1

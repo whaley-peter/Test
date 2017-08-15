@@ -14,7 +14,6 @@ from eles.minepage import *
 from eles.globaleles import *
 from eles.homepage import *
 
-
 # set default timeout
 TIMEOUT = 15
 
@@ -54,6 +53,7 @@ class AppiumExtend(AppiumLibrary):
         """
         preinstallThread = threading.Thread(target=self.preInstall)
         preinstallThread.start()
+
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
