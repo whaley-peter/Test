@@ -24,10 +24,10 @@ Force Tags  localvideo
     click element      id=${check}
     click element      id=${delete}
     click element      id=${quxiao}
+    click element      id=${rightquxiao}
 
 #删除一个
-    click element       id=${delete}
-    click element       id=${confirm}
+    delete nth element      1
     page should not contain element     id=${videoname}
 
 删除操作2-testlocalvideo003
@@ -46,10 +46,7 @@ Force Tags  localvideo
     should be equal     ${videoname3}       ${videoname4}
 
 
-    click element       id=${bianji}
-    click element       id=${checkall}
-    click element       id=${delete}
-    click element       id=${confirm}
+    delete all element
 
     Page Should Not Contain Element     id=${videoname}
 链接导入-testlocalvideo004
