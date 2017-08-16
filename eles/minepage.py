@@ -33,11 +33,13 @@ logoutbutton = "com.snailvr.manager:id/btn_logout"
 #本地管理
 localmanagement = "com.snailvr.manager:id/layout_local"
 #离线缓存
-offlinecache = "//android.widget.HorizontalScrollView//android.support.v7.app.ActionBar$Tab[@index=0]"
+offlinecache = "android.support.v7.app.ActionBar$Tab"
 #视频名
 tvname = "com.snailvr.manager:id/tv_name"
 #编辑
 bianji = "com.snailvr.manager:id/btn_right"
+#右上角取消
+rightquxiao = "com.snailvr.manager:id/btn_right"
 #选择
 check = "com.snailvr.manager:id/iv_check"
 #全选
@@ -88,7 +90,11 @@ problemfeedback = "com.snailvr.manager:id/layout_feedback"
 forum = "com.snailvr.manager:id/layout_forum"
 
 """选择缓存视频"""
-#综艺左下视频
+#综艺频道左下视频
 video1 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
+#综艺频道右下视频
+video2 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
+#视频名
+tvdes = "com.snailvr.manager:id/tv_des"
 #缓存
 download = "com.snailvr.manager:id/layout_downlod"
