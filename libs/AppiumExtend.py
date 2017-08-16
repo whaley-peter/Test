@@ -225,6 +225,17 @@ class AppiumExtend(AppiumLibrary):
             self._current_application().swipe(x1,y1,x1,y2,1000)
             time.sleep(1)
 
+    def swipe_up_until_element_presented(self,locator):
+        try:
+            while True:
+                if not self.is_element_present(locator):
+                    self.swipe_up_nth()
+                    continue
+                else:
+                    break
+        except:
+            raise logger.debug('element cnanot found by given %s'%locator,True)
+
     def swipe_down_nth(self,nth=1):
         """swipe the screen down nth times
 
@@ -240,6 +251,17 @@ class AppiumExtend(AppiumLibrary):
         for one in range(nth):
             self._current_application().swipe(x1,y1,x1,y2,1000)
             time.sleep(1)
+
+    def swipe_down_until_element_presented(self,locator):
+        try:
+            while True:
+                if not self.is_element_present(locator):
+                    self.swipe_down_nth()
+                    continue
+                else:
+                    break
+        except:
+            raise logger.debug('element cnanot found by given %s'%locator,True)
 
     def swipe_left_nth(self,nth=1):
         """swipe the screen left nth times
@@ -270,6 +292,7 @@ class AppiumExtend(AppiumLibrary):
         for one in range(nth):
             self._current_application().swipe(x1,y1,x2,y1,1000)
             time.sleep(1)
+
 
     def input_until_no_error(self, locator, text, message="", timeout=TIMEOUT):
         """Try types the given `text` into text field identified by `locator` until no error occurred.
@@ -465,8 +488,6 @@ class AppiumExtend(AppiumLibrary):
             message = "Double clicking element '%s'" % locator
         self._wait_until_no_error_fixed(timeout, True, message, self.double_click_element(locator), locator)
 
-
-
     def is_element_present(self, locator):
         """Check the element identified by `locator` is exist or not.
 
@@ -477,6 +498,26 @@ class AppiumExtend(AppiumLibrary):
         """
         time.sleep(2)
         return self._is_element_present(locator)
+
+    def get_nth_element_text(self, locator, nth=1):
+        """find text of nth element by `locator`. return a text
+
+        Examples:
+        | get nth element text | id=com.snailvr.manager:id/name | 2 |
+        | ${val} | get nth element text | id=com.snailvr.manager:id/name | 2 |
+        """
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+        elements = self.get_webelements(locator)
+        self._info("get %dth element '%s' 's text" % (nth, locator))
+        if nth > 0:
+            return self.get_text(elements[nth - 1])
+        elif nth < 0:
+            return self.get_text(elements[nth])
 
     def get_element_attribute_in_time(self, locator, attribute, message="", timeout=TIMEOUT):
         """Get element attribute using given attribute: name, value,... by `locator` until no error occurred.
