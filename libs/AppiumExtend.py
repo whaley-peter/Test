@@ -186,7 +186,7 @@ class AppiumExtend(AppiumLibrary):
         while self.is_element_present(locator):
             self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 
-    def click_back_nth(self,nth,message="",timeout=TIMEOUT):
+    def click_back_nth(self,nth=1,message="",timeout=TIMEOUT):
         """click backbutton nth times
         :param nth:
         :param message:
@@ -200,6 +200,62 @@ class AppiumExtend(AppiumLibrary):
         nth = int(nth)
         for one in range(nth):
             self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+
+    def delete_nth_element(self,nth=1):
+        """delete nth element on the page
+
+        :param nth:
+        :return:
+        Example:
+        | delete nth element | 2 |
+        | delete nth element |
+        """
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+
+        if not self.is_element_present("id=" + mycollectionempty) or self.is_element_present("id=" + localempty):
+            self.click_element_until_no_error("id="+bianji)
+            elements = self.get_webelements(check)
+
+            if nth > 0:
+                elements[nth - 1].click()
+            elif nth < 0:
+                elements[nth].click()
+            if self.is_element_present("id="+delete):
+                self.click_element_until_no_error("id="+delete)
+            elif self.is_element_present("id=com.snailvr.manager:id/tv_delete"):
+                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
+            self.click_element_until_no_error("id="+confirm)
+        else:
+            logger.console("no element to deleting")
+
+    def delete_all_element(self):
+        """delete all element of page,before delete check whether user can cancle delete
+        :return:
+        Example:
+        | delete all element |
+        """
+        if not self.is_element_present("id="+mycollectionempty) or self.is_element_present("id="+localempty):
+            self._current_application().find_element_by_id(bianji).click()
+            checkall1 = "id=" + checkall
+            if self.is_element_present(checkall1):
+                self.click_element_until_no_error(checkall)
+                self.click_element_until_no_error("id="+delete)
+                self.click_element_until_no_error("id="+quxiao)
+                self.click_element_until_no_error("id="+delete)
+            else:
+                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_check")
+                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
+                self.click_element_until_no_error("id="+quxiao)
+                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
+
+            self.click_element_until_no_error("id=" + confirm)
+        else:
+            logger.console("no element to deleting")
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
