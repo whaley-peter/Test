@@ -14,7 +14,7 @@ Variables   eles/globaleles.py
 
 #    ${val}      get text     xpath=${downloadtext}    //也可以断言
 #    should be equal        ${val}      已缓存         //也可以断言
-    sleep      2
+    sleep      4
 #    element should contain text     xpath=${downloadtext}       已缓存
     click element   id=${backbutton}
     sleep      2
@@ -22,14 +22,15 @@ Variables   eles/globaleles.py
     click element  xpath=${video2}
     click element   id=${download}
 #    element should contain text     xpath=${downloadtext}       已缓存
+    sleep  4
     click element   id=${backbutton}
 
 
 #检查离线缓存
     click element     id=${mybase}
     click element     id=${localmanagement}
-    click nth element     class=${offlinecache}         1
-
+#    click nth element     class=${offlinecache}         1
+    swipe right nth
     ${tvname1}       get nth element text    id=${tvname}   2
     should be equal     ${tvdes1}       ${tvname1}
     ${tvname2}       get nth element text    id=${tvname}   1
