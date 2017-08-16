@@ -48,6 +48,8 @@ delete = "com.snailvr.manager:id/btn_delete"
 confirm = "com.snailvr.manager:id/tv_confirm"
 #取消
 quxiao = "com.snailvr.manager:id/tv_cancel"
+#本地视频或者离线缓存为空
+localempty = "id=com.snailvr.manager:id/tv_empty"
 
 """
 by.class
@@ -70,6 +72,8 @@ link = "com.snailvr.manager:id/btn_link"
 
 #我的播单
 mycollection = "com.snailvr.manager:id/layout_collect"
+#我的播单为空
+mycollectionempty = "com.snailvr.manager:id/tv_error"
 
 #我的券/兑换码
 mycoupen = "com.snailvr.manager:id/layout_pay"
