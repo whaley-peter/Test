@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-__mtime__ = '2017/8/14'
 """全局变量，多处通用"""
 #by.id
 #返回按钮
@@ -22,9 +20,9 @@ apppath = getProjectRootPath()+ r"\app\WhaleyVR.apk"
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '6.0',
+    'platformVersion' : '7.0',
     'deviceName' :'test',
-    'udid':'6221231716B0904714',
+    'udid':'GWY0217115007494',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
     'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
@@ -45,8 +43,9 @@ username1 = '13764205429'
 password1 = 'lang123456'
 usernickname1 = 'lang'
 
-username2 = '13636423651'
+username3 = '13636423651'
 password3 = 'a123456'
-usernickname2 = '5451'
+usernickname3 = '5451'
+
 
 

@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 __mtime__ = '2017/8/10'
-
+#底部首页button
+homepage = "com.snailvr.manager:id/rl_recommend"
+#tab 综艺
+zongyi = "//android.widget.LinearLayout/android.view.View[4]"
 """
 by.id
 """
-
 #我 tap button
 mybase = "com.snailvr.manager:id/tv_user"
 
@@ -28,8 +30,42 @@ logoutbutton = "com.snailvr.manager:id/btn_logout"
 
 
 """本地界面及二级目录"""
+#本地管理
+localmanagement = "com.snailvr.manager:id/layout_local"
+#离线缓存
+offlinecache = "//android.widget.HorizontalScrollView//android.support.v7.app.ActionBar$Tab[@index=0]"
+#视频名
+tvname = "com.snailvr.manager:id/tv_name"
+#编辑
+bianji = "com.snailvr.manager:id/btn_right"
+#选择
+check = "com.snailvr.manager:id/iv_check"
+#全选
+checkall = "com.snailvr.manager:id/cb_check_all"
+#删除
+delete = "com.snailvr.manager:id/btn_delete"
+#继续
+confirm = "com.snailvr.manager:id/tv_confirm"
+#取消
+quxiao = "com.snailvr.manager:id/tv_cancel"
+
+"""
+by.class
+"""
 #本地视频
-localvideo = "com.snailvr.manager:id/layout_local"
+localvideo = "android.support.v7.app.ActionBar$Tab"
+# localvideo1 = "//android.widget.HorizontalScrollView//android.support.v7.app.ActionBar$Tab[@index=1]"
+#相册视频导入
+xiangce = "com.snailvr.manager:id/btn_gallery"
+#导入
+daoru = "com.snailvr.manager:id/btn_import"
+#确定
+ok = "com.snailvr.manager:id/tv_ok"
+#视频名
+videoname = "com.snailvr.manager:id/name"
+#链接导入
+link = "com.snailvr.manager:id/btn_link"
+
 
 
 #我的播单
@@ -46,3 +82,9 @@ problemfeedback = "com.snailvr.manager:id/layout_feedback"
 
 #官方论坛
 forum = "com.snailvr.manager:id/layout_forum"
+
+"""选择缓存视频"""
+#综艺左下视频
+video1 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
+#缓存
+download = "com.snailvr.manager:id/layout_downlod"
