@@ -19,7 +19,7 @@ collectiontext = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//and
 
 #缓存
 downloadbutton = "com.snailvr.manager:id/layout_downlod"
-downliadtext = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView"
+downloadtext = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView"
 
 #发布者名称
 postername = "com.snailvr.manager:id/tv_poster_name"
@@ -38,3 +38,6 @@ back = "com.snailvr.manager:id/btn_back"
 
 #即将播放
 loadingtext = "com.snailvr.manager:id/tv_loading_text"
+
+#自动化测试tab页/
+testtab = "//android.widget.RelativeLayout//android.widget.HorizontalScrollView//android.view.View[2]"
