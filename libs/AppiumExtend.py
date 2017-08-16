@@ -370,16 +370,6 @@ class AppiumExtend(AppiumLibrary):
             message = "Clicking %sth element '%s'" % (nth, locator)
         self._wait_until_no_error_fixed(timeout, True, message, self.click_nth_element, locator, nth)
 
-
-    # def click_element_until_exists(self, locator,message="",timeout=TIMEOUT):
-    #
-    #
-    #     if not message:
-    #         message = "Clicking element '%s' until element '%s' appear" % locator
-    #
-    #     if self.is_element_present(locator):
-    #         self.click_element(locator)
-
     def click_until_waitElement_exists(self, locator, wait_locator, message="", timeout=TIMEOUT):
         """Click element identified by `locator` until element identified by `wait_locator` appear.
 
@@ -532,13 +522,13 @@ class AppiumExtend(AppiumLibrary):
             message = "Element locator '%s' did not match any elements." % locator
         return self._wait_until_no_error_fixed(timeout, True, message, self.get_element_attribute, locator, attribute)
 
-    def get_element_count(self, locator, fail_on_error=True):
+    def get_element_count(self, locator):
         """Count elements found by `locator`.
 
         Examples:
         | ${count}= | Get Element Count | class=android.widget.Button |
         """
-        return len(self.get_elements(locator, fail_on_error=fail_on_error))
+        return len(self.get_webelements(locator))
 
     def get_element_count_in_time(self, locator, message="", timeout=TIMEOUT):
         """Count elements found by `locator` until result is not 0.
