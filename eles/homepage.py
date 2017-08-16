@@ -17,7 +17,8 @@ download = "com.snailvr.manager:id/btn_download"
 
 #浏览历史
 history = "com.snailvr.manager:id/btn_history"
-
+#浏览历史为空
+historyempty = "com.snailvr.manager:id/tv_error"
 
 """
 by.xpath
