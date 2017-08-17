@@ -122,12 +122,35 @@ fulladdress = "com.snailvr.manager:id/et_full_address"
 #提交
 submit = "com.snailvr.manager:id/bin_submit"
 
-
+"""问题反馈及二级目录"""
 #问题反馈
 problemfeedback = "com.snailvr.manager:id/layout_feedback"
+#问题反馈大标题
+title3 = "com.snailvr.manager:id/tv_title"
+
+
 
 #官方论坛
 forum = "com.snailvr.manager:id/layout_forum"
+
+"""使用帮助及二级目录"""
+#使用帮助
+usehelp = "com.snailvr.manager:id/layout_help"
+#帮助标题
+title4 = "com.snailvr.manager:id/tv_title"
+"""关于及二级目录"""
+#关于
+about = "com.snailvr.manager:id/layout_about"
+#图标
+icon = "com.snailvr.manager:id/iv_icon"
+#加入QQ群
+enter = "com.snailvr.manager:id/tv_enter_qq"
+#商务合作
+trade = "com.snailvr.manager:id/tv_trade"
+#用户协议
+agreement="com.snailvr.manager:id/user_agreement"
+#用户协议标题
+title5 = "com.snailvr.manager:id/tv_title"
 
 """选择缓存视频"""
 #综艺频道左下视频

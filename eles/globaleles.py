@@ -20,9 +20,9 @@ apppath = getProjectRootPath()+ r"\app\WhaleyVR.apk"
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '7.0',
+    'platformVersion' : '6.0.1',
     'deviceName' :'test',
-    'udid':'GWY0217115007494',
+    'udid':'8d5cd6c0',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
     'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',

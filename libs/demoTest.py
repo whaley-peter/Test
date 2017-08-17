@@ -9,9 +9,9 @@ import subprocess
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '5.1',
+    'platformVersion' : '6.0.1',
     'deviceName' :'test',
-    'udid':'VGYP7T6P99999999',
+    'udid':'8d5cd6c0',
     'app' : r'E:\Test\app\WhaleyVR.apk',
     'appPackage' : 'com.snailvr.manager',
     'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
