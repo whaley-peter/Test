@@ -82,11 +82,46 @@ bodanvideo ="com.snailvr.manager:id/pic"
 bodanname = "com.snailvr.manager:id/name"
 
 
+"""我的券/兑换码及二级目录"""
 #我的券/兑换码
 mycoupen = "com.snailvr.manager:id/layout_pay"
+#兑换码输入框
+mabox = "com.snailvr.manager:id/rl_redemption_box"
+#请输入兑换码字样
+# maname = "//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]/android.widget.TextView"
+maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.widget.TextView"
+#观看券中视频名
+quanname = "com.snailvr.manager:id/tv_name"
+#明细
+mingxi = "com.snailvr.manager:id/btn_right"
+#购买明细标题
+title1 = "com.snailvr.manager:id/tv_title"
+#明细中说明
+paynum="com.snailvr.manager:id/tv_pay_num"
 
+
+"""我的奖品及二级目录"""
 #我的奖品
 mygift = "com.snailvr.manager:id/layout_gift"
+#我的奖品标题
+title2 = "com.snailvr.manager:id/tv_title"
+#右上添加按钮
+address = "com.snailvr.manager:id/btn_address"
+#收货人
+etname = "com.snailvr.manager:id/et_name"
+#联系电话
+etnumber = "com.snailvr.manager:id/et_number"
+#所在地址
+etaddress = "com.snailvr.manager:id/et_address"
+#上海长宁区城区
+shanghai = "//android.widget.ListView/android.widget.RelativeLayout[2]"
+changning = "//android.widget.ListView/android.widget.RelativeLayout[3]"
+chengqu = "//android.widget.ListView/android.widget.RelativeLayout"
+#详细地址
+fulladdress = "com.snailvr.manager:id/et_full_address"
+#提交
+submit = "com.snailvr.manager:id/bin_submit"
+
 
 #问题反馈
 problemfeedback = "com.snailvr.manager:id/layout_feedback"
