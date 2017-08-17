@@ -70,12 +70,17 @@ videoname = "com.snailvr.manager:id/name"
 #链接导入
 link = "com.snailvr.manager:id/btn_link"
 
-
+"""我的播单界面及二级目录"""
 
 #我的播单
 mycollection = "com.snailvr.manager:id/layout_collect"
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
+#播单中视频
+bodanvideo ="com.snailvr.manager:id/pic"
+#播单中视频名
+bodanname = "com.snailvr.manager:id/name"
+
 
 #我的券/兑换码
 mycoupen = "com.snailvr.manager:id/layout_pay"
@@ -98,3 +103,10 @@ video2 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[
 tvdes = "com.snailvr.manager:id/tv_des"
 #缓存
 download = "com.snailvr.manager:id/layout_downlod"
+
+"""将视频加入播单"""
+# 加入播单
+collectbodan="com.snailvr.manager:id/layout_collect"
+
+
+
