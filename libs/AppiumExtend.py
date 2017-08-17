@@ -4,15 +4,14 @@ import subprocess
 import threading
 import time
 from AppiumLibrary import *
+
+from eles.loginpage import *
+from eles.minepage import *
+from eles.homepage import *
 from appium import webdriver
 from robot import utils
 from robot.api import logger
 from eles.globaleles import *
-from launchManagerment import *
-from eles.loginpage import *
-from eles.minepage import *
-from eles.globaleles import *
-from eles.homepage import *
 
 # set default timeout
 TIMEOUT = 15
@@ -25,11 +24,16 @@ class AppiumExtend(AppiumLibrary):
     def __init__(self):
         AppiumLibrary.__init__(self)
 
+    def getProjectRootPath(self):
+        """get rootpath of project
+        """
+        rootpath = os.getcwd().split('\libs')[0]
+        return rootpath
+
     def preInstall(self):
         """create function using for dealing with alert during install the app
-
         """
-        watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
+        watcherpath = self.getProjectRootPath() + r"\libs\UIWatcher.jar"
         push = subprocess.Popen(
             "adb push " + watcherpath + " data/local/tmp",
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
