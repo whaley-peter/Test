@@ -20,9 +20,13 @@ Variables   eles/globaleles.py
     sleep  4
     click element   id=${backbutton}
 
-进入我的播单--testwodebodan002
+#进入检查我的播单
     click element       id=${mybase}
     click element       id=${mycollection}
+    ${boname1}       get nth element text    id=${bodanname}   2
+    should be equal     ${tvdes1}       ${boname1}
+    ${boname2}       get nth element text    id=${bodanname}   1
+    should be equal     ${tvdes2}       ${boname2}
 
 #取消删除播单
     click element       id=${bianji}
