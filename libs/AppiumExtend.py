@@ -4,7 +4,7 @@ import subprocess
 import threading
 import time
 from AppiumLibrary import *
-
+from launchManagement import *
 from eles.loginpage import *
 from eles.minepage import *
 from eles.homepage import *
@@ -24,16 +24,10 @@ class AppiumExtend(AppiumLibrary):
     def __init__(self):
         AppiumLibrary.__init__(self)
 
-    def getProjectRootPath(self):
-        """get rootpath of project
-        """
-        rootpath = os.getcwd().split('\libs')[0]
-        return rootpath
-
     def preInstall(self):
         """create function using for dealing with alert during install the app
         """
-        watcherpath = self.getProjectRootPath() + r"\libs\UIWatcher.jar"
+        watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
         push = subprocess.Popen(
             "adb push " + watcherpath + " data/local/tmp",
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
