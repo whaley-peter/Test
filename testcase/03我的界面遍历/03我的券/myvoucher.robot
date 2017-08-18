@@ -15,4 +15,5 @@ Variables   eles/globaleles.py
 #检查购买明细
         click element       id=${mingxi}
         element should contain text         id=${title}           购买明细
+#检查购买数量
 #        page should contain element         id=${paynum}

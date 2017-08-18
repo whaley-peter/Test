@@ -51,7 +51,7 @@ confirm = "com.snailvr.manager:id/tv_confirm"
 #取消
 quxiao = "com.snailvr.manager:id/tv_cancel"
 #本地视频或者离线缓存为空
-localempty = "id=com.snailvr.manager:id/tv_empty"
+localempty = "com.snailvr.manager:id/tv_empty"
 
 """
 by.class
@@ -61,6 +61,10 @@ localvideo = "android.support.v7.app.ActionBar$Tab"
 # localvideo1 = "//android.widget.HorizontalScrollView//android.support.v7.app.ActionBar$Tab[@index=1]"
 #相册视频导入
 xiangce = "com.snailvr.manager:id/btn_gallery"
+#相册中视频
+layout = "com.snailvr.manager:id/pic_layout"
+#相册中视频名
+layname = "com.snailvr.manager:id/name"
 #导入
 daoru = "com.snailvr.manager:id/btn_import"
 #确定
@@ -69,6 +73,8 @@ ok = "com.snailvr.manager:id/tv_ok"
 videoname = "com.snailvr.manager:id/name"
 #链接导入
 link = "com.snailvr.manager:id/btn_link"
+#链接导入框
+suggestion ="com.snailvr.manager:id/suggestion"
 
 """我的播单界面及二级目录"""
 
@@ -94,8 +100,8 @@ maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.
 quanname = "com.snailvr.manager:id/tv_name"
 #明细
 mingxi = "com.snailvr.manager:id/btn_right"
-#购买明细标题
-title1 = "com.snailvr.manager:id/tv_title"
+#上方标题标题
+title = "com.snailvr.manager:id/tv_title"
 #明细中说明
 paynum="com.snailvr.manager:id/tv_pay_num"
 
@@ -103,8 +109,6 @@ paynum="com.snailvr.manager:id/tv_pay_num"
 """我的奖品及二级目录"""
 #我的奖品
 mygift = "com.snailvr.manager:id/layout_gift"
-#我的奖品标题
-title2 = "com.snailvr.manager:id/tv_title"
 #右上添加按钮
 address = "com.snailvr.manager:id/btn_address"
 #收货人
@@ -125,8 +129,7 @@ submit = "com.snailvr.manager:id/bin_submit"
 """问题反馈及二级目录"""
 #问题反馈
 problemfeedback = "com.snailvr.manager:id/layout_feedback"
-#问题反馈大标题
-title3 = "com.snailvr.manager:id/tv_title"
+
 
 
 
@@ -136,8 +139,7 @@ forum = "com.snailvr.manager:id/layout_forum"
 """使用帮助及二级目录"""
 #使用帮助
 usehelp = "com.snailvr.manager:id/layout_help"
-#帮助标题
-title4 = "com.snailvr.manager:id/tv_title"
+
 """关于及二级目录"""
 #关于
 about = "com.snailvr.manager:id/layout_about"
@@ -149,18 +151,18 @@ enter = "com.snailvr.manager:id/tv_enter_qq"
 trade = "com.snailvr.manager:id/tv_trade"
 #用户协议
 agreement="com.snailvr.manager:id/user_agreement"
-#用户协议标题
-title5 = "com.snailvr.manager:id/tv_title"
 
 """选择缓存视频"""
 #综艺频道左下视频
 video1 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
 #综艺频道右下视频
 video2 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
-#视频名
-tvdes = "com.snailvr.manager:id/tv_des"
+#半屏详情页视频名
+programname = "com.snailvr.manager:id/tv_program_name"
 #缓存
 download = "com.snailvr.manager:id/layout_downlod"
+#已缓存字样
+downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView"
 
 """将视频加入播单"""
 # 加入播单

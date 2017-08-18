@@ -14,4 +14,4 @@ Variables   eles/globaleles.py
         page should contain element     id=${trade}
 
         click element       id=${agreement}
-        element should contain text     id=${title5}        用户协议
+        element should contain text     id=${title}        用户协议

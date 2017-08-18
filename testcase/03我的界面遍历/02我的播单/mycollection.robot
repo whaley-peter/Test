@@ -5,19 +5,20 @@ Variables   eles/globaleles.py
 
 *** Test Cases ***
 加入我的播单--testwodebodan001
+    [Documentation]  加入播单后在我的播单进行删除操作
+#加入播单
     click element   id=${homepage}
     click element   xpath=${zongyi}
-    sleep      3
-    ${tvdes1}       get nth element text    id=${tvdes}     1
+    wait until element is visible   xpath=${video1}
     click element   xpath=${video1}
+    ${tvdes1}       get text        id=${programname}
+
     click element   id=${collectbodan}
     click element   id=${backbutton}
-    sleep      2
 
-    ${tvdes2}       get nth element text    id=${tvdes}     2
-    click element  xpath=${video2}
+    wait until element is visible   xpath=${video2}
+    click element   xpath=${video2}
     click element   id=${collectbodan}
-    sleep  4
     click element   id=${backbutton}
 
 #进入检查我的播单
@@ -25,8 +26,6 @@ Variables   eles/globaleles.py
     click element       id=${mycollection}
     ${boname1}       get nth element text    id=${bodanname}   2
     should be equal     ${tvdes1}       ${boname1}
-    ${boname2}       get nth element text    id=${bodanname}   1
-    should be equal     ${tvdes2}       ${boname2}
 
 #取消删除播单
     click element       id=${bianji}
@@ -41,6 +40,4 @@ Variables   eles/globaleles.py
 #删除所有播单
     delete all element
     Page Should Not Contain Element     id=${bodanvideo}
-    click nth element until no error    id=${mycollection}
-#    click element until no error        id=${backbutton}
-#    click element        id=${backbutton}
+    element should contain text         id=${mycollectionempty}         暂无视频加入播单

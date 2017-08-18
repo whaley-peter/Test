@@ -9,4 +9,4 @@ Variables   eles/globaleles.py
         swipe up nth      2
         click element       id=${usehelp}
 #检查界面
-        element should contain text     id=${title4}        帮助
+        element should contain text     id=${title}        帮助
