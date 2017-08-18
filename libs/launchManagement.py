@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from AppiumExtend import *
 import subprocess
 from robot.api import logger
 from appium import webdriver
@@ -80,15 +79,12 @@ def getCapabilities():
     return dict
 
 def start_servers(port,bootstrapport,udid):
-    sleep(5)
     cmd = r'node C:\Users\dell\AppData\Local\Programs\appium-desktop\resources\app\node_modules\appium\build\lib\main.js -a 127.0.0.1 -p %s -bp %s -U %s --session-override'%(port,bootstrapport,udid)
-    # os.system(cmd)
     subprocess.Popen(cmd,shell=True)
-    sleep(5)
 
 def kill_node():
+    port = 4723
     for one in range(len(getDeviceList())):
-        port = 4723
         cmd = 'netstat -ano|findstr "%s"'%port
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         out,err=p.communicate()
@@ -99,7 +95,7 @@ def kill_node():
         port += 2
         continue
 
-def open_applications(lock,remote_server,desired_caps,udid,alias=None):
+def open_applications(lock,remote_server,desired_caps,udid):
     lock.acquire()
     try:
         thraed0 = threading.Thread(target=install_alert,args=(udid,))
@@ -133,22 +129,18 @@ def install_alert(udid):
     # logger.console(outter1)
 
 
-def multitest():
+def multi_servers_start():
     dict = getCapabilities()
-    lock = multiprocessing.Lock()
+    # lock = multiprocessing.Lock()
     for one in dict:
         port = dict[one]['port']
         bootstrapport = dict[one]['bootstrapport']
         udid = dict[one]['udid']
-        remote_server = dict[one]['remote_server']
-        desired_caps = dict[one]['desired_caps']
         thread = threading.Thread(target=start_servers(port,bootstrapport,udid))
         thread.start()
-        process1 = multiprocessing.Process(target=open_applications,args=(lock,remote_server,desired_caps,udid))
-        process1.start()
-
-
-
-
-
-
+        sleep(10)
+        # remote_server = dict[one]['remote_server']
+        # desired_caps = dict[one]['desired_caps']
+        # process1 = multiprocessing.Process(target=open_applications,args=(lock,remote_server,desired_caps,udid))
+        # process1.start()
+    return dict
