@@ -55,6 +55,8 @@ def getCapabilities():
             devicename = 'oppe r9tm'
         elif udid == 'GWY0217115007494':
             devicename = 'HUAWEI Meta9'
+        else:
+            devicename = 'nokonwdevice'
         try:
             desired_caps = {
                 'platformName':'Android',
@@ -95,23 +97,6 @@ def kill_node():
         port += 2
         continue
 
-def open_applications(lock,remote_server,desired_caps,udid):
-    lock.acquire()
-    try:
-        thraed0 = threading.Thread(target=install_alert,args=(udid,))
-        thraed0.start()
-        application = webdriver.Remote(command_executor=remote_server, desired_capabilities=desired_caps)
-        # self._debug('Opened application with session id %s' % application.session_id)
-        # return self._cache.register(application,alias)
-    finally:
-        lock.release()
-    # driver.find_element_by_id("com.snailvr.manager:id/iv_leapfrog").click()
-    # driver.find_element_by_id("com.snailvr.manager:id/tv_user").click()
-    #
-    # driver.find_element_by_id("com.snailvr.manager:id/iv_setting").click()
-    # for one in range(10):
-    #     driver.find_element_by_id("com.snailvr.manager:id/btn_back").click()
-    #     driver.find_element_by_id("com.snailvr.manager:id/iv_setting").click()
 
 def install_alert(udid):
     """create function using for dealing with alert during install the app
@@ -131,7 +116,6 @@ def install_alert(udid):
 
 def multi_servers_start():
     dict = getCapabilities()
-    # lock = multiprocessing.Lock()
     for one in dict:
         port = dict[one]['port']
         bootstrapport = dict[one]['bootstrapport']
@@ -139,8 +123,4 @@ def multi_servers_start():
         thread = threading.Thread(target=start_servers(port,bootstrapport,udid))
         thread.start()
         sleep(10)
-        # remote_server = dict[one]['remote_server']
-        # desired_caps = dict[one]['desired_caps']
-        # process1 = multiprocessing.Process(target=open_applications,args=(lock,remote_server,desired_caps,udid))
-        # process1.start()
     return dict

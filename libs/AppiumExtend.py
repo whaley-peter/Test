@@ -15,7 +15,6 @@ import subprocess
 import threading
 import multiprocessing
 
-
 # set default timeout
 TIMEOUT = 15
 
@@ -67,9 +66,9 @@ class AppiumExtend(AppiumLibrary):
             thraed0.start()
             application = webdriver.Remote(remote_url, desired_caps)
             self._debug('Opened application with session id %s' % application.session_id)
+            return self._cache.register(application, alias)
         finally:
             lock.release()
-            return self._cache.register(application, alias)
 
     def launch_applications(self):
         #启动多个appium server
@@ -82,7 +81,12 @@ class AppiumExtend(AppiumLibrary):
             udid = dict[one]['udid']
             alias = desired_caps['deviceName']
             process = multiprocessing.Process(target=self.open_applications,args=(lock,remote_server,desired_caps,udid,alias))
+
             process.start()
+
+        process = multiprocessing.Process(target=self.printnum)
+        process.start()
+
 
     def teardown_test(self):
         sleep(5)
