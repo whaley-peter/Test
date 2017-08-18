@@ -8,8 +8,11 @@ Variables   eles/globaleles.py
     click element   id=${homepage}
     click element   xpath=${zongyi}
     sleep      3
+#    wait until element is visible   id=${tvdes}
     ${tvdes1}       get nth element text    id=${tvdes}     1
     click element   xpath=${video1}
+    wait until element is visible   id=com.snailvr.manager:id/tv_program_name       5
+#    ${tvdes1}       get text        id=com.snailvr.manager:id/tv_program_name
     click element   id=${download}
 
 #    ${val}      get text     xpath=${downloadtext}    //也可以断言

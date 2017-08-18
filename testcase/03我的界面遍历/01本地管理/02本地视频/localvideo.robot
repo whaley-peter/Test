@@ -3,10 +3,9 @@ Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Suite Teardown       back to homepage
 Force Tags  localvideo
-
+Documentation
 *** Test Cases ***
 相册视频导入-testlocalvideo001
-
     click element     id=${mybase}
     click element     id=${localmanagement}
     click element     id=${xiangce}
@@ -21,7 +20,7 @@ Force Tags  localvideo
 
 #取消删除
     click element      id=${bianji}
-    click element      id=${check}
+    click nth element      id=${check}
     click element      id=${delete}
     click element      id=${quxiao}
     click element      id=${rightquxiao}
