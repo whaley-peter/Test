@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import subprocess
-import threading
+
 import time
 from AppiumLibrary import *
 from launchManagement import *
@@ -12,6 +11,10 @@ from appium import webdriver
 from robot import utils
 from robot.api import logger
 from eles.globaleles import *
+import subprocess
+import threading
+import multiprocessing
+
 
 # set default timeout
 TIMEOUT = 15
@@ -56,6 +59,35 @@ class AppiumExtend(AppiumLibrary):
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
+
+    def open_applications(self,lock,remote_url,desired_caps,udid,alias=None):
+        lock.acquire()
+        try:
+            thraed0 = threading.Thread(target=install_alert, args=(udid,))
+            thraed0.start()
+            application = webdriver.Remote(remote_url, desired_caps)
+            self._debug('Opened application with session id %s' % application.session_id)
+        finally:
+            lock.release()
+            return self._cache.register(application, alias)
+
+    def launch_applications(self):
+        #启动多个appium server
+        dict = multi_servers_start()
+        lock = multiprocessing.Lock()
+        #创建多个webdriver对象
+        for one in dict:
+            remote_server = dict[one]['remote_server']
+            desired_caps = dict[one]['desired_caps']
+            udid = dict[one]['udid']
+            alias = desired_caps['deviceName']
+            process = multiprocessing.Process(target=self.open_applications,args=(lock,remote_server,desired_caps,udid,alias))
+            process.start()
+
+    def teardown_test(self):
+        sleep(5)
+        kill_node()
+        self.kill_uiautomator()
 
     def kill_uiautomator(self):
         """kill uiautomator process manual
@@ -606,7 +638,7 @@ class AppiumExtend(AppiumLibrary):
         """
         if not message:
             message = "Page should have contained text '%s' in %s" % (text, self._format_timeout(timeout))
-        self._wait_until_no_error_fixed(timeout, True, message, self.page_should_contain, text, 'NONE')
+        self._wait_until_no_error_fixed(timeout, True, message, self.page_should_contain_text, text, 'NONE')
 
     def page_should_contain_element_in_time(self, locator, message="", timeout=TIMEOUT):
         """Verifies element identified by `locator` is not found on the current page in setting time.
