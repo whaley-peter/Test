@@ -45,3 +45,5 @@ subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
 
 driver.swipe()
+
+driver.quit()
