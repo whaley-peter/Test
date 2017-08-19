@@ -59,34 +59,25 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    def open_applications(self,lock,remote_url,desired_caps,udid,alias=None):
-        lock.acquire()
-        try:
-            thraed0 = threading.Thread(target=install_alert, args=(udid,))
-            thraed0.start()
-            application = webdriver.Remote(remote_url, desired_caps)
-            self._debug('Opened application with session id %s' % application.session_id)
-            return self._cache.register(application, alias)
-        finally:
-            lock.release()
+    def open_applications(self,alias=None):
+        """a new method of open application for muti test
 
-    def launch_applications(self):
-        #启动多个appium server
-        dict = multi_servers_start()
-        lock = multiprocessing.Lock()
-        #创建多个webdriver对象
-        for one in dict:
-            remote_server = dict[one]['remote_server']
-            desired_caps = dict[one]['desired_caps']
-            udid = dict[one]['udid']
-            alias = desired_caps['deviceName']
-            process = multiprocessing.Process(target=self.open_applications,args=(lock,remote_server,desired_caps,udid,alias))
+        :param alias:
+        :return:
+        Example:
+        | open applications |
+        """
+        dict = getCapabilities()
+        with open('udid.txt','r') as f:
+            udid = f.read()
+        remote_server = dict[udid]['remote_server']
+        desired_caps = dict[udid]['desired_caps']
+        thraed0 = threading.Thread(target=install_alert, args=(udid,))
+        thraed0.start()
+        application = webdriver.Remote(remote_server, desired_caps)
+        self._debug('Opened application with session id %s' % application.session_id)
 
-            process.start()
-
-        process = multiprocessing.Process(target=self.printnum)
-        process.start()
-
+        return self._cache.register(application, alias)
 
     def teardown_test(self):
         sleep(5)
