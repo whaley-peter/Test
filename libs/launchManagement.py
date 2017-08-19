@@ -21,15 +21,11 @@ def getDeviceList():
     p = subprocess.Popen("adb devices", stdout=subprocess.PIPE, stderr=subprocess.STDOUT,shell=True)
     outter,err = p.communicate()
     devicesIds = []
-    rootpath = getProjectRootPath() +r'devicesinfo.txt'
-    with open(rootpath,"w") as f:
-        outter = outter.decode('cp936').decode('utf-8')
-        outter =  outter.split("\r\n")[1:]
-        for one in outter:
-            if one:
-                one = one.split('\tdevice')[0]
-                f.write(one + ',')
-                devicesIds.append(one)
+    outter =  outter.split("\r\n")[1:]
+    for one in outter:
+        if one:
+            one = one.split('\tdevice')[0]
+            devicesIds.append(one)
     p.wait()
     return devicesIds
 
@@ -46,17 +42,17 @@ def getCapabilities():
         if udid == 'ea08a98e':
             devicename = 'MI5'
         elif udid == '8d5cd6c0':
-            devicename = 'vivo x9i'
+            devicename = 'vivo_x9i'
         elif udid == '6221231716B0904714':
             devicename =  '360'
         elif udid == '5e321b32':
             devicename = 'SamsungGalaxy7'
         elif udid == 'VGYP7T6P99999999':
-            devicename = 'oppe r9tm'
+            devicename = 'oppo_r9tm'
         elif udid == 'GWY0217115007494':
-            devicename = 'HUAWEI Meta9'
+            devicename = 'HUAWEI_Meta9'
         else:
-            devicename = 'nokonwdevice'
+            devicename = 'noknowdevice'
         try:
             desired_caps = {
                 'platformName':'Android',
@@ -75,13 +71,13 @@ def getCapabilities():
             print   'devicename not found'
         remote_server = 'http://127.0.0.1:%s/wd/hub' % port
         if udid not in dict:
-            dict[udid] = {'remote_server':remote_server,'desired_caps':desired_caps,'port':port,'bootstrapport':bootstrapport,'udid':udid}
+            dict[udid] = {'remote_server':remote_server,'desired_caps':desired_caps,'port':port,'bootstrapport':bootstrapport,'udid':udid,'deviceName':devicename}
         else:
-            dict[udid].append({'remote_server':remote_server,'desired_caps':desired_caps,'port':port,'bootstrapport':bootstrapport,'udid':udid})
+            dict[udid].append({'remote_server':remote_server,'desired_caps':desired_caps,'port':port,'bootstrapport':bootstrapport,'udid':udid,'deviceName':devicename})
     return dict
 
 def start_servers(port,bootstrapport,udid):
-    cmd = r'node C:\Users\dell\AppData\Local\Programs\appium-desktop\resources\app\node_modules\appium\build\lib\main.js -a 127.0.0.1 -p %s -bp %s -U %s --session-override'%(port,bootstrapport,udid)
+    cmd = r'node C:\Users\admin\AppData\Local\Programs\appium-desktop\resources\app\node_modules\appium\build\lib\main.js -a 127.0.0.1 -p %s -bp %s -U %s --session-override'%(port,bootstrapport,udid)
     subprocess.Popen(cmd,shell=True)
 
 def kill_node():
@@ -96,7 +92,6 @@ def kill_node():
             subprocess.Popen(kill,shell=True)
         port += 2
         continue
-
 
 def install_alert(udid):
     """create function using for dealing with alert during install the app
@@ -113,7 +108,6 @@ def install_alert(udid):
     sleep(5)
     # logger.console(outter1)
 
-
 def multi_servers_start():
     dict = getCapabilities()
     for one in dict:
@@ -122,5 +116,3 @@ def multi_servers_start():
         udid = dict[one]['udid']
         thread = threading.Thread(target=start_servers(port,bootstrapport,udid))
         thread.start()
-        sleep(10)
-    return dict
