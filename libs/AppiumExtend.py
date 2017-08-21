@@ -3,7 +3,6 @@
 
 import time
 from AppiumLibrary import *
-from launchManagement import *
 from eles.loginpage import *
 from eles.minepage import *
 from eles.homepage import *
@@ -59,30 +58,37 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    def open_applications(self,alias=None):
-        """a new method of open application for muti test
+    def open_mutilapplications(self,remote_url,udid,alias=None):
+        """a method used for mutil test
 
-        :param alias:
-        :return:
-        Example:
-        | open applications |
+        | open mutilapplications | ${remote_url} | ${udid} |
         """
-        dict = getCapabilities()
-        with open('udid.txt','r') as f:
-            udid = f.read()
-        remote_server = dict[udid]['remote_server']
-        desired_caps = dict[udid]['desired_caps']
+        # dict = getCapabilities()
+        # with open('udid.txt','r') as f:
+        #     udid = f.read()
+        # remote_server = dict[udid]['remote_server']
+        # desired_caps = dict[udid]['desired_caps']
+        desired_caps = {
+            'platformName': 'Android',
+            'platformVersion': '6.0.1',
+            'deviceName': 'test',
+            'udid': udid,
+            'app': apppath,
+            'appPackage': 'com.snailvr.manager',
+            'appActivity': 'com.whaley.vr.module.launcher.activitys.SplashActivity',
+            'unicodeKeyborad': True,
+            'resetKeyborad': True,
+            'noRest': True,
+            'commandTimeout': 60,
+            'autoGrantPermissions': True,
+            'sessonOverride': True
+        }
         thraed0 = threading.Thread(target=install_alert, args=(udid,))
         thraed0.start()
-        application = webdriver.Remote(remote_server, desired_caps)
+        application = webdriver.Remote(remote_url, desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
-
-    def teardown_test(self):
-        sleep(5)
-        kill_node()
-        self.kill_uiautomator()
 
     def kill_uiautomator(self):
         """kill uiautomator process manual
