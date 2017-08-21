@@ -18,7 +18,7 @@ Variables   eles/globaleles.py
     should be equal        ${val}       已缓存
 
     click element   id=${backbutton}
-    wait until element is visible   xpath=${video1}
+    wait until element is visible   xpath=${video2}
     click element   xpath=${video2}
     click element   id=${download}
     wait until element is visible   xpath=${downloadtext1}
