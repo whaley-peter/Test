@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 """全局变量，多处通用"""
 #by.id
 #返回按钮
@@ -14,15 +15,19 @@ canclebutton = "com.snailvr.manager:id/tv_cancel"
 #弹框上确定按钮
 confirmbutton = "com.snailvr.manager:id/tv_confirm"
 
+def getProjectRootPath():
+    """get rootpath of project
+    """
+    rootpath = os.getcwd().split('\eles')[0]
+    return rootpath
 
-from libs.launchManagement import getProjectRootPath
 apppath = getProjectRootPath()+ r"\app\WhaleyVR.apk"
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '7.0',
+    'platformVersion' : '6.0.1',
     'deviceName' :'test',
-    'udid':'GWY0217115007494',
+    'udid':'6221231716B0904714',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
     'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
@@ -49,3 +54,5 @@ usernickname3 = '5451'
 
 
 
+if __name__=="__main__":
+    print getProjectRootPath()
