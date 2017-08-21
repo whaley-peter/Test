@@ -1,0 +1,1 @@
+python run.py -t swipe,text -s testcase
