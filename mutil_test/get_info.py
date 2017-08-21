@@ -44,16 +44,6 @@ def get_ip():
     # ip = '127.0.0.1'
     return ip
 
-def get_plat():
-    sysstr = platform.system()
-    if(sysstr =="Windows"):
-        #print ("Call Windows tasks")
-        return "Windows"
-    elif(sysstr == "Linux"):
-        #print ("Call Linux tasks")
-        return "Linux"
-    else:
-        return "Mac"
 
 if __name__ == '__main__':
     b = get_devices()
