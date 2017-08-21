@@ -12,3 +12,8 @@ history = "com.snailvr.manager:id/btn_history"
 hname = "com.snailvr.manager:id/tv_name"
 #浏览历史为空
 hempty = "com.snailvr.manager:id/tv_error"
+
+#首页视频
+
+videoa="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
+videob="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
