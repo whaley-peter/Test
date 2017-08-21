@@ -1,0 +1,1 @@
+node C:\Users\dell\AppData\Local\Programs\appium-desktop\resources\app\node_modules\appium\build\lib\main.js -a %1 -p %2 -bp %3 --session-override
