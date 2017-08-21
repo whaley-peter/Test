@@ -25,7 +25,7 @@ desired_caps = {
 remote_server = 'http://localhost:4723/wd/hub'
 
 driver = webdriver.Remote(command_executor=remote_server,desired_capabilities=desired_caps)
-
+driver.implicitly_wait(10)
 # driver.find_element_by_id("com.snailvr.manager:id/btn_login").click()
 # driver.find_element_by_id("com.snailvr.manager:id/et_user_name").send_keys("18616512272")
 # driver.find_element_by_id("com.snailvr.manager:id/et_password").send_keys("a123456")
@@ -41,8 +41,6 @@ driver.back()
 driver.back()
 cmd = "adb shell am start -n com.snailvr.manager/com.whaley.vr.module.launcher.activitys.SplashActivity"
 subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-
 
 driver.swipe()
 
