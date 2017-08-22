@@ -39,6 +39,18 @@ class AppiumExtend(AppiumLibrary):
         logger.console(outter)
         logger.console(outter1)
 
+    def install_alert(self,udid):
+        watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
+        cmd1 = 'adb -s {0} push '.format(udid) + watcherpath + " data/local/tmp"
+        push = subprocess.Popen(cmd1,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        cmd2 = u"adb -s {0} shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers".format(udid)
+        run = subprocess.Popen(cmd2,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        outter, err = push.communicate()
+        outter1, err1 = run.communicate()
+        logger.console(outter)
+        logger.console(outter1)
+
     def open_application(self, remote_url,desired_caps,alias=None):
         """Opens a new application to given Appium server.
         Capabilities of appium server, Android and iOS,
@@ -83,12 +95,13 @@ class AppiumExtend(AppiumLibrary):
             'autoGrantPermissions': True,
             'sessonOverride': True
         }
-        thraed0 = threading.Thread(target=install_alert, args=(udid,))
+        thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
         application = webdriver.Remote(remote_url, desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
+
 
     def kill_uiautomator(self):
         """kill uiautomator process manual
@@ -102,6 +115,16 @@ class AppiumExtend(AppiumLibrary):
         if out:
             a = out.split(" ")[5]
             kill = "adb shell kill " + a
+            subprocess.Popen(kill, shell=True)
+
+    def kill_uiautomators(self,udid):
+        time.sleep(5)
+        cmd = "adb -s {0} shell ps |find " + r'"uiautomator"'.format(udid)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out, err = p.communicate()
+        if out:
+            a = out.split(" ")[5]
+            kill = "adb -s {0} shell kill ".format(udid) + a
             subprocess.Popen(kill, shell=True)
 
     def login(self,username=username,password=password):
