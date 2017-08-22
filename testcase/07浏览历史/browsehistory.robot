@@ -10,14 +10,13 @@ Suite Teardown       back to homepage
         [Documentation]  检查浏览历史以及进行删除操作
 #浏览视频
         click element   id=${homepage}
-        click element   xpath=${zongyi}
-        wait until element is visible   xpath=${video1}
-        click element   xpath=${video1}
+        wait until element is visible   xpath=${videoa}
+        click element   xpath=${videoa}
         ${tvdes1}       get text        id=${programname}
         sleep       20
         go back
-        wait until element is visible   xpath=${video2}
-        click element   xpath=${video2}
+        wait until element is visible   xpath=${videob}
+        click element   xpath=${videob}
         sleep       20
         go back
 #检查浏览历史
