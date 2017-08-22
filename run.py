@@ -24,8 +24,8 @@ if "-h" in arglist:
 if "-s" in arglist:
   testsuites=arglist[arglist.index('-s')+1]
 else:
-  print "you should select the testsuite!"
-  sys.exit(0)
+  print  'using delaut suite "testcase"'
+  testsuites='testcase'
 
 if "-t" in  arglist:
   tags=arglist[arglist.index('-t')+1]
@@ -41,6 +41,7 @@ else:
 if "-path" in arglist:
     path=arglist[arglist.index('-path')+1]
 else:
+    print  'using delaut path "testcase"'
     path='testcase'
 
 if "-p" in arglist:
