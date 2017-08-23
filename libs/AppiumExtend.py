@@ -229,8 +229,15 @@ class AppiumExtend(AppiumLibrary):
         | back to homepage |
         """
         locator = "id=" + backbutton
-        while self.is_element_present(locator):
-            self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+        while True:
+            if self.is_element_present("id="+homebase):
+                break
+            elif not self.is_element_present("id="+homebase) and self.is_element_present(locator):
+                self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
+                continue
+            elif not self.is_element_present("id="+homebase) and not self.is_element_present(locator):
+                self._current_application().back()
+                continue
 
     def click_back_nth(self,nth=1,message="",timeout=TIMEOUT):
         """click backbutton nth times
@@ -245,7 +252,13 @@ class AppiumExtend(AppiumLibrary):
         locator = "id=" + backbutton
         nth = int(nth)
         for one in range(nth):
-            self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+            if self.is_element_present(locator):
+                self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+            elif not self.is_element_present(locator) and not self.is_element_present("id="+homebase):
+                self._current_application().back()
+            elif not self.is_element_present(locator) and self.is_element_present("id="+homebase):
+                break
+
 
     # def check_toast(self,toasttext):
     #     """check whether the toast of element is the same as the giving one
