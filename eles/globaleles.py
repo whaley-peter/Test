@@ -25,9 +25,9 @@ apppath = getProjectRootPath()+ r"\app\WhaleyVR.apk"
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '6.0.1',
+    # 'platformVersion' : '6.0.1',
     'deviceName' :'test',
-    'udid':'6221231716B0904714',
+    # 'udid':'8d5cd6c0',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
     'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
@@ -36,7 +36,9 @@ desired_caps = {
     'noRest' : True,
     'commandTimeout': 60,
     'autoGrantPermissions':True,
-    'sessonOverride': True
+    'sessonOverride': True,
+    # 'automationName': 'Uiautomator2'
+
 }
 
 remote_server = 'http://localhost:4723/wd/hub'
