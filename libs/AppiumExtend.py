@@ -13,6 +13,13 @@ from eles.globaleles import *
 import subprocess
 import threading
 import multiprocessing
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # set default timeout
 TIMEOUT = 15
@@ -25,26 +32,16 @@ class AppiumExtend(AppiumLibrary):
     def __init__(self):
         AppiumLibrary.__init__(self)
 
-    def preInstall(self):
-        """create function using for dealing with alert during install the app
-        """
+    def install_alert(self,udid=None):
         watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
-        push = subprocess.Popen(
-            "adb push " + watcherpath + " data/local/tmp",
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        run = subprocess.Popen("adb shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers",
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        outter, err = push.communicate()
-        outter1, err1 = run.communicate()
-        logger.console(outter)
-        logger.console(outter1)
+        if udid==None:
+            cmd1 = "adb push " + watcherpath + " data/local/tmp"
+            cmd2 = u"adb shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers"
+        else:
+            cmd1 = 'adb -s {0} push '.format(udid) + watcherpath + " data/local/tmp"
+            cmd2 = u"adb -s {0} shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers".format(udid)
 
-    def install_alert(self,udid):
-        watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
-        cmd1 = 'adb -s {0} push '.format(udid) + watcherpath + " data/local/tmp"
         push = subprocess.Popen(cmd1,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
-        cmd2 = u"adb -s {0} shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers".format(udid)
         run = subprocess.Popen(cmd2,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         outter, err = push.communicate()
         outter1, err1 = run.communicate()
@@ -62,7 +59,7 @@ class AppiumExtend(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=iOS      | platformVersion=7.0            | deviceName='iPhone Simulator'           | app=your.app                         |
         | Open Application | http://localhost:4723/wd/hub | platformName=Android | platformVersion=4.2.2 | deviceName=192.168.56.101:5555 | app=${CURDIR}/demoapp/OrangeDemoApp.apk | appPackage=com.netease.qa.orangedemo | appActivity=MainActivity |
         """
-        preinstallThread = threading.Thread(target=self.preInstall)
+        preinstallThread = threading.Thread(target=self.install_alert)
         preinstallThread.start()
 
         application = webdriver.Remote(str(remote_url), desired_caps)
@@ -75,14 +72,8 @@ class AppiumExtend(AppiumLibrary):
 
         | open mutilapplications | ${remote_url} | ${udid} |
         """
-        # dict = getCapabilities()
-        # with open('udid.txt','r') as f:
-        #     udid = f.read()
-        # remote_server = dict[udid]['remote_server']
-        # desired_caps = dict[udid]['desired_caps']
         desired_caps = {
             'platformName': 'Android',
-            'platformVersion': '6.0.1',
             'deviceName': 'test',
             'udid': udid,
             'app': apppath,
@@ -97,34 +88,35 @@ class AppiumExtend(AppiumLibrary):
         }
         thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
+
         application = webdriver.Remote(remote_url, desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
 
+    def kill_uiautomator(self,udid=None):
+        """kill uiautomator after test
+        for mutil test,you must put the udid Variables
 
-    def kill_uiautomator(self):
-        """kill uiautomator process manual
-
+        :param udid:
         :return:
+        Example:
+        | kill uiautomator |
+        | kill uiautomator | ${udid} |
         """
         time.sleep(5)
-        cmd = "adb shell ps |find " + r'"uiautomator"'
+        if udid == None:
+            cmd = "adb shell ps |find " + r'"uiautomator"'
+        else:
+            cmd = "adb -s {0} shell ps |find " + r'"uiautomator"'.format(udid)
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         out, err = p.communicate()
         if out:
             a = out.split(" ")[5]
-            kill = "adb shell kill " + a
-            subprocess.Popen(kill, shell=True)
-
-    def kill_uiautomators(self,udid):
-        time.sleep(5)
-        cmd = "adb -s {0} shell ps |find " + r'"uiautomator"'.format(udid)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out, err = p.communicate()
-        if out:
-            a = out.split(" ")[5]
-            kill = "adb -s {0} shell kill ".format(udid) + a
+            if udid == None:
+                kill = "adb shell kill " + a
+            else:
+                kill = "adb -s {0} shell kill ".format(udid) + a
             subprocess.Popen(kill, shell=True)
 
     def login(self,username=username,password=password):
@@ -179,7 +171,7 @@ class AppiumExtend(AppiumLibrary):
                 self.click_element("id="+logoutbutton)
                 self.click_element("id=" + confirmbutton)
         except:
-            raise logger.console("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
+            raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
 
     def switch_to_debug_mode(self):
         """swith the app to debug mode
@@ -188,7 +180,7 @@ class AppiumExtend(AppiumLibrary):
         | swith to debug mode |
         """
         self.back_to_homepage()
-        self.wait_until_element_is_visible("id=" + mybase, 10)
+        self.wait_until_element_is_visible("id=" + mybase,10)
         self.click_element("id=" + mybase)
         self.click_element("id=" + settingbutton)
         debugbutton = "id=" + debugswith
@@ -254,6 +246,46 @@ class AppiumExtend(AppiumLibrary):
         nth = int(nth)
         for one in range(nth):
             self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
+
+    # def check_toast(self,toasttext):
+    #     """check whether the toast of element is the same as the giving one
+    #
+    #     :param toasttext:
+    #     :return:
+    #     Example:
+    #     | check toast | 加入播单成功 |
+    #     """
+    #     toasttext = str(toasttext)
+    #     message = '//*[@text=\'%s\']'%toasttext
+    #     element = WebDriverWait(self._current_application(),10).until(EC.presence_of_element_located((By.XPATH,message)))
+    #     try:
+    #         if element.text == toasttext:
+    #             self._info('find toast and matched')
+    #         else:
+    #             raise self._info('toast does not match with the giving one')
+    #     except:
+    #         raise  AssertionError('element does not find exception')
+
+    # def input_text(self, locator,text,udid=None):
+    #     """override the input text method to fix problem of sendkeys function in appium+uiautomator2
+    #         udid is required for mutil test
+    #     :param locator:
+    #     :param text:
+    #     :return:
+    #     Example:
+    #     | input text | id=${passwordinput} | a123456 |
+    #     | input text | id=${passwordinput} | a123456 | ${udid} |
+    #     """
+    #     time.sleep(1)
+    #     self.click_element_until_no_error(locator)
+    #     time.sleep(1)
+    #     if udid==None:
+    #         cmd = 'adb shell input text {0}'.format(text)
+    #     else:
+    #         cmd = 'adb -s {0} shell input text {1}'.format(udid,text)
+    #     subprocess.Popen(cmd,shell=True)
+    #     time.sleep(1)
+
 
     def delete_nth_element(self,nth=1):
         """delete nth element on the page
