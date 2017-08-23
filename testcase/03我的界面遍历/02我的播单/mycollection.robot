@@ -41,3 +41,4 @@ Variables   eles/globaleles.py
     delete all element
     Page Should Not Contain Element     id=${bodanvideo}
     element should contain text         id=${mycollectionempty}         暂无视频加入播单
+    click back nth
