@@ -59,6 +59,7 @@ class AppiumExtend(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=iOS      | platformVersion=7.0            | deviceName='iPhone Simulator'           | app=your.app                         |
         | Open Application | http://localhost:4723/wd/hub | platformName=Android | platformVersion=4.2.2 | deviceName=192.168.56.101:5555 | app=${CURDIR}/demoapp/OrangeDemoApp.apk | appPackage=com.netease.qa.orangedemo | appActivity=MainActivity |
         """
+        self.kill_uiautomator()
         preinstallThread = threading.Thread(target=self.install_alert)
         preinstallThread.start()
 
@@ -86,6 +87,7 @@ class AppiumExtend(AppiumLibrary):
             'autoGrantPermissions': True,
             'sessonOverride': True
         }
+        self.kill_uiautomator(udid)
         thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
 
@@ -117,7 +119,12 @@ class AppiumExtend(AppiumLibrary):
                 kill = "adb shell kill " + a
             else:
                 kill = "adb -s {0} shell kill ".format(udid) + a
-            subprocess.Popen(kill, shell=True)
+            killinfo = subprocess.Popen(kill, stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+            killout,killerr= killinfo.communicate()
+            if killout:
+                logger.console(killout)
+            else:
+                logger.console(killerr)
 
     def login(self,username=username,password=password):
         """login app
@@ -236,6 +243,8 @@ class AppiumExtend(AppiumLibrary):
                 self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
                 continue
             elif not self.is_element_present("id="+homebase) and not self.is_element_present(locator):
+                if self.is_element_present('id='+loginbutton):
+                    break
                 self._current_application().back()
                 continue
 
