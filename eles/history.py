@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 __mtime__ = '2017/8/21'
-
+from homepage import *
 #底部首页button
-homepage = "com.snailvr.manager:id/rl_recommend"
+homepage = homebase
 
 """搜索界面"""
 #搜索历史按钮
-history = "com.snailvr.manager:id/btn_history"
+history = history
 #浏览历史中视频名
 hname = "com.snailvr.manager:id/tv_name"
 #浏览历史为空
-hempty = "com.snailvr.manager:id/tv_error"
+hempty = historyempty
 
 #首页视频
 
