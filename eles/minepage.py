@@ -6,40 +6,40 @@ __mtime__ = '2017/8/10'
 homepage = "com.snailvr.manager:id/rl_recommend"
 #tab 综艺
 zongyi = "//android.widget.LinearLayout/android.view.View[4]"
-"""
-by.id
-"""
-#我 tap button
-mybase = "com.snailvr.manager:id/tv_user"
 
-nickname = "com.snailvr.manager:id/tv_nick_name"
+#我 tap button
+mybase = "com.snailvr.manager:id/tv_user" #id
+
+"""个人信息"""
+#用户名
+nickname = "com.snailvr.manager:id/tv_nick_name" #id
 
 
 """设置界面及二级目录"""
 #设置按钮
-settingbutton = "com.snailvr.manager:id/iv_setting"
+settingbutton = "com.snailvr.manager:id/iv_setting" #id
 
 #清除缓存
-setting_clean_cache = "com.snailvr.manager:id/setting_clean_cache"
+setting_clean_cache = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[2]"  #xpath
 
 #切换到debug模式
-debugswith = "com.snailvr.manager:id/layout_debug"
+debugswitch = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[6]//android.widget.TextView[1]" #xpath
 
 #退出登录
-logoutbutton = "com.snailvr.manager:id/btn_logout"
+logoutbutton = "com.snailvr.manager:id/btn_logout" #id
 
 
 """本地界面及二级目录"""
 #本地管理
-localmanagement = "com.snailvr.manager:id/layout_local"
-#离线缓存
-offlinecache = "android.support.v7.app.ActionBar$Tab"
+localmanagement = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]" #xpath
+#离线缓存\本地视频
+offlinecache = "android.support.v7.app.ActionBar$Tab"   #class
 #视频名
 tvname = "com.snailvr.manager:id/tv_name"
 #编辑
-bianji = "com.snailvr.manager:id/btn_right"
+bianji = "com.snailvr.manager:id/titlebar_right"
 #右上角取消
-rightquxiao = "com.snailvr.manager:id/btn_right"
+rightquxiao = bianji
 #选择
 check = "com.snailvr.manager:id/iv_check"
 #全选
@@ -53,12 +53,7 @@ quxiao = "com.snailvr.manager:id/tv_cancel"
 #本地视频或者离线缓存为空
 localempty = "com.snailvr.manager:id/tv_empty"
 
-"""
-by.class
-"""
-#本地视频
-localvideo = "android.support.v7.app.ActionBar$Tab"
-# localvideo1 = "//android.widget.HorizontalScrollView//android.support.v7.app.ActionBar$Tab[@index=1]"
+
 #相册视频导入
 xiangce = "com.snailvr.manager:id/btn_gallery"
 #相册中视频
@@ -71,15 +66,19 @@ daoru = "com.snailvr.manager:id/btn_import"
 ok = "com.snailvr.manager:id/tv_ok"
 #视频名
 videoname = "com.snailvr.manager:id/name"
+
 #链接导入
 link = "com.snailvr.manager:id/btn_link"
 #链接导入框
 suggestion ="com.snailvr.manager:id/suggestion"
 
-"""我的播单界面及二级目录"""
+#二维码导入
+qrcode = "com.snailvr.manager:id/btn_qrcode"
 
+
+"""我的播单界面及二级目录"""
 #我的播单
-mycollection = "com.snailvr.manager:id/layout_collect"
+mycollection = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[2]" #xpath
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
 #播单中视频
@@ -90,11 +89,10 @@ bodanname = "com.snailvr.manager:id/name"
 
 """我的券/兑换码及二级目录"""
 #我的券/兑换码
-mycoupen = "com.snailvr.manager:id/layout_pay"
+mycoupen = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[3]" #xpath
 #兑换码输入框
 mabox = "com.snailvr.manager:id/rl_redemption_box"
 #请输入兑换码字样
-# maname = "//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]/android.widget.TextView"
 maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.widget.TextView"
 #观看券中视频名
 quanname = "com.snailvr.manager:id/tv_name"
@@ -108,7 +106,7 @@ paynum="com.snailvr.manager:id/tv_pay_num"
 
 """我的奖品及二级目录"""
 #我的奖品
-mygift = "com.snailvr.manager:id/layout_gift"
+mygift = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]"
 #右上添加按钮
 address = "com.snailvr.manager:id/btn_address"
 #收货人
@@ -128,21 +126,19 @@ submit = "com.snailvr.manager:id/bin_submit"
 
 """问题反馈及二级目录"""
 #问题反馈
-problemfeedback = "com.snailvr.manager:id/layout_feedback"
-
-
+problemfeedback = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]"  #xpath
 
 
 #官方论坛
-forum = "com.snailvr.manager:id/layout_forum"
+forum = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]" #xpath
 
 """使用帮助及二级目录"""
 #使用帮助
-usehelp = "com.snailvr.manager:id/layout_help"
+usehelp = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[7]" #xpath
 
 """关于及二级目录"""
 #关于
-about = "com.snailvr.manager:id/layout_about"
+about = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[8]" #xpath
 #图标
 icon = "com.snailvr.manager:id/iv_icon"
 #加入QQ群
@@ -165,7 +161,7 @@ download = "com.snailvr.manager:id/layout_downlod"
 downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView"
 
 """将视频加入播单"""
-# 加入播单
+# 加入播单s
 collectbodan="com.snailvr.manager:id/layout_collect"
 
 
