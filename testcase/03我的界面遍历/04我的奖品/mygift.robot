@@ -7,7 +7,7 @@ Variables   eles/globaleles.py
 我的奖品--testmygift001
         [Documentation]  在我的奖品界面添加地址
         click element       id=${mybase}
-        click element       id=${mygift}
+        click element       xpath=${mygift}
 #检查界面
         element should contain text         id=${title}        我的奖品
         page should contain element         id=${address}

@@ -7,6 +7,6 @@ Variables   eles/globaleles.py
 使用帮助--testfeedback001
         click element       id=${mybase}
         swipe up nth      2
-        click element       id=${usehelp}
+        click element       xpath=${usehelp}
 #检查界面
         element should contain text     id=${title}        帮助

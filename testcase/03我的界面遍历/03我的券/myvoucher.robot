@@ -6,7 +6,7 @@ Variables   eles/globaleles.py
 *** Test Cases ***
 我的券/兑换码遍历--testmyvoucher001
         click element       id=${mybase}
-        click element       id=${mycoupen}
+        click element       xpath=${mycoupen}
 # 检查兑换码输入框
         page should contain element         id=${mabox}
         element should contain text         xpath=${maname}       请输入兑换码

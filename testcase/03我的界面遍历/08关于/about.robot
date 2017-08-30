@@ -7,7 +7,7 @@ Variables   eles/globaleles.py
 使用帮助--testfeedback001
         click element       id=${mybase}
         swipe up nth      2
-        click element       id=${about}
+        click element       xpath=${about}
 #检查界面
         page should contain element     id=${icon}
         page should contain element     id=${enter}

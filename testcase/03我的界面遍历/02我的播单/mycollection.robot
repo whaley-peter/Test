@@ -23,7 +23,7 @@ Variables   eles/globaleles.py
 
 #进入检查我的播单
     click element       id=${mybase}
-    click element       id=${mycollection}
+    click element       xpath=${mycollection}
     ${boname1}       get nth element text    id=${bodanname}   2
     should be equal     ${tvdes1}       ${boname1}
 

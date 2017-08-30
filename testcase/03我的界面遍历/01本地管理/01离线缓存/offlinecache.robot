@@ -16,24 +16,19 @@ Variables   eles/globaleles.py
     wait until element is visible   xpath=${downloadtext1}      10
     ${val}      get text     xpath=${downloadtext1}
     should be equal        ${val}       已缓存
-    #click element  换为click back nth，防止播放界面的控件已经消失了
-#    click element   id=${backbutton}
+
     click back nth
     wait until element is visible   xpath=${video2}
     click element   xpath=${video2}
     click element   id=${download}
-    #增加timeout延时参数
     wait until element is visible   xpath=${downloadtext1}      10
     ${val}      get text     xpath=${downloadtext1}
     wait until element is visible   xpath=${downloadtext1}
     should be equal        ${val}       已缓存
-    #click element  换为click back nth，防止播放界面的控件已经消失了
-#    click element   id=${backbutton}
     click back nth
 #检查离线缓存
     click element     id=${mybase}
-    click element     id=${localmanagement}
-    swipe right nth
+    click element     xpath=${localmanagement}
     ${tvname1}       get nth element text    id=${tvname}   2
     should be equal     ${tvdes1}       ${tvname1}
 
