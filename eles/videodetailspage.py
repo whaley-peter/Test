@@ -14,7 +14,7 @@ videoname = "com.snailvr.manager:id/tv_program_name"
 videoplaycounts = "com.snailvr.manager:id/tv_play_count"
 
 #加入播单
-addtocollection = mycollection
+addtocollection = collectbodan
 collectiontext = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//android.widget.TextView"
 
 #缓存
