@@ -190,8 +190,8 @@ class AppiumExtend(AppiumLibrary):
         self.wait_until_element_is_visible("id=" + mybase,10)
         self.click_element("id=" + mybase)
         self.click_element("id=" + settingbutton)
-        debugbutton = "id=" + debugswith
-        debug = self.get_text("id=com.snailvr.manager:id/tv_debug")
+        debugbutton = "xpath=" + debugswitch
+        debug = self.get_text(debugbutton)
         if debug == u'是':
             self.back_to_homepage()
         else:
