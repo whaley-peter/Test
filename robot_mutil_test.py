@@ -83,7 +83,7 @@ sd=int(startd)-1
 divtmp=get_info.get_devices()
 divlist=divtmp[sd:]
 
-cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport "
+cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport --output output.xml"
 
 for one in range(len(divlist)):
   wdport=wdhost+str(aport)+"/wd/hub"
