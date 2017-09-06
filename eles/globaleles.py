@@ -4,7 +4,7 @@ import os
 """全局变量，多处通用"""
 #by.id
 #返回按钮
-backbutton = "com.snailvr.manager:id/btn_back"
+backbutton = "com.snailvr.manager:id/titlebar_left"
 
 #标题栏
 title = "com.snailvr.manager:id/tv_title"
@@ -30,7 +30,8 @@ desired_caps = {
     # 'udid':'8d5cd6c0',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
-    'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
+    # 'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
+    'appActivity':'com.whaley.biz.launcher.activitys.LauncherActivity',
     'unicodeKeyborad' : True,
     'resetKeyborad' : True,
     'noRest' : True,
@@ -42,13 +43,14 @@ desired_caps = {
 }
 
 remote_server = 'http://localhost:4723/wd/hub'
+
 username = '18616512272'
 password = 'a123456'
 usernickname = "ABCD"
 
 username1 = '13764205429'
 password1 = 'lang123456'
-usernickname1 = 'lang'
+usernickname1 = '浪'
 
 username3 = '13636423651'
 password3 = 'a123456'
