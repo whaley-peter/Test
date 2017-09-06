@@ -73,17 +73,18 @@ class AppiumExtend(AppiumLibrary):
 
         | open mutilapplications | ${remote_url} | ${udid} |
         """
+        apppath1 = r"D:\Jenkins\workspace\AndroidCIT\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
             'udid': udid,
-            'app': apppath,
+            'app': apppath1,
             'appPackage': 'com.snailvr.manager',
             # 'appActivity': 'com.whaley.vr.module.launcher.activitys.SplashActivity',
             'appActivity': 'com.whaley.biz.launcher.activitys.LauncherActivity',
             'unicodeKeyborad': True,
             'resetKeyborad': True,
-            'noRest': True,
+            'noReset': True,
             'commandTimeout': 60,
             'autoGrantPermissions': True,
             'sessonOverride': True
