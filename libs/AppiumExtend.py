@@ -386,7 +386,7 @@ class AppiumExtend(AppiumLibrary):
             all = self.get_text(locator).split("(")[1].split(")")[0].split("/")[1]
         elif self.is_element_present(locator1):
             select = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
-            all = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
+            all = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[1]
 
         if select != all:
             if not message:
