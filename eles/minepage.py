@@ -13,7 +13,8 @@ mybase = "com.snailvr.manager:id/tv_user" #id
 """个人信息"""
 #用户名
 nickname = "com.snailvr.manager:id/tv_nick_name" #id
-
+#标题
+title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView"
 
 """设置界面及二级目录"""
 #设置按钮
@@ -32,20 +33,31 @@ logoutbutton = "com.snailvr.manager:id/btn_logout" #id
 """本地界面及二级目录"""
 #本地管理
 localmanagement = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]" #xpath
+#万能VR播放器
+tvtext="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//android.widget.TextView[1]"
+#xpath
 #离线缓存\本地视频
 offlinecache = "android.support.v7.app.ActionBar$Tab"   #class
 #视频名
 tvname = "com.snailvr.manager:id/tv_name"
+#下载百分比/继续按钮
+btndownload = "com.snailvr.manager:id/btn_download"
 #编辑
 bianji = "com.snailvr.manager:id/titlebar_right"
 #右上角取消
 rightquxiao = bianji
+#全选删除框
+layout_check = "com.snailvr.manager:id/layout_check"
 #选择
 check = "com.snailvr.manager:id/iv_check"
+#选中视频数
+checknum ="com.snailvr.manager:id/tv_check_num"
 #全选
 checkall = "com.snailvr.manager:id/cb_check_all"
 #删除
 delete = "com.snailvr.manager:id/btn_delete"
+#删除框
+laydelete ="com.snailvr.manager:id/layout_buttons"
 #继续
 confirm = "com.snailvr.manager:id/tv_confirm"
 #取消
@@ -62,6 +74,10 @@ layout = "com.snailvr.manager:id/pic_layout"
 layname = "com.snailvr.manager:id/name"
 #导入
 daoru = "com.snailvr.manager:id/btn_import"
+#导入框(底部）
+daocheck=layout_check
+#导入完成提示框/删除本地视频确认框
+content = "android:id/content"
 #确定
 ok = "com.snailvr.manager:id/tv_ok"
 #视频名
@@ -71,6 +87,8 @@ videoname = "com.snailvr.manager:id/name"
 link = "com.snailvr.manager:id/btn_link"
 #链接导入框
 suggestion ="com.snailvr.manager:id/suggestion"
+#已导入视频
+picvideo="com.snailvr.manager:id/pic_layout"
 
 #二维码导入
 qrcode = "com.snailvr.manager:id/btn_qrcode"
@@ -81,6 +99,8 @@ qrcode = "com.snailvr.manager:id/btn_qrcode"
 mycollection = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[2]" #xpath
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
+#已加入播单字样
+collecttext1 = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//android.widget.TextView"
 #播单中视频
 bodanvideo ="com.snailvr.manager:id/pic"
 #播单中视频名
@@ -98,8 +118,6 @@ maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.
 quanname = "com.snailvr.manager:id/tv_name"
 #明细
 mingxi = "com.snailvr.manager:id/btn_right"
-#上方标题标题
-title = "com.snailvr.manager:id/tv_title"
 #明细中说明
 paynum="com.snailvr.manager:id/tv_pay_num"
 
@@ -153,6 +171,8 @@ agreement="com.snailvr.manager:id/user_agreement"
 video1 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
 #综艺频道右下视频
 video2 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
+#综艺频道JHH视频3
+video3="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[3]"
 #半屏详情页视频名
 programname = "com.snailvr.manager:id/tv_program_name"
 #缓存
