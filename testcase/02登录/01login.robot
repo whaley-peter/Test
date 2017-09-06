@@ -10,17 +10,17 @@ Documentation   测试登录功能、登录界面跳转到其他界面功能
 登录界面跳转到注册--testdenglu001
     click element until no error        id=${loginbutton}
     click element until no error        id=${jump_to_login_or_register}
-    element should contain text         id=${title}     注册微鲸账户
+    element should contain text         xpath=${title}     注册微鲸账户
     click back nth      1
 
 登录界面跳转到短信--testdenglu002
     click element until no error        id=${safe_login}
-    element should contain text         id=${title}     短信快捷登录
+    element should contain text         xpath=${title}     短信快捷登录
     click back nth      1
 
 登录界面跳转到忘记密码--testdenglu003
     click element until no error    id=${forget_pwd}
-    element should contain text     id=${title}     找回密码
+    element should contain text     xpath=${title}     找回密码
     click back nth      2
 
 登录app---testdenglu004
