@@ -7,7 +7,7 @@ import os
 backbutton = "com.snailvr.manager:id/titlebar_left"
 
 #标题栏
-title = "com.snailvr.manager:id/tv_title"
+title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView"
 
 #弹框上取消按钮
 canclebutton = "com.snailvr.manager:id/tv_cancel"
