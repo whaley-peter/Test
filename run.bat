@@ -1,1 +1,1 @@
-python run.py -t swipe,text -s testcase
+python %~dp0\run.py -t zhuce -s testcase
