@@ -159,7 +159,8 @@ class AppiumExtend(AppiumLibrary):
 
     def skip_login(self):
         try:
-            self.click_element('id='+leapfrog)
+            self.click_element_until_no_error("id="+leapfrog)
+            # self.click_element('id='+leapfrog)
         except :
             raise   logger.console("can't find element by given locator %s"%leapfrog)
 
@@ -181,11 +182,12 @@ class AppiumExtend(AppiumLibrary):
         except:
             raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
 
-    def switch_to_debug_mode(self):
+    def switch_to_debug_mode(self,udid=None):
         """swith the app to debug mode
-
+        for mulittest you maust set the udid Variables
         Example:
         | swith to debug mode |
+        | swith to debug mode | ${udid} |
         """
         self.back_to_homepage()
         self.wait_until_element_is_visible("id=" + mybase,10)
@@ -200,11 +202,14 @@ class AppiumExtend(AppiumLibrary):
             self.go_back()
             self.go_back()
             self.go_back()
-            cmd = "adb shell am start -n com.snailvr.manager/com.whaley.vr.module.launcher.activitys.SplashActivity"
+            if udid == None:
+                cmd = "adb shell am start -n com.snailvr.manager/com.whaley.biz.launcher.activitys.LauncherActivity"
+            else:
+                cmd = "adb -s %s shell am start -n com.snailvr.manager/com.whaley.biz.launcher.activitys.LauncherActivity"%udid
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         time.sleep(TIMEOUT)
 
-    def login_and_switch_to_debug_mode(self,username=username,password=password):
+    def login_and_switch_to_debug_mode(self,username=username,password=password,udid=None):
         """login app adn swith app to debugmode
         if loginOrnot is False,then swith app to debugmode without login
 
@@ -214,7 +219,7 @@ class AppiumExtend(AppiumLibrary):
         """
         self.login(username,password)
 
-        self.switch_to_debug_mode()
+        self.switch_to_debug_mode(udid)
 
     def skip_login_and_switch_to_debug_mode(self,message="",timeout=TIMEOUT):
         """skip login app and swith to debug mode
@@ -309,7 +314,6 @@ class AppiumExtend(AppiumLibrary):
     #     subprocess.Popen(cmd,shell=True)
     #     time.sleep(1)
 
-
     def delete_nth_element(self,nth=1):
         """delete nth element on the page
 
@@ -353,11 +357,13 @@ class AppiumExtend(AppiumLibrary):
             checkall1 = "id=" + checkall
             if self.is_element_present(checkall1):
                 self.click_element_until_no_error(checkall)
+                self.is_all_selected()
                 self.click_element_until_no_error("id="+delete)
                 self.click_element_until_no_error("id="+quxiao)
                 self.click_element_until_no_error("id="+delete)
             else:
                 self.click_element_until_no_error("id=com.snailvr.manager:id/tv_check")
+                self.is_all_selected()
                 self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
                 self.click_element_until_no_error("id="+quxiao)
                 self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
@@ -365,6 +371,29 @@ class AppiumExtend(AppiumLibrary):
             self.click_element_until_no_error("id=" + confirm)
         else:
             logger.console("no element to deleting")
+
+    def is_all_selected(self,message=""):
+        """check whether all element is selected
+
+        :return:
+        Exapmle:
+        |     is all selected |
+        """
+        locator = "id=com.snailvr.manager:id/tv_delete"
+        locator1 = "id=com.snailvr.manager:id/tv_check_num"
+        if self.is_element_present(locator):
+            select = self.get_text(locator).split("(")[1].split(")")[0].split("/")[0]
+            all = self.get_text(locator).split("(")[1].split(")")[0].split("/")[1]
+        elif self.is_element_present(locator1):
+            select = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
+            all = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
+
+        if select != all:
+            if not message:
+                message = "select element is %s,but all element is %s" % (select, all)
+            raise AssertionError(message)
+        else:
+            self._info("selected and all elemets are equal")
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
