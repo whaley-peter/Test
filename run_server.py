@@ -24,10 +24,10 @@ if '-h' in arglist:
     print outstr
     sys.exit(0)
 
-if "-n" in arglist:
-    num=arglist[arglist.index('-n')+1]
-else:
-    num=0
+# if "-n" in arglist:
+#     num=arglist[arglist.index('-n')+1]
+# else:
+#     num=0
 
 if "-p" in arglist:
     aport=int(arglist[arglist.index('-p')+1])
@@ -66,18 +66,10 @@ def start_server():
 devicelist = get_info.get_devices()
 
 if devicelist==[]:
-    if int(num) == 0:
-        print "NO Android Device Connect The PC!"
-    else:
-        for t in range(int(num)):
-            start_server()
+     print "NO Android Device Connect The PC!"
+
 else:
-    if int(num)==0:
-        for div in devicelist:
-            start_server()
-    else:
-        t2 = 0
-        for t2 in range(int(num)):
-            start_server()
+    for div in devicelist:
+        start_server()
 
 time.sleep(3)
