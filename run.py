@@ -58,9 +58,10 @@ else:
     bport=5723
     wport=8101
 
+currentpath = sys.path[0]
 
-run_server = "python run_server.py"
-run_test = "python robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport)
+run_server = r"python {0}\run_server.py".format(currentpath)
+run_test = r"python {3}\robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport,currentpath)
 
 os.system(run_server)
 sleep(5)
