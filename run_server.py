@@ -54,8 +54,9 @@ def start_server():
 
     result = manage_server.kill_port(aport)
     manage_server.kill_port(bport)
+    currentpath = sys.path[0]
 
-    run_appium = 'start .\\mutil_test\\run_appium_server.bat {0} {1} {2}'.format(ip,aport,bport)
+    run_appium = 'start {3}\\mutil_test\\run_appium_server.bat {0} {1} {2}'.format(ip,aport,bport,currentpath)
     aport += 1
     bport += 1
     if result == 1:
