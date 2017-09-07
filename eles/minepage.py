@@ -15,6 +15,8 @@ mybase = "com.snailvr.manager:id/tv_user" #id
 nickname = "com.snailvr.manager:id/tv_nick_name" #id
 #标题
 title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView"
+#未登录
+notlogin = "com.snailvr.manager:id/iv_avatar_not_login"
 
 """设置界面及二级目录"""
 #设置按钮
@@ -117,7 +119,7 @@ maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.
 #观看券中视频名
 quanname = "com.snailvr.manager:id/tv_name"
 #明细
-mingxi = "com.snailvr.manager:id/btn_right"
+mingxi = "com.snailvr.manager:id/titlebar_right"
 #明细中说明
 paynum="com.snailvr.manager:id/tv_pay_num"
 
@@ -127,20 +129,28 @@ paynum="com.snailvr.manager:id/tv_pay_num"
 mygift = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]"
 #右上添加按钮
 address = "com.snailvr.manager:id/btn_address"
+#收货人字样
+shouhuoren = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[1]/android.widget.TextView[2]"
 #收货人
 etname = "com.snailvr.manager:id/et_name"
+#联系电话字样
+dianhua = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[2]/android.widget.TextView[2]"
 #联系电话
 etnumber = "com.snailvr.manager:id/et_number"
+#所在地址字样
+dizhi = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[3]/android.widget.TextView[2]"
 #所在地址
 etaddress = "com.snailvr.manager:id/et_address"
 #上海长宁区城区
 shanghai = "//android.widget.ListView/android.widget.RelativeLayout[2]"
 changning = "//android.widget.ListView/android.widget.RelativeLayout[3]"
 chengqu = "//android.widget.ListView/android.widget.RelativeLayout"
+#详细地址字样
+xiangxi = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[4]/android.widget.TextView[2]"
 #详细地址
 fulladdress = "com.snailvr.manager:id/et_full_address"
 #提交
-submit = "com.snailvr.manager:id/bin_submit"
+submit = "com.snailvr.manager:id/btn_submit"
 
 """问题反馈及二级目录"""
 #问题反馈

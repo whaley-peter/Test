@@ -32,7 +32,7 @@ Variables   eles/globaleles.py
     click element   id=${download}
     wait until element is visible   xpath=${downloadtext1}      10
     ${val}      get text     xpath=${downloadtext1}
-    wait until element is visible   xpath=${downloadtext1}
+    wait until element is visible   xpath=${downloadtext1}      10
     should be equal        ${val}       已缓存
 #检查离线缓存
     click back nth
