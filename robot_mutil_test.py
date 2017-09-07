@@ -85,6 +85,7 @@ divlist=divtmp[sd:]
 
 cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport --output output.xml "
 
+currentpath = sys.path[0]
 for one in range(len(divlist)):
   wdport=wdhost+str(aport)+"/wd/hub"
   #print wdport
@@ -93,9 +94,9 @@ for one in range(len(divlist)):
       print "the appium server by port:{0} is not start,please check it".format(wdport)
       sys.exit(0)
   devicename = get_info.get_devicename(divlist[i])
-  cmd=u'pybot --pythonpath . {0} {1} -o .\\resultDir_{4}\\output-of-{4}.xml -l .\\resultDir_{4}\\log-of-{4}.html -r .\\resultDir_{4}\\report-of-{4}.html --variable remote_url:{2} --variable udid:{3} {5}'.format(tags,suites,wdport,divlist[i],devicename,path)
+  cmd=u'pybot --pythonpath . {0} {1} -o {5}\\resultDir_{4}\\output-of-{4}.xml -l {5}\\resultDir_{4}\\log-of-{4}.html -r {5}\\resultDir_{4}\\report-of-{4}.html --variable remote_url:{2} --variable udid:{3} {5}'.format(tags,suites,wdport,divlist[i],devicename,path,currentpath)
 
-  cmd3 = cmd3 + u'.\\resultDir_{0}\\output-of-{0}.xml '.format(devicename)
+  cmd3 = cmd3 + u'{1}\\resultDir_{0}\\output-of-{0}.xml '.format(devicename,currentpath)
   p=multiprocessing.Process(target=run,args=(cmd,))
   lprocess.append(p)
   aport=aport+1
