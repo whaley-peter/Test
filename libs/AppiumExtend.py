@@ -17,6 +17,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
+import shutil
+from mutil_test import get_info
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -314,6 +316,56 @@ class AppiumExtend(AppiumLibrary):
     #         cmd = 'adb -s {0} shell input text {1}'.format(udid,text)
     #     subprocess.Popen(cmd,shell=True)
     #     time.sleep(1)
+    def logcat(self,udid=None,testcasename=None):
+        self.kill_logcat(udid)
+        path = getProjectRootPath().split("\libs")[0]
+        dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+        os.mkdir(dir)
+        if udid==None and testcasename==None:
+            logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
+        elif udid!=None and testcasename != None:
+            devicename = get_info.get_devicename(udid)
+
+            logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {3}'.format(udid, path,devicename,testcasename)
+
+        subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+
+    def kill_logcat(self,udid=None):
+        if udid == None:
+            cmd = "adb shell ps |find " + r'"logcat"'
+        else:
+            cmd = "adb -s {0} shell ps |find " + r'"logcat"'.format(udid)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out,err = p.communicate()
+        while out:
+            lines = out.split("\r\n")
+            for line in lines:
+                if line:
+                    pid = line.split()[1]
+                    if udid == None:
+                        kill = "adb shell kill " + pid
+                    else:
+                        kill = "adb -s {0} shell kill ".format(udid) + pid
+                    os.system(kill)
+            break
+
+    def save_log(self):
+        self.kill_logcat()
+        dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+        if not os.path.isdir(dir):
+            os.mkdir(dir)
+        alllist = os.listdir(dir)
+        for one in alllist:
+            aa,bb= one.split(".")
+            file = dir+aa+"."+bb
+            newfile = "{0}/LogOutput/Logcat/{1}.{2}".format(getProjectRootPath().split("\libs")[0],aa,bb)
+            shutil.copyfile(file,newfile)
+        shutil.rmtree(dir)
+
+        os.mkdir(dir)
 
     def delete_nth_element(self,nth=1):
         """delete nth element on the page
@@ -840,3 +892,11 @@ class AppiumExtend(AppiumLibrary):
                 break
             time.sleep(0.5)
 
+if __name__=="__main__":
+    a = AppiumExtend()
+    for one in range(5):
+        a.logcat("5e321b32","test1")
+        # a.logcat()
+        time.sleep(3)
+        # print "kill========================"
+        a.save_log()
