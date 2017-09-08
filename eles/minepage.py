@@ -14,7 +14,9 @@ mybase = "com.snailvr.manager:id/tv_user" #id
 #用户名
 nickname = "com.snailvr.manager:id/tv_nick_name" #id
 #标题
-title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView"
+title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView" #xpath
+#未登录
+notlogin = "com.snailvr.manager:id/iv_avatar_not_login"
 
 """设置界面及二级目录"""
 #设置按钮
@@ -100,7 +102,7 @@ mycollection = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.wi
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
 #已加入播单字样
-collecttext1 = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//android.widget.TextView"
+collecttext1 = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//android.widget.TextView" #xpath
 #播单中视频
 bodanvideo ="com.snailvr.manager:id/pic"
 #播单中视频名
@@ -113,11 +115,11 @@ mycoupen = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget
 #兑换码输入框
 mabox = "com.snailvr.manager:id/rl_redemption_box"
 #请输入兑换码字样
-maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.widget.TextView"
+maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.widget.TextView" #xpath
 #观看券中视频名
 quanname = "com.snailvr.manager:id/tv_name"
 #明细
-mingxi = "com.snailvr.manager:id/btn_right"
+mingxi = "com.snailvr.manager:id/titlebar_right"
 #明细中说明
 paynum="com.snailvr.manager:id/tv_pay_num"
 
@@ -127,20 +129,28 @@ paynum="com.snailvr.manager:id/tv_pay_num"
 mygift = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]"
 #右上添加按钮
 address = "com.snailvr.manager:id/btn_address"
+#收货人字样
+shouhuoren = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[1]/android.widget.TextView[2]" #xpath
 #收货人
 etname = "com.snailvr.manager:id/et_name"
+#联系电话字样
+dianhua = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[2]/android.widget.TextView[2]" #xpath
 #联系电话
 etnumber = "com.snailvr.manager:id/et_number"
+#所在地址字样
+dizhi = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[3]/android.widget.TextView[2]" #xpath
 #所在地址
 etaddress = "com.snailvr.manager:id/et_address"
 #上海长宁区城区
 shanghai = "//android.widget.ListView/android.widget.RelativeLayout[2]"
 changning = "//android.widget.ListView/android.widget.RelativeLayout[3]"
 chengqu = "//android.widget.ListView/android.widget.RelativeLayout"
+#详细地址字样
+xiangxi = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[4]/android.widget.TextView[2]" #xpath
 #详细地址
 fulladdress = "com.snailvr.manager:id/et_full_address"
 #提交
-submit = "com.snailvr.manager:id/bin_submit"
+submit = "com.snailvr.manager:id/btn_submit"
 
 """问题反馈及二级目录"""
 #问题反馈
@@ -178,7 +188,7 @@ programname = "com.snailvr.manager:id/tv_program_name"
 #缓存
 download = "com.snailvr.manager:id/layout_downlod"
 #已缓存字样
-downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView"
+downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView" #xpath
 
 """将视频加入播单"""
 # 加入播单s

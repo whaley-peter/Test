@@ -29,8 +29,14 @@ tvname = "com.snailvr.manager:id/name"
 programname = "com.snailvr.manager:id/tv_program_name"
 #缓存
 huancun = "com.snailvr.manager:id/layout_downlod"
+#搜索历史框（全部）
+rvhistory = "com.snailvr.manager:id/rv_history"
+# 第一条搜索历史
+history1 = "//*[@resource-id='com.snailvr.manager:id/rv_history']//android.widget.RelativeLayout[1]"
 
 #清空搜索历史
 searchdelete= "com.snailvr.manager:id/layout_delete"
-#搜索历史图标
+# 清空字样
+qingkong="com.snailvr.manager:id/tv_delete"
+#搜索历史图标(钟表)
 ivpic = "com.snailvr.manager:id/iv_pic"
