@@ -57,19 +57,12 @@ currentpath = sys.path[0]
 run_server = r"python {0}\run_server.py".format(currentpath)
 run_test = r"python {3}\robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport,currentpath)
 
-# testresult = currentpath + "\\LogOutput\\TestResult"
-# logcat = currentpath + "\\LogOutput\\Logcat"
-#
-# if os.path.isdir(logcat):
-#     shutil.rmtree(logcat)
-#
-# if os.path.isdir(testresult):
-#     shutil.rmtree(testresult)
+
 LogOutputfile = currentpath + "\\LogOutput\\"
 if os.path.isdir(LogOutputfile):
     shutil.rmtree(LogOutputfile)
 os.mkdir(LogOutputfile)
 
-# os.system(run_server)
-# sleep(5)
-# os.system(run_test)
+os.system(run_server)
+sleep(5)
+os.system(run_test)
