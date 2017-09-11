@@ -76,6 +76,7 @@ class AppiumExtend(AppiumLibrary):
         | open mutilapplications | ${remote_url} | ${udid} |
         """
         apppath1 = r"D:\Jenkins\workspace\AndroidCIT\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
+        # apppath1 = r"e:\Test1\launcher-debug.apk"
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
@@ -318,17 +319,20 @@ class AppiumExtend(AppiumLibrary):
     #     time.sleep(1)
     def logcat(self,udid=None,testcasename=None):
         self.kill_logcat(udid)
+        devicename = get_info.get_devicename(udid)
         path = getProjectRootPath().split("\libs")[0]
-        dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+        if udid==None:
+            dir= "{0}/LogOutput/Temp".format(getProjectRootPath().split("\libs")[0])
+        else:
+            dir = "{0}/LogOutput/Temp_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
         if os.path.isdir(dir):
             shutil.rmtree(dir)
         os.mkdir(dir)
         if udid==None and testcasename==None:
             logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
         elif udid!=None and testcasename != None:
-            devicename = get_info.get_devicename(udid)
 
-            logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {3}'.format(udid, path,devicename,testcasename)
+            logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {2} {3}'.format(udid, path,devicename,testcasename)
 
         subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
@@ -337,9 +341,11 @@ class AppiumExtend(AppiumLibrary):
         if udid == None:
             cmd = "adb shell ps |find " + r'"logcat"'
         else:
-            cmd = "adb -s {0} shell ps |find " + r'"logcat"'.format(udid)
+            cmd = "adb -s {0} shell ps |find ".format(udid) + r'"logcat"'
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         out,err = p.communicate()
+        print out
+        print err
         while out:
             lines = out.split("\r\n")
             for line in lines:
@@ -352,19 +358,27 @@ class AppiumExtend(AppiumLibrary):
                     os.system(kill)
             break
 
-    def save_log(self):
-        self.kill_logcat()
-        dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+    def save_log(self,udid=None):
+        time.sleep(1)
+        self.kill_logcat(udid)
+        devicename = get_info.get_devicename(udid)
+        if udid==None:
+            dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+        else:
+            dir= "{0}/LogOutput/Temp_{1}/".format(getProjectRootPath().split("\libs")[0],devicename)
+
         if not os.path.isdir(dir):
             os.mkdir(dir)
         alllist = os.listdir(dir)
         for one in alllist:
             aa,bb= one.split(".")
             file = dir+aa+"."+bb
+            newpath = "{0}/LogOutput/Logcat/".format(getProjectRootPath().split("\libs")[0])
             newfile = "{0}/LogOutput/Logcat/{1}.{2}".format(getProjectRootPath().split("\libs")[0],aa,bb)
+            if not os.path.isdir(newpath):
+                os.mkdir(newpath)
             shutil.copyfile(file,newfile)
         shutil.rmtree(dir)
-
         os.mkdir(dir)
 
     def delete_nth_element(self,nth=1):
@@ -895,8 +909,9 @@ class AppiumExtend(AppiumLibrary):
 if __name__=="__main__":
     a = AppiumExtend()
     for one in range(5):
+        time.sleep(1)
         a.logcat("5e321b32","test1")
         # a.logcat()
         time.sleep(3)
         # print "kill========================"
-        a.save_log()
+        a.save_log("5e321b32")
