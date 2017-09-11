@@ -38,12 +38,6 @@ if "-d" in  arglist:
 else:
   startd=1
 
-if "-path" in arglist:
-    path=arglist[arglist.index('-path')+1]
-else:
-    print  'using delaut path "testcase"'
-    path='testcase'
-
 if "-p" in arglist:
     aport=int(arglist[arglist.index('-p')+1])
     iport=int(arglist[arglist.index('-p')+1])
