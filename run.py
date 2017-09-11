@@ -4,7 +4,6 @@
 from time import ctime, sleep
 import os
 import sys
-from run_server import get_info
 import shutil
 arglist = sys.argv
 
