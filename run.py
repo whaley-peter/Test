@@ -5,7 +5,7 @@ from time import ctime, sleep
 import os
 import sys
 from run_server import get_info
-
+import shutil
 arglist = sys.argv
 
 if "-h" in arglist:
@@ -56,6 +56,10 @@ currentpath = sys.path[0]
 
 run_server = r"python {0}\run_server.py".format(currentpath)
 run_test = r"python {3}\robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport,currentpath)
+
+logcat = currentpath + "\\LogOutput\\Logcat\\"
+if os.path.isdir(logcat):
+    shutil.rmtree(logcat)
 
 os.system(run_server)
 sleep(5)
