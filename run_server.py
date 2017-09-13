@@ -6,7 +6,7 @@ from mutil_test import manage_server
 import sys
 import time
 import os
-
+import subprocess
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -60,7 +60,9 @@ def start_server():
     aport += 1
     bport += 1
     if result == 1:
-        os.system(run_appium)
+        # os.system(run_appium)
+        subprocess.Popen(run_appium, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
     else:
         pass
 
