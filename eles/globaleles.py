@@ -34,7 +34,7 @@ desired_caps = {
     'appActivity':'com.whaley.biz.launcher.activitys.LauncherActivity',
     'unicodeKeyborad' : True,
     'resetKeyborad' : True,
-    'noRest' : True,
+    'noReset' : True,
     'commandTimeout': 60,
     'autoGrantPermissions':True,
     'sessonOverride': True,
