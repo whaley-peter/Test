@@ -63,6 +63,7 @@ def start_server():
         # os.system(run_appium)
         subprocess.Popen(run_appium, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
+        print "error:================"
     else:
         pass
 
