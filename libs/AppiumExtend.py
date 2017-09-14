@@ -330,7 +330,8 @@ class AppiumExtend(AppiumLibrary):
             shutil.rmtree(dir)
         os.mkdir(dir)
         if udid==None and testcasename==None:
-            logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
+            # logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
+            logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
         elif udid!=None and testcasename != None:
 
             # logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {2} {3}'.format(udid, path,devicename,testcasename)
