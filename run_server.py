@@ -15,11 +15,11 @@ sys.setdefaultencoding('utf-8')
 
 ip=get_info.get_ip()
 arglist=sys.argv
-lprocess = []
 
 def run(arg):
-    # subprocess.Popen(str(arg), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    os.system(str(arg))
+    # subprocess.Popen(str(arg), stdout=open(logpath,"w"), stderr=subprocess.PIPE, shell=True)
+    subprocess.Popen(str(arg),shell=True)
+    # os.system(str(arg))
 
 if '-h' in arglist:
     outstr = '''
@@ -60,15 +60,17 @@ def start_server():
     global ip
     global plat
     devicelist = get_info.get_devices()
+    lprocess = []
     if devicelist == []:
         print "NO Android Device Connect The PC!"
-        lprocess = []
+        # lprocess = []
     else:
         for div in devicelist:
             result = manage_server.kill_port(aport)
             manage_server.kill_port(bport)
             currentpath = sys.path[0]
-
+            devicename = get_info.get_devicename(div)
+            logpath = currentpath + "/Logoutput/{0}_appium.txt".format(devicename)
             run_appium = 'appium -a {0} -p {1} -bp {2}'.format(ip,aport,bport)
             aport += 1
             bport += 1
@@ -77,9 +79,8 @@ def start_server():
                 # subprocess.Popen(run_appium, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
                 p = multiprocessing.Process(target=run, args=(run_appium,))
                 lprocess.append(p)
-            else:
-                print "the appium server still running,skip"
-                lprocess = []
+            else:                print "the appium server still running,skip"
+                # lprocess = []
     return lprocess
 
 if __name__ == '__main__':
