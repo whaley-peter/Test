@@ -89,10 +89,7 @@ divlist=divtmp[sd:]
 
 
 currentpath = rootpath + "\\LogOutput\\TestResult\\"
-if os.path.isdir(currentpath):
-    shutil.rmtree(currentpath)
-sleep(1)
-os.mkdir(currentpath)
+
 cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport --output output.xml -d {0} ".format(currentpath)
 
 for one in range(len(divlist)):
@@ -120,4 +117,5 @@ if __name__ == '__main__':
 
     os.system(cmd3)
     sleep(2)
+
     print "test finished"
