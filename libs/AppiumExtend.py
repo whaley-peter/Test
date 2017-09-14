@@ -75,8 +75,8 @@ class AppiumExtend(AppiumLibrary):
 
         | open mutilapplications | ${remote_url} | ${udid} |
         """
-        apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
-        # apppath1 = r"e:\Test1\launcher-debug.apk"
+        # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
+        apppath1 = r"e:\AutoTest\app\WhaleyVR.apk"
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
@@ -111,6 +111,7 @@ class AppiumExtend(AppiumLibrary):
         | kill uiautomator |
         | kill uiautomator | ${udid} |
         """
+        self.kill_logcat(udid)
         time.sleep(5)
         if udid == None:
             cmd = "adb shell ps |find " + r'"uiautomator"'
@@ -332,8 +333,8 @@ class AppiumExtend(AppiumLibrary):
             logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
         elif udid!=None and testcasename != None:
 
-            logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {2} {3}'.format(udid, path,devicename,testcasename)
-
+            # logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {2} {3}'.format(udid, path,devicename,testcasename)
+            logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
         subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
 
