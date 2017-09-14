@@ -57,7 +57,7 @@ run_server = r"python {0}\run_server.py".format(currentpath)
 run_test = r"python {3}\robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport,currentpath)
 
 
-LogOutputfile = currentpath + "\\LogOutput\\"
+LogOutputfile = currentpath + "\\LogOutput\\Logcat\\"
 if os.path.isdir(LogOutputfile):
     shutil.rmtree(LogOutputfile)
 os.mkdir(LogOutputfile)
