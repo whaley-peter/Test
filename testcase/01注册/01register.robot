@@ -20,5 +20,4 @@ Documentation   测试从开机屏跳转到注册界面、从注册界面跳转�
     click element until no error    id=${jump_to_login_or_register}
     element should contain text     xpath=${title}     登录
     click back nth      2
-#    [Teardown]      RUN KEYWORD IF TEST FAILED      save log    ${udid}
-    save log    ${udid}
+    [Teardown]      RUN KEYWORD IF TEST FAILED      save log    ${udid}
