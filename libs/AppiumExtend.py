@@ -19,6 +19,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import sys
 import shutil
 from mutil_test import get_info
+from mutil_test import manage_environment
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -101,36 +102,7 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    def kill_uiautomator(self,udid=None):
-        """kill uiautomator after test
-        for mutil test,you must put the udid Variables
 
-        :param udid:
-        :return:
-        Example:
-        | kill uiautomator |
-        | kill uiautomator | ${udid} |
-        """
-        self.kill_logcat(udid)
-        time.sleep(5)
-        if udid == None:
-            cmd = "adb shell ps |find " + r'"uiautomator"'
-        else:
-            cmd = "adb -s {0} shell ps |find " + r'"uiautomator"'.format(udid)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out, err = p.communicate()
-        if out:
-            a = out.split(" ")[5]
-            if udid == None:
-                kill = "adb shell kill " + a
-            else:
-                kill = "adb -s {0} shell kill ".format(udid) + a
-            killinfo = subprocess.Popen(kill, stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
-            killout,killerr= killinfo.communicate()
-            if killout:
-                logger.console(killout)
-            else:
-                logger.console(killerr)
 
     def login(self,username=username,password=password):
         """login app
@@ -212,7 +184,7 @@ class AppiumExtend(AppiumLibrary):
             else:
                 cmd = "adb -s %s shell am start -n com.snailvr.manager/com.whaley.biz.launcher.activitys.LauncherActivity"%udid
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        time.sleep(TIMEOUT)
+            time.sleep(TIMEOUT)
 
     def login_and_switch_to_debug_mode(self,username=username,password=password,udid=None):
         """login app adn swith app to debugmode
@@ -318,6 +290,37 @@ class AppiumExtend(AppiumLibrary):
     #         cmd = 'adb -s {0} shell input text {1}'.format(udid,text)
     #     subprocess.Popen(cmd,shell=True)
     #     time.sleep(1)
+    def kill_uiautomator(self,udid=None):
+        """kill uiautomator after test
+        for mutil test,you must put the udid Variables
+
+        :param udid:
+        :return:
+        Example:
+        | kill uiautomator |
+        | kill uiautomator | ${udid} |
+        """
+        time.sleep(5)
+        if udid == None:
+            cmd = "adb shell ps |find " + r'"uiautomator"'
+        else:
+            cmd = "adb -s {0} shell ps |find ".format(udid) + r'"uiautomator"'
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out, err = p.communicate()
+        if out:
+            a = out.split(" ")[5]
+            if udid == None:
+                kill = "adb shell kill " + a
+            else:
+                kill = "adb -s {0} shell kill ".format(udid) + a
+            killinfo = subprocess.Popen(kill, stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+            killout,killerr= killinfo.communicate()
+            if killout:
+                logger.console(killout)
+            else:
+                logger.console(killerr)
+
+
     def logcat(self,udid=None,testcasename=None):
         self.kill_logcat(udid)
         devicename = get_info.get_devicename(udid)
@@ -329,15 +332,16 @@ class AppiumExtend(AppiumLibrary):
         if os.path.isdir(dir):
             shutil.rmtree(dir)
         os.mkdir(dir)
-        if udid==None and testcasename==None:
-            # logcat = r'start {0}/mutil_test/logcat_noPar.bat {0}'.format(path)
-            logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
-        elif udid!=None and testcasename != None:
+        try:
+            if udid==None and testcasename==None:
+                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
+                subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            elif udid!=None and testcasename != None:
+                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
+                subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
-            # logcat = r'start {1}/mutil_test/logcat.bat {0} {1} {2} {2} {3}'.format(udid, path,devicename,testcasename)
-            logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
-        subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
+        except Exception,e:
+            print "exception:",e
 
     def kill_logcat(self,udid=None):
         if udid == None:
@@ -346,8 +350,6 @@ class AppiumExtend(AppiumLibrary):
             cmd = "adb -s {0} shell ps |find ".format(udid) + r'"logcat"'
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         out,err = p.communicate()
-        print out
-        print err
         while out:
             lines = out.split("\r\n")
             for line in lines:
@@ -363,10 +365,10 @@ class AppiumExtend(AppiumLibrary):
     def save_log(self,udid=None):
         time.sleep(1)
         self.kill_logcat(udid)
-        devicename = get_info.get_devicename(udid)
         if udid==None:
             dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
         else:
+            devicename = get_info.get_devicename(udid)
             dir= "{0}/LogOutput/Temp_{1}/".format(getProjectRootPath().split("\libs")[0],devicename)
 
         if not os.path.isdir(dir):
