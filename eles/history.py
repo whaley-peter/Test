@@ -10,6 +10,8 @@ homepage = homebase
 history = history
 #浏览历史中视频名
 hname = "com.snailvr.manager:id/tv_name"
+#全选
+tvcheck ="com.snailvr.manager:id/tv_check"
 #浏览历史为空
 hempty = historyempty
 
@@ -17,3 +19,4 @@ hempty = historyempty
 
 videoa="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[1]"
 videob="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
+videoc="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[3]"
