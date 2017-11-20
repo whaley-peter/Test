@@ -77,7 +77,7 @@ class AppiumExtend(AppiumLibrary):
         | open mutilapplications | ${remote_url} | ${udid} |
         """
         # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
-        apppath1 = r"e:\AutoTest\app\WhaleyVR.apk"
+        apppath1 = r"E:\CI\Jenkins\workspace\App\launcher-debug.apk"
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
