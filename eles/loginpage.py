@@ -29,6 +29,9 @@ safe_login = "com.snailvr.manager:id/btn_safe_login"
 #短信快捷登录
 forget_pwd = "com.snailvr.manager:id/btn_forget_pwd"
 
+#找回密码界面
+connect_us = "com.snailvr.manager:id/tv_connect_us"
+
 #跳转到注册界面按钮//-------注册界面跳转到登录界面按钮
 jump_to_login_or_register = "com.snailvr.manager:id/titlebar_right"
 
