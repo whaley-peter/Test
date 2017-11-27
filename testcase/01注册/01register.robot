@@ -12,7 +12,7 @@ Documentation   测试从开机屏跳转到注册界面、从注册界面跳转�
     input text      id=${msm_code_input}    ${username}
     click element until no error        id=${nextstep}
 
-从注册界面跳转到登录界面--testregister001
+从注册界面跳转到登录界面--testregister002
     click element until no error    id=${jump_to_login_or_register}
     element should contain text     xpath=${title}     登录
     click back nth      2
