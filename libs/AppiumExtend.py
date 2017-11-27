@@ -135,12 +135,12 @@ class AppiumExtend(AppiumLibrary):
         | login |
         | login | 18616512272 | a123456 |
         """
-        login = 'id='+loginbutton
+        Loginbutton = 'id='+loginbutton
         nickname1 = 'id=' + nickname
         leapforg1 = "id=" +leapfrog
         self.back_to_homepage()
         def login_app():
-            self.click_element(login)
+            self.click_element(Loginbutton)
             locator1 = 'id=' + usernameinput
             locator2 = 'id=' + passwordinput
             self.input_text(locator1, username)
@@ -177,11 +177,11 @@ class AppiumExtend(AppiumLibrary):
         try:
             self.click_element("id="+mybase)
             if self.is_element_present(nickname1):
-                self.click_element("id="+settingbutton)
+                self.click_element("id="+info)
                 self.click_element("id="+logoutbutton)
                 self.click_element("id=" + confirmbutton)
         except:
-            raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
+            raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,info,logoutbutton, confirmbutton))
 
     def switch_to_debug_mode(self,udid=None):
         """swith the app to debug mode
@@ -193,8 +193,9 @@ class AppiumExtend(AppiumLibrary):
         self.back_to_homepage()
         self.wait_until_element_is_visible("id=" + mybase,10)
         self.click_element("id=" + mybase)
-        self.click_element("id=" + settingbutton)
+        self.click_element("xpath=" + settingbutton)
         debugbutton = "xpath=" + debugswitch
+        time.sleep(1)
         debug = self.get_text(debugbutton)
         if debug == u'是':
             self.back_to_homepage()
@@ -333,7 +334,7 @@ class AppiumExtend(AppiumLibrary):
 
         if not self.is_element_present("id=" + mycollectionempty) or self.is_element_present("id=" + localempty):
             self.click_element_until_no_error("id="+bianji)
-            elements = self.get_webelements(check)
+            elements = self.get_webelements(click)
 
             if nth > 0:
                 elements[nth - 1].click()
@@ -355,9 +356,9 @@ class AppiumExtend(AppiumLibrary):
         """
         if not self.is_element_present("id="+mycollectionempty) or self.is_element_present("id="+localempty):
             self._current_application().find_element_by_id(bianji).click()
-            checkall1 = "id=" + checkall
-            if self.is_element_present(checkall1):
-                self.click_element_until_no_error(checkall)
+            chickall1 = "id=" + clickall
+            if self.is_element_present(chickall1):
+                self.click_element_until_no_error(chickall1)
                 self.is_all_selected()
                 self.click_element_until_no_error("id="+delete)
                 self.click_element_until_no_error("id="+quxiao)
@@ -371,7 +372,7 @@ class AppiumExtend(AppiumLibrary):
 
             self.click_element_until_no_error("id=" + confirm)
         else:
-            logger.console("no element to deleting")
+            logger.console("no element to delete")
 
     def is_all_selected(self,message=""):
         """check whether all element is selected
@@ -380,21 +381,29 @@ class AppiumExtend(AppiumLibrary):
         Exapmle:
         |     is all selected |
         """
-        locator = "id=com.snailvr.manager:id/tv_delete"
-        locator1 = "id=com.snailvr.manager:id/tv_check_num"
+        locator = "id=" + delete
+        locator1 = "id=" + daoru
         if self.is_element_present(locator):
             select = self.get_text(locator).split("(")[1].split(")")[0].split("/")[0]
             all = self.get_text(locator).split("(")[1].split(")")[0].split("/")[1]
-        elif self.is_element_present(locator1):
+            if select != all:
+                if not message:
+                    message = "select element is %s,but all element is %s" % (select, all)
+                raise AssertionError(message)
+            else:
+                self._info("selected and all elemets are equal")
+
+        if self.is_element_present(locator1):
             select = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
             all = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[1]
-
-        if select != all:
-            if not message:
-                message = "select element is %s,but all element is %s" % (select, all)
-            raise AssertionError(message)
+            if select != all:
+                if not message:
+                    message = "select element is %s,but all element is %s" % (select, all)
+                raise AssertionError(message)
+            else:
+                self._info("selected and all elemets are equal")
         else:
-            self._info("selected and all elemets are equal")
+            self._info("element is not present by given locator {0}".format(locator))
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
