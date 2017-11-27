@@ -26,7 +26,7 @@ Force Tags  localvideo
     click element     id=${xiangce}
     element should contain text         xpath=${title}          相册视频导入
     page should contain element     id=${daocheck}
-    click element     id=${checkall}
+    click element     id=${clickall}
     is all selected
     click element       id=${daoru}
     page should contain element     id=${content}
@@ -35,10 +35,10 @@ Force Tags  localvideo
 删除操作1-testlocalvideo002
     [Documentation]   取消删除和删除一个操作
 #取消删除
-    page should contain element     id=${bianji}
     click element      id=${bianji}
-    page should contain element     id=${layout_check}
-    click nth element      id=${check}      1
+    element should contain text     id=${clickall}      全选
+    element should contain text    id=${delete}     删除
+    click nth element      id=${click}      1
     click element      id=${delete}
     page should contain element     id=${content}
     click element      id=${quxiao}
@@ -67,9 +67,9 @@ Force Tags  localvideo
     click element       id=${link}
     element should contain text         xpath=${title}          链接导入
     page should contain element         id=${suggestion}
-    page should contain element         id=${daoru}
+    page should contain element         id=${linkimport}
     input text          id=${suggestion}        http://vr.moguv.com/play/5dacf3e06a154ac4a3397293128ce38a
-    click element       id=${daoru}
+    click element       id=${linkimport}
     page should contain element         id=${picvideo}
 
 
