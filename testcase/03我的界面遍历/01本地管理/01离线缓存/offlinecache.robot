@@ -34,14 +34,17 @@ Variables   eles/globaleles.py
     ${val}      get text     xpath=${downloadtext1}
     wait until element is visible   xpath=${downloadtext1}      10
     should be equal        ${val}       已缓存
-#检查离线缓存
+检查离线缓存
     click back nth
+    swipe right nth     3
+#    click element until no error    xpath=${jingxuan}
     click element     id=${mybase}
-    page should contain element     xpath=${localmanagement}
+    ${a}   get text     xpath=${tvtext}
+    log to console      ${a}
     element should contain text     xpath=${tvtext}        万能VR播放器
     click element     xpath=${localmanagement}
     ${tvname1}       get nth element text    id=${tvname}   -1
-    should be equal     ${tvdes1}       ${tvname1}
+#    should be equal     ${tvdes1}       ${tvname1}
 
 取消和删除离线缓存-testlocalcache002
     [Documentation]  对离线缓存进行删除一个或多个的操作
@@ -52,25 +55,24 @@ Variables   eles/globaleles.py
 #编辑——选中一个视频
     ${tvnamea}       get nth element text    id=${tvname}   1
     click element       id=${bianji}
-    page should contain element     id=${check}
-    page should contain element     id=${layout_check}
-    click nth element       id=${check}     1
-    element should contain text     id=${checknum}      (1/3)
+    click nth element       id=${click}     1
+    element should contain text     id=${delete}      (1/3)
 #取消删除离线缓存
     click element       id=${delete}
-    page should contain element     id=${laydelete}
+    element should contain text     id=${deleteOrNot}       确定要删除吗
     click element       id=${quxiao}
     click element       id=${rightquxiao}
-    ${tvnameb}       get nth element text    id=${tvname}   1
+    ${tvnameb}          get nth element text    id=${tvname}   1
     should be equal     ${tvnamea}       ${tvnameb}
 #编辑——逐个选中所有视频
     click element       id=${bianji}
-    page should contain element     id=${check}
-    page should contain element     id=${layout_check}
-    click nth element       id=${check}     1
-    click nth element       id=${check}     2
-    click nth element       id=${check}     3
-    element should contain text     id=${checknum}      (3/3)
+    page should contain element     id=${click}
+    element should contain text      id=${clickall}     全选
+    element should contain text     id=${delete}       删除
+    click nth element       id=${click}     1
+    click nth element       id=${click}     2
+    click nth element       id=${click}     3
+    element should contain text     id=${delete}      (3/3)
     click element       id=${rightquxiao}
 #删除离线缓存
     delete nth element      1
