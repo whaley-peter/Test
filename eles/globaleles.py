@@ -21,16 +21,15 @@ def getProjectRootPath():
     rootpath = os.getcwd().split('\eles')[0]
     return rootpath
 
-apppath = getProjectRootPath()+ r"\app\WhaleyVR.apk"
+apppath = getProjectRootPath()+ r"\app\launcher-debug.apk"
 
 desired_caps = {
     'platformName':'Android',
-    # 'platformVersion' : '6.0.1',
+    'platformVersion' : '7.1.1',
     'deviceName' :'test',
-    # 'udid':'8d5cd6c0',
+    # 'udid':'5e321b32',
     'app' : apppath,
     'appPackage' : 'com.snailvr.manager',
-    # 'appActivity' : 'com.whaley.vr.module.launcher.activitys.SplashActivity',
     'appActivity':'com.whaley.biz.launcher.activitys.LauncherActivity',
     'unicodeKeyborad' : True,
     'resetKeyborad' : True,

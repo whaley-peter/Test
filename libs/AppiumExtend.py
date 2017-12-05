@@ -130,6 +130,7 @@ class AppiumExtend(AppiumLibrary):
             self.back_to_homepage()
             self.click_element("id="+mybase)
             if not self.is_element_present(nickname1):
+                self.click_element(login)
                 login_app()
             else:
                 print "app already login"
@@ -153,7 +154,7 @@ class AppiumExtend(AppiumLibrary):
         try:
             self.click_element("id="+mybase)
             if self.is_element_present(nickname1):
-                self.click_element("id="+settingbutton)
+                self.click_element("id="+info)
                 self.click_element("id="+logoutbutton)
                 self.click_element("id=" + confirmbutton)
         except:
@@ -169,7 +170,7 @@ class AppiumExtend(AppiumLibrary):
         self.back_to_homepage()
         self.wait_until_element_is_visible("id=" + mybase,10)
         self.click_element("id=" + mybase)
-        self.click_element("id=" + settingbutton)
+        self.click_element("xpath=" + settingbutton)
         debugbutton = "xpath=" + debugswitch
         debug = self.get_text(debugbutton)
         if debug == u'是':
@@ -222,14 +223,16 @@ class AppiumExtend(AppiumLibrary):
         while True:
             if self.is_element_present("id="+homebase):
                 break
-            elif not self.is_element_present("id="+homebase) and self.is_element_present(locator):
-                self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
-                continue
-            elif not self.is_element_present("id="+homebase) and not self.is_element_present(locator):
-                if self.is_element_present('id='+loginbutton):
-                    break
-                self._current_application().back()
-                continue
+            elif not self.is_element_present("id="+homebase):
+                if self.is_element_present(locator):
+                    self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
+                    continue
+                elif not self.is_element_present(locator):
+                    if self.is_element_present('id='+loginbutton):
+                        break
+                    else:
+                        self._current_application().back()
+                        continue
 
     def click_back_nth(self,nth=1,message="",timeout=TIMEOUT):
         """click backbutton nth times
@@ -246,10 +249,11 @@ class AppiumExtend(AppiumLibrary):
         for one in range(nth):
             if self.is_element_present(locator):
                 self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
-            elif not self.is_element_present(locator) and not self.is_element_present("id="+homebase):
-                self._current_application().back()
-            elif not self.is_element_present(locator) and self.is_element_present("id="+homebase):
-                break
+            else:
+                if not self.is_element_present("id="+homebase):
+                    self._current_application().back()
+                elif self.is_element_present("id="+homebase):
+                    break
 
 
     # def check_toast(self,toasttext):

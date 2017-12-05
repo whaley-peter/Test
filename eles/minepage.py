@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from homepage import homebase
 
 __mtime__ = '2017/8/10'
 #底部首页button
-homepage = "com.snailvr.manager:id/rl_recommend"
+homepage = homebase
 #tab 综艺
 zongyi = "//android.widget.LinearLayout/android.view.View[4]"
 
@@ -11,8 +12,9 @@ zongyi = "//android.widget.LinearLayout/android.view.View[4]"
 mybase = "com.snailvr.manager:id/tv_user" #id
 
 """个人信息"""
+info = "com.snailvr.manager:id/btn_info"
 #用户名
-nickname = "com.snailvr.manager:id/tv_nick_name" #id
+nickname = "com.snailvr.manager:id/tv_name" #id
 #标题
 title = "//*[@resource-id='com.snailvr.manager:id/titlebar_center']//android.widget.TextView" #xpath
 #未登录
@@ -20,7 +22,7 @@ notlogin = "com.snailvr.manager:id/iv_avatar_not_login"
 
 """设置界面及二级目录"""
 #设置按钮
-settingbutton = "com.snailvr.manager:id/iv_setting" #id
+settingbutton = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]"
 
 #清除缓存
 setting_clean_cache = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[2]"  #xpath
@@ -36,7 +38,7 @@ logoutbutton = "com.snailvr.manager:id/btn_logout" #id
 #本地管理
 localmanagement = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]" #xpath
 #万能VR播放器
-tvtext="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//android.widget.TextView[1]"
+tvtext="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//android.widget.LinearLayout//android.widget.LinearLayout[1]//android.widget.TextView[1]"
 #xpath
 #离线缓存\本地视频
 offlinecache = "android.support.v7.app.ActionBar$Tab"   #class
@@ -152,21 +154,17 @@ fulladdress = "com.snailvr.manager:id/et_full_address"
 #提交
 submit = "com.snailvr.manager:id/btn_submit"
 
-"""问题反馈及二级目录"""
-#问题反馈
-problemfeedback = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]"  #xpath
-
 
 #官方论坛
-forum = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]" #xpath
+forum = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[3]" #xpath
 
 """使用帮助及二级目录"""
 #使用帮助
-usehelp = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[7]" #xpath
+usehelp = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]" #xpath
 
 """关于及二级目录"""
 #关于
-about = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[8]" #xpath
+about = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]" #xpath
 #图标
 icon = "com.snailvr.manager:id/iv_icon"
 #加入QQ群

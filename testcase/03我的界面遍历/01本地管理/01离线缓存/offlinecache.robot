@@ -3,6 +3,10 @@ Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/videodetailspage.py
 Variables   eles/globaleles.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      localcache
+
 *** Test Cases ***
 选择视频进行缓存-testlocalcache001
     [Documentation]  选择视频进行缓存后进入本地管理-离线缓存检查视频
@@ -36,6 +40,7 @@ Variables   eles/globaleles.py
     should be equal        ${val}       已缓存
 #检查离线缓存
     click back nth
+    swipe right nth     3
     click element     id=${mybase}
     page should contain element     xpath=${localmanagement}
     element should contain text     xpath=${tvtext}        万能VR播放器
@@ -45,11 +50,6 @@ Variables   eles/globaleles.py
 
 取消和删除离线缓存-testlocalcache002
     [Documentation]  对离线缓存进行删除一个或多个的操作
-#缓存中对视频操作
-#    click nth element       id=${btndownload}       1
-#    element should contain text     id=${btndownload}       继续
-#    click nth element       id=${btndownload}       1
-#编辑——选中一个视频
     ${tvnamea}       get nth element text    id=${tvname}   1
     click element       id=${bianji}
     page should contain element     id=${check}

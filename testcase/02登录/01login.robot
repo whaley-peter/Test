@@ -4,6 +4,9 @@ Variables  eles/homepage.py
 Variables  eles/loginpage.py
 Variables  eles/globaleles.py
 Variables  eles/minepage.py
+Suite Setup     back to homepage
+Suite Teardown  back to homepage
+Force Tags  denglu
 Documentation   测试登录功能、登录界面跳转到其他界面功能
 
 *** Test Cases ***
