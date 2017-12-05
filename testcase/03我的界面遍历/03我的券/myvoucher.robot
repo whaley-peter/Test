@@ -3,6 +3,10 @@ Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
 Variables   eles/loginpage.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      myvoucher
+
 *** Test Cases ***
 我的券/兑换码遍历--testmyvoucher001
         [Documentation]  我的券/兑换码界面遍历

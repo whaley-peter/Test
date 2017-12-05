@@ -2,6 +2,9 @@
 Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      wentifankui
 
 *** Test Cases ***
 问题反馈--testfeedback001

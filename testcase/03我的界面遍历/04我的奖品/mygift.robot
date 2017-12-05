@@ -2,6 +2,9 @@
 Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      mygift
 
 *** Test Cases ***
 我的奖品--testmygift001

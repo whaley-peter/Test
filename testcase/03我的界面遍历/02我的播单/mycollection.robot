@@ -3,6 +3,9 @@ Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
 Variables   eles/loginpage.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      wodebodan
 
 *** Test Cases ***
 加入我的播单--testwodebodan001
