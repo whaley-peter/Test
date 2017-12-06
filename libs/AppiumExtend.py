@@ -172,10 +172,11 @@ class AppiumExtend(AppiumLibrary):
         self.click_element("id=" + mybase)
         self.click_element("xpath=" + settingbutton)
         debugbutton = "xpath=" + debugswitch
+        time.sleep(3)
         debug = self.get_text(debugbutton)
         if debug == u'是':
             self.back_to_homepage()
-        else:
+        elif debug == u'否':
             self.click_element(debugbutton)
             self.go_back()
             self.go_back()
@@ -407,7 +408,7 @@ class AppiumExtend(AppiumLibrary):
 
         if not self.is_element_present("id=" + mycollectionempty) or self.is_element_present("id=" + localempty):
             self.click_element_until_no_error("id="+bianji)
-            elements = self.get_webelements(check)
+            elements = self.get_webelements(click)
 
             if nth > 0:
                 elements[nth - 1].click()
@@ -427,25 +428,17 @@ class AppiumExtend(AppiumLibrary):
         Example:
         | delete all element |
         """
-        if not self.is_element_present("id="+mycollectionempty) or self.is_element_present("id="+localempty):
+        if self.is_element_present("id="+bianji):
             self._current_application().find_element_by_id(bianji).click()
-            checkall1 = "id=" + checkall
-            if self.is_element_present(checkall1):
-                self.click_element_until_no_error(checkall)
-                self.is_all_selected()
-                self.click_element_until_no_error("id="+delete)
-                self.click_element_until_no_error("id="+quxiao)
-                self.click_element_until_no_error("id="+delete)
-            else:
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_check")
-                self.is_all_selected()
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
-                self.click_element_until_no_error("id="+quxiao)
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
-
+            checkall1 = "id=" + clickall
+            self.click_element_until_no_error(checkall1)
+            self.is_all_selected()
+            self.click_element_until_no_error("id="+delete)
+            self.click_element_until_no_error("id="+quxiao)
+            self.click_element_until_no_error("id="+delete)
             self.click_element_until_no_error("id=" + confirm)
         else:
-            logger.console("no element to deleting")
+            self._info("no element to delete")
 
     def is_all_selected(self,message=""):
         """check whether all element is selected
@@ -454,21 +447,30 @@ class AppiumExtend(AppiumLibrary):
         Exapmle:
         |     is all selected |
         """
-        locator = "id=com.snailvr.manager:id/tv_delete"
-        locator1 = "id=com.snailvr.manager:id/tv_check_num"
+        locator = "id=" + delete
+        locator1 = "id=" + daoru
         if self.is_element_present(locator):
             select = self.get_text(locator).split("(")[1].split(")")[0].split("/")[0]
             all = self.get_text(locator).split("(")[1].split(")")[0].split("/")[1]
-        elif self.is_element_present(locator1):
+            if select != all:
+                if not message:
+                    message = "select element is %s,but all element is %s" % (select, all)
+                raise AssertionError(message)
+            else:
+                self._info("selected and all elemets are equal")
+
+        if self.is_element_present(locator1):
             select = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[0]
             all = self.get_text(locator1).split("(")[1].split(")")[0].split("/")[1]
-
-        if select != all:
-            if not message:
-                message = "select element is %s,but all element is %s" % (select, all)
-            raise AssertionError(message)
+            if select != all:
+                if not message:
+                    message = "select element is %s,but all element is %s" % (select, all)
+                raise AssertionError(message)
+            else:
+                self._info("selected and all elemets are equal")
         else:
-            self._info("selected and all elemets are equal")
+            self._info("element is not present by given locator {0}".format(locator))
+
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
@@ -809,6 +811,11 @@ class AppiumExtend(AppiumLibrary):
         | ${count}= | Get Element Count In Time | class=android.widget.Button | count button | 10s |
         """
         return self._wait_until_not_value(timeout, 0, False, message, self.get_element_count, locator)
+
+    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=5):
+        if not message:
+            message = "element should have contained text '%s' in %s" % (expected, self._format_timeout(timeout))
+        self._wait_until_no_error_fixed(timeout, True, message, self.element_should_contain_text, locator,expected,'NONE')
 
     def page_should_contain_text_in_time(self, text, message="", timeout=TIMEOUT):
         """Verifies text is not found on the current page in setting time.

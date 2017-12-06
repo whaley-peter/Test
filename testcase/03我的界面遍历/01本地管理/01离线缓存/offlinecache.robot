@@ -27,7 +27,6 @@ Force Tags      localcache
     click element   id=${download}
     wait until element is visible   xpath=${downloadtext1}      10
     ${val}      get text     xpath=${downloadtext1}
-    wait until element is visible   xpath=${downloadtext1}
     should be equal        ${val}       已缓存
 #缓存第三个视频
     click back nth
@@ -52,25 +51,22 @@ Force Tags      localcache
     [Documentation]  对离线缓存进行删除一个或多个的操作
     ${tvnamea}       get nth element text    id=${tvname}   1
     click element       id=${bianji}
-    page should contain element     id=${check}
-    page should contain element     id=${layout_check}
-    click nth element       id=${check}     1
-    element should contain text     id=${checknum}      (1/3)
+    element should contain text     id=${clickall}      全选
+    click nth element       id=${click}     1
+    element should contain text     id=${delete}      删除 (1/3)
 #取消删除离线缓存
     click element       id=${delete}
-    page should contain element     id=${laydelete}
     click element       id=${quxiao}
     click element       id=${rightquxiao}
     ${tvnameb}       get nth element text    id=${tvname}   1
     should be equal     ${tvnamea}       ${tvnameb}
 #编辑——逐个选中所有视频
     click element       id=${bianji}
-    page should contain element     id=${check}
-    page should contain element     id=${layout_check}
-    click nth element       id=${check}     1
-    click nth element       id=${check}     2
-    click nth element       id=${check}     3
-    element should contain text     id=${checknum}      (3/3)
+    click nth element       id=${click}     1
+    click nth element       id=${click}     2
+    click nth element       id=${click}     3
+    element should contain text     id=${clickall}    取消全选
+    element should contain text     id=${delete}      删除 (3/3)
     click element       id=${rightquxiao}
 #删除离线缓存
     delete nth element      1
@@ -79,4 +75,5 @@ Force Tags      localcache
     delete all element
     Page Should Not Contain Element     id=${tvname}
     element should contain text         id=${localempty}      没有下载的视频
+    page should not contain element     id=${bianji}
 

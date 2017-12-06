@@ -8,15 +8,22 @@ Suite Teardown       back to homepage
 Force Tags      wodebodan
 
 *** Test Cases ***
-加入我的播单--testwodebodan001
+清空我的播单--testwodebodan001
+    click element       id=${mybase}
+    click element       xpath=${mycollection}
+    delete all element
+    back to homepage
+
+加入我的播单--testwodebodan002
     [Documentation]  加入播单并检查播单
 #加入第一个视频
     click element   id=${homepage}
+    swipe right nth     3
     click element   xpath=${zongyi}
     wait until element is visible   xpath=${video1}     10
     click element   xpath=${video1}
     ${tvdes1}       get text        id=${programname}
-
+    wait until element is visible       id=${collectbodan}      5
     click element   id=${collectbodan}
     sleep   3
     ${text}      get text     xpath=${collecttext1}
@@ -25,6 +32,7 @@ Force Tags      wodebodan
 #加入第二个视频
     wait until element is visible   xpath=${video2}     10
     click element   xpath=${video2}
+    wait until element is visible       id=${collectbodan}      5
     click element   id=${collectbodan}
     sleep   3
     ${text}      get text     xpath=${collecttext1}
@@ -33,30 +41,33 @@ Force Tags      wodebodan
 #加入第三个视频
     wait until element is visible   xpath=${video3}     10
     click element   xpath=${video3}
+    wait until element is visible       id=${collectbodan}      5
     click element   id=${collectbodan}
     sleep   3
     ${text}      get text     xpath=${collecttext1}
     should be equal        ${text}       已加入播单
     click back nth
-
+    swipe right nth     3
 #进入检查我的播单
     click element       id=${mybase}
     click element       xpath=${mycollection}
+    wait until element is visible   xpath=${title}      5
     element should contain text     xpath=${title}      我的播单
     ${boname1}       get nth element text    id=${bodanname}   -1
     should be equal     ${tvdes1}       ${boname1}
-删除播单操作--testwodebodan002
-    [Documentation]  取消删除和删除操作
 
+删除播单操作--testwodebodan003
+    [Documentation]  取消删除和删除操作
 #取消删除播单
     page should contain element     id=${bianji}
     click element       id=${bianji}
-    page should contain element     id=${layout_check}
-    click nth element      id=${check}      1
+    element should contain text  id=${clickall}     全选
+    element should contain text  id=${delete}       删除
+    click nth element      id=${click}      1
     click element      id=${delete}
     page should contain element     id=${content}
     click element      id=${quxiao}
-    click element      id=${checkall}
+    click element      id=${clickall}
     is all selected
     click element      id=${rightquxiao}
 
@@ -73,29 +84,21 @@ Force Tags      wodebodan
     Page Should Not Contain Element     id=${bodanvideo}
     element should contain text         id=${mycollectionempty}         暂无视频加入播单
     click back nth
-退出登录从我的播单登录--testwodebodan003
+
+退出登录从我的播单登录--testwodebodan004
     [Documentation]  退出登录并通过我的播单登录
 #退出登录
-    wait until element is visible       id=${settingbutton}         10
-    click element       id=${settingbutton}
-    element should contain text         xpath=${title}         设置
-    page should contain element         id=${logoutbutton}
-    click element       id=${logoutbutton}
-    page should contain element         id=${content}
-    click element       id=${confirm}
-    page should contain element         id=${notlogin}
+    logout
 #从我的播单登录
     wait until element is visible       xpath=${mycollection}       10
     click element       xpath=${mycollection}
     page should contain element         id=${content}
     click element       id=${confirm}
-    element should contain text         xpath=${title}         登录
-    input text          id=${usernameinput}         18616512272
-    input text          id=${passwordinput}         a123456
-    click element       id=${loginbutton}
-    page should contain element         xpath=${title}
+    input text      id=${usernameinput}     ${username}
+    input text      id=${passwordinput}     ${password}
+    click element   id=${loginbutton}
+    wait until element is visible   xpath=${title}      5
     element should contain text         xpath=${title}          我的播单
-
 
 
 
