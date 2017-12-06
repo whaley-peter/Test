@@ -4,8 +4,7 @@
 from time import ctime, sleep
 import os
 import sys
-from run_server import get_info
-
+import shutil
 arglist = sys.argv
 
 if "-h" in arglist:
@@ -38,12 +37,6 @@ if "-d" in  arglist:
 else:
   startd=1
 
-if "-path" in arglist:
-    path=arglist[arglist.index('-path')+1]
-else:
-    print  'using delaut path "testcase"'
-    path='testcase'
-
 if "-p" in arglist:
     aport=int(arglist[arglist.index('-p')+1])
     iport=int(arglist[arglist.index('-p')+1])
@@ -62,6 +55,12 @@ currentpath = sys.path[0]
 
 run_server = r"python {0}\run_server.py".format(currentpath)
 run_test = r"python {3}\robot_mutil_test.py -t {0} -s {1} -p {2}".format(tags,testsuites,aport,currentpath)
+
+
+LogOutputfile = currentpath + "\\LogOutput\\Logcat\\"
+if os.path.isdir(LogOutputfile):
+    shutil.rmtree(LogOutputfile)
+os.mkdir(LogOutputfile)
 
 os.system(run_server)
 sleep(5)

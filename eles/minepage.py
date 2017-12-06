@@ -33,7 +33,7 @@ settingbutton = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.w
 setting_clean_cache = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[2]"  #xpath
 
 #切换到debug模式
-debugswitch = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[6]//android.widget.TextView[1]" #xpath
+debugswitch = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[6]//*[@resource-id='com.snailvr.manager:id/view_right']//android.widget.TextView" #xpath
 
 #退出登录
 logoutbutton = "com.snailvr.manager:id/btn_logout" #id
@@ -54,6 +54,7 @@ btndownload = "com.snailvr.manager:id/btn_download"
 
 #编辑
 bianji = "com.snailvr.manager:id/titlebar_right"
+bianjitext = "//*[@resource-id='com.snailvr.manager:id/titlebar_right']//android.widget.TextView"
 #右上角取消
 rightquxiao = bianji
 
@@ -86,7 +87,7 @@ daoru = "com.snailvr.manager:id/tv_import"
 #导入框(底部）
 daocheck = "com.snailvr.manager:id/layout_check"
 #导入完成提示框/删除本地视频确认框
-content = "android:id/content"
+content = "com.snailvr.manager:id/dialog_textview_name"
 #确定
 ok = "com.snailvr.manager:id/tv_ok"
 #视频名
@@ -150,6 +151,8 @@ etnumber = "com.snailvr.manager:id/et_number"
 dizhi = "//*[@resource-id='com.snailvr.manager:id/add_address']//android.widget.LinearLayout[3]/android.widget.TextView[2]" #xpath
 #所在地址
 etaddress = "com.snailvr.manager:id/et_address"
+#
+province = 'com.snailvr.manager:id/textViewProvince'
 #上海长宁区城区
 shanghai = "//android.widget.ListView/android.widget.RelativeLayout[2]"
 changning = "//android.widget.ListView/android.widget.RelativeLayout[3]"
@@ -205,6 +208,3 @@ downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//andr
 """将视频加入播单"""
 # 加入播单s
 collectbodan="com.snailvr.manager:id/layout_collect"
-
-
-

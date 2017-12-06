@@ -3,6 +3,9 @@ Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
 Variables   eles/loginpage.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      wodebodan
 
 *** Test Cases ***
 清空我的播单--testwodebodan001
@@ -15,6 +18,7 @@ Variables   eles/loginpage.py
     [Documentation]  加入播单并检查播单
 #加入第一个视频
     click element   id=${homepage}
+    swipe right nth     3
     click element   xpath=${zongyi}
     wait until element is visible   xpath=${video1}     10
     click element   xpath=${video1}
@@ -43,17 +47,17 @@ Variables   eles/loginpage.py
     ${text}      get text     xpath=${collecttext1}
     should be equal        ${text}       已加入播单
     click back nth
-
+    swipe right nth     3
 #进入检查我的播单
     click element       id=${mybase}
     click element       xpath=${mycollection}
+    wait until element is visible   xpath=${title}      5
     element should contain text     xpath=${title}      我的播单
     ${boname1}       get nth element text    id=${bodanname}   -1
     should be equal     ${tvdes1}       ${boname1}
 
 删除播单操作--testwodebodan003
     [Documentation]  取消删除和删除操作
-
 #取消删除播单
     page should contain element     id=${bianji}
     click element       id=${bianji}
@@ -93,4 +97,8 @@ Variables   eles/loginpage.py
     input text      id=${usernameinput}     ${username}
     input text      id=${passwordinput}     ${password}
     click element   id=${loginbutton}
+    wait until element is visible   xpath=${title}      5
     element should contain text         xpath=${title}          我的播单
+
+
+

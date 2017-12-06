@@ -2,6 +2,9 @@
 Library     libs/AppiumExtend.py
 Variables   eles/minepage.py
 Variables   eles/globaleles.py
+Suite Setup     back to homepage
+Suite Teardown       back to homepage
+Force Tags      mygift
 
 *** Test Cases ***
 我的奖品--testmygift001
@@ -10,6 +13,7 @@ Variables   eles/globaleles.py
         wait until element is visible       xpath=${mygift}         10
         click element       xpath=${mygift}
 #检查界面
+        wait until element is visible   xpath=${title}      5
         element should contain text         xpath=${title}             我的奖品
         page should contain element         id=${address}
         click element       id=${address}
@@ -31,7 +35,7 @@ Variables   eles/globaleles.py
         input text          id=${etnumber}      18701870187
 #选择所在地址
         click element       id=${etaddress}
-        page should contain element         id=${content}
+        element should contain text         id=${province}      选择所在省份
         click element       xpath=${shanghai}
         click element       xpath=${changning}
         click element       xpath=${chengqu}
@@ -43,5 +47,5 @@ Variables   eles/globaleles.py
         go back
         wait until element is visible       id=${submit}                10
         click element       id=${submit}
-        page should contain element         xpath=${title}
+        wait until element is visible   xpath=${title}      5
         element should contain text         xpath=${title}             我的奖品

@@ -4,11 +4,21 @@ import adb_helper
 import sys
 import platform
 import socket
-
+import subprocess
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 __mtime__ = '2017/8/21'
+
+def connectDevice():
+    try:
+        deviveinfo = subprocess.check_output("adb devices").split("\r\n")
+        if deviveinfo[1]=='':
+            return False
+        else:
+            return True
+    except Exception,e:
+        print "Device Connect Fail: ",e
 
 def get_devices():
     ADB = adb_helper.AdbHelper()
@@ -22,21 +32,25 @@ def get_devices():
     return devices
 
 def get_devicename(udid):
-    if udid == 'ea08a98e':
-        devicename = 'MI5'
-    elif udid == '8d5cd6c0':
-        devicename = 'vivo_x9i'
-    elif udid == '6221231716B0904714':
-        devicename = '360'
-    elif udid == '5e321b32':
-        devicename = 'SamsungGalaxy7'
-    elif udid == 'VGYP7T6P99999999':
-        devicename = 'oppo_r9tm'
-    elif udid == 'GWY0217115007494':
-        devicename = 'HUAWEI_Meta9'
-    else:
-        devicename = 'noknowdevice'
-    return devicename
+    try:
+        if connectDevice():
+            dict = {}
+            devicesInfo = subprocess.check_output('adb devices -l').split('\r\n')[1:-2]
+
+            for deviceInfo in devicesInfo:
+                deviceId = deviceInfo.split('device product')[0].rstrip()
+                deviceName = deviceInfo.split('model:')[1].split(' ')[0]
+                dict[deviceId]=deviceName
+
+            if udid in dict.keys():
+                Name =  dict[udid]
+                return Name
+            else:
+                print "can't find the device by given udid, please check"
+        else:
+            print "No device is connectted"
+    except Exception,e:
+        print "Get Android version:",e
 
 def get_ip():
     iplist = socket.gethostbyname_ex(socket.gethostname())
@@ -46,6 +60,5 @@ def get_ip():
 
 
 if __name__ == '__main__':
-    b = get_devices()
+    b = get_devicename("VGYP7T6P99999999")
     print b
-    print platform.system()

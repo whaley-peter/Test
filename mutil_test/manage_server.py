@@ -33,7 +33,7 @@ def check_appium(ip,port):
 def check_running(ip,port):
     try:
         r = requests.get(url='http://{0}:{1}/favicon.ico'.format(ip,port))
-        if r.status_code == 200:
+        if r.status_code == 200 or r.status_code == 304:
             return 1
         else:
             print "the appium respone code is {0}".format(r.status_code)
@@ -81,4 +81,5 @@ def kill_port(port):
 
 if __name__ == "__main__":
     # check_appium('127.0.0.1','4723')
-    kill_port('4723')
+    ip = get_info.get_ip()
+    print check_running(ip,'4723')

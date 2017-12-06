@@ -17,6 +17,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
+import shutil
+from mutil_test import get_info
+from mutil_test import manage_environment
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -73,7 +76,8 @@ class AppiumExtend(AppiumLibrary):
 
         | open mutilapplications | ${remote_url} | ${udid} |
         """
-        apppath1 = r"D:\Jenkins\workspace\AndroidCIT\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
+        # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
+        apppath1 = r"E:\CI\Jenkins\workspace\App\launcher-debug.apk"
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
@@ -98,35 +102,7 @@ class AppiumExtend(AppiumLibrary):
 
         return self._cache.register(application, alias)
 
-    def kill_uiautomator(self,udid=None):
-        """kill uiautomator after test
-        for mutil test,you must put the udid Variables
 
-        :param udid:
-        :return:
-        Example:
-        | kill uiautomator |
-        | kill uiautomator | ${udid} |
-        """
-        time.sleep(5)
-        if udid == None:
-            cmd = "adb shell ps |find " + r'"uiautomator"'
-        else:
-            cmd = "adb -s {0} shell ps |find " + r'"uiautomator"'.format(udid)
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out, err = p.communicate()
-        if out:
-            a = out.split(" ")[5]
-            if udid == None:
-                kill = "adb shell kill " + a
-            else:
-                kill = "adb -s {0} shell kill ".format(udid) + a
-            killinfo = subprocess.Popen(kill, stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
-            killout,killerr= killinfo.communicate()
-            if killout:
-                logger.console(killout)
-            else:
-                logger.console(killerr)
 
     def login(self,username=username,password=password):
         """login app
@@ -135,12 +111,12 @@ class AppiumExtend(AppiumLibrary):
         | login |
         | login | 18616512272 | a123456 |
         """
-        Loginbutton = 'id='+loginbutton
+        login = 'id='+loginbutton
         nickname1 = 'id=' + nickname
         leapforg1 = "id=" +leapfrog
         self.back_to_homepage()
         def login_app():
-            self.click_element(Loginbutton)
+            self.click_element(login)
             locator1 = 'id=' + usernameinput
             locator2 = 'id=' + passwordinput
             self.input_text(locator1, username)
@@ -154,6 +130,7 @@ class AppiumExtend(AppiumLibrary):
             self.back_to_homepage()
             self.click_element("id="+mybase)
             if not self.is_element_present(nickname1):
+                self.click_element(login)
                 login_app()
             else:
                 print "app already login"
@@ -181,7 +158,7 @@ class AppiumExtend(AppiumLibrary):
                 self.click_element("id="+logoutbutton)
                 self.click_element("id=" + confirmbutton)
         except:
-            raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,info,logoutbutton, confirmbutton))
+            raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
 
     def switch_to_debug_mode(self,udid=None):
         """swith the app to debug mode
@@ -195,11 +172,11 @@ class AppiumExtend(AppiumLibrary):
         self.click_element("id=" + mybase)
         self.click_element("xpath=" + settingbutton)
         debugbutton = "xpath=" + debugswitch
-        time.sleep(1)
+        time.sleep(3)
         debug = self.get_text(debugbutton)
         if debug == u'是':
             self.back_to_homepage()
-        else:
+        elif debug == u'否':
             self.click_element(debugbutton)
             self.go_back()
             self.go_back()
@@ -209,7 +186,7 @@ class AppiumExtend(AppiumLibrary):
             else:
                 cmd = "adb -s %s shell am start -n com.snailvr.manager/com.whaley.biz.launcher.activitys.LauncherActivity"%udid
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        time.sleep(TIMEOUT)
+            time.sleep(TIMEOUT)
 
     def login_and_switch_to_debug_mode(self,username=username,password=password,udid=None):
         """login app adn swith app to debugmode
@@ -247,14 +224,16 @@ class AppiumExtend(AppiumLibrary):
         while True:
             if self.is_element_present("id="+homebase):
                 break
-            elif not self.is_element_present("id="+homebase) and self.is_element_present(locator):
-                self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
-                continue
-            elif not self.is_element_present("id="+homebase) and not self.is_element_present(locator):
-                if self.is_element_present('id='+loginbutton):
-                    break
-                self._current_application().back()
-                continue
+            elif not self.is_element_present("id="+homebase):
+                if self.is_element_present(locator):
+                    self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
+                    continue
+                elif not self.is_element_present(locator):
+                    if self.is_element_present('id='+loginbutton):
+                        break
+                    else:
+                        self._current_application().back()
+                        continue
 
     def click_back_nth(self,nth=1,message="",timeout=TIMEOUT):
         """click backbutton nth times
@@ -271,10 +250,11 @@ class AppiumExtend(AppiumLibrary):
         for one in range(nth):
             if self.is_element_present(locator):
                 self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
-            elif not self.is_element_present(locator) and not self.is_element_present("id="+homebase):
-                self._current_application().back()
-            elif not self.is_element_present(locator) and self.is_element_present("id="+homebase):
-                break
+            else:
+                if not self.is_element_present("id="+homebase):
+                    self._current_application().back()
+                elif self.is_element_present("id="+homebase):
+                    break
 
 
     # def check_toast(self,toasttext):
@@ -315,6 +295,100 @@ class AppiumExtend(AppiumLibrary):
     #         cmd = 'adb -s {0} shell input text {1}'.format(udid,text)
     #     subprocess.Popen(cmd,shell=True)
     #     time.sleep(1)
+    def kill_uiautomator(self,udid=None):
+        """kill uiautomator after test
+        for mutil test,you must put the udid Variables
+
+        :param udid:
+        :return:
+        Example:
+        | kill uiautomator |
+        | kill uiautomator | ${udid} |
+        """
+        time.sleep(5)
+        if udid == None:
+            cmd = "adb shell ps |find " + r'"uiautomator"'
+        else:
+            cmd = "adb -s {0} shell ps |find ".format(udid) + r'"uiautomator"'
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out, err = p.communicate()
+        if out:
+            a = out.split(" ")[5]
+            if udid == None:
+                kill = "adb shell kill " + a
+            else:
+                kill = "adb -s {0} shell kill ".format(udid) + a
+            killinfo = subprocess.Popen(kill, stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
+            killout,killerr= killinfo.communicate()
+            if killout:
+                logger.console(killout)
+            else:
+                logger.console(killerr)
+
+
+    def logcat(self,udid=None,testcasename=None):
+        self.kill_logcat(udid)
+        devicename = get_info.get_devicename(udid)
+        path = getProjectRootPath().split("\libs")[0]
+        if udid==None:
+            dir= "{0}/LogOutput/Temp".format(getProjectRootPath().split("\libs")[0])
+        else:
+            dir = "{0}/LogOutput/Temp_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
+        if os.path.isdir(dir):
+            shutil.rmtree(dir)
+        os.mkdir(dir)
+        try:
+            if udid==None and testcasename==None:
+                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
+                subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            elif udid!=None and testcasename != None:
+                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
+                subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        except Exception,e:
+            print "exception:",e
+
+    def kill_logcat(self,udid=None):
+        if udid == None:
+            cmd = "adb shell ps |find " + r'"logcat"'
+        else:
+            cmd = "adb -s {0} shell ps |find ".format(udid) + r'"logcat"'
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        out,err = p.communicate()
+        while out:
+            lines = out.split("\r\n")
+            for line in lines:
+                if line:
+                    pid = line.split()[1]
+                    if udid == None:
+                        kill = "adb shell kill " + pid
+                    else:
+                        kill = "adb -s {0} shell kill ".format(udid) + pid
+                    os.system(kill)
+            break
+
+    def save_log(self,udid=None):
+        time.sleep(1)
+        self.kill_logcat(udid)
+        if udid==None:
+            dir= "{0}/LogOutput/Temp/".format(getProjectRootPath().split("\libs")[0])
+        else:
+            devicename = get_info.get_devicename(udid)
+            dir= "{0}/LogOutput/Temp_{1}/".format(getProjectRootPath().split("\libs")[0],devicename)
+
+        if not os.path.isdir(dir):
+            os.mkdir(dir)
+        alllist = os.listdir(dir)
+        for one in alllist:
+            aa,bb= one.split(".")
+            file = dir+aa+"."+bb
+            newpath = "{0}/LogOutput/Logcat/".format(getProjectRootPath().split("\libs")[0])
+            newfile = "{0}/LogOutput/Logcat/{1}.{2}".format(getProjectRootPath().split("\libs")[0],aa,bb)
+            if not os.path.isdir(newpath):
+                os.mkdir(newpath)
+            shutil.copyfile(file,newfile)
+        shutil.rmtree(dir)
+        os.mkdir(dir)
 
     def delete_nth_element(self,nth=1):
         """delete nth element on the page
@@ -354,25 +428,17 @@ class AppiumExtend(AppiumLibrary):
         Example:
         | delete all element |
         """
-        if not self.is_element_present("id="+mycollectionempty) or self.is_element_present("id="+localempty):
+        if self.is_element_present("id="+bianji):
             self._current_application().find_element_by_id(bianji).click()
-            chickall1 = "id=" + clickall
-            if self.is_element_present(chickall1):
-                self.click_element_until_no_error(chickall1)
-                self.is_all_selected()
-                self.click_element_until_no_error("id="+delete)
-                self.click_element_until_no_error("id="+quxiao)
-                self.click_element_until_no_error("id="+delete)
-            else:
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_check")
-                self.is_all_selected()
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
-                self.click_element_until_no_error("id="+quxiao)
-                self.click_element_until_no_error("id=com.snailvr.manager:id/tv_delete")
-
+            checkall1 = "id=" + clickall
+            self.click_element_until_no_error(checkall1)
+            self.is_all_selected()
+            self.click_element_until_no_error("id="+delete)
+            self.click_element_until_no_error("id="+quxiao)
+            self.click_element_until_no_error("id="+delete)
             self.click_element_until_no_error("id=" + confirm)
         else:
-            logger.console("no element to delete")
+            self._info("no element to delete")
 
     def is_all_selected(self,message=""):
         """check whether all element is selected
@@ -404,6 +470,7 @@ class AppiumExtend(AppiumLibrary):
                 self._info("selected and all elemets are equal")
         else:
             self._info("element is not present by given locator {0}".format(locator))
+
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
@@ -745,6 +812,11 @@ class AppiumExtend(AppiumLibrary):
         """
         return self._wait_until_not_value(timeout, 0, False, message, self.get_element_count, locator)
 
+    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=5):
+        if not message:
+            message = "element should have contained text '%s' in %s" % (expected, self._format_timeout(timeout))
+        self._wait_until_no_error_fixed(timeout, True, message, self.element_should_contain_text, locator,expected,'NONE')
+
     def page_should_contain_text_in_time(self, text, message="", timeout=TIMEOUT):
         """Verifies text is not found on the current page in setting time.
 
@@ -849,3 +921,12 @@ class AppiumExtend(AppiumLibrary):
                 break
             time.sleep(0.5)
 
+if __name__=="__main__":
+    a = AppiumExtend()
+    for one in range(5):
+        time.sleep(1)
+        a.logcat("5e321b32","test1")
+        # a.logcat()
+        time.sleep(3)
+        # print "kill========================"
+        a.save_log("5e321b32")

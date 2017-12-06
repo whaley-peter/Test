@@ -42,8 +42,8 @@ Suite Teardown       back to homepage
 #检查全选
         page should contain element         id=${bianji}
         click element       id=${bianji}
-        wait until element is visible       id=${tvcheck}
-        click element       id=${tvcheck}
+        element should contain text       id=${clickall}        全选
+        click element       id=${clickall}
         is all selected
         click element      id=${rightquxiao}
 #删除一个

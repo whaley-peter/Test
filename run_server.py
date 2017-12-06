@@ -6,12 +6,20 @@ from mutil_test import manage_server
 import sys
 import time
 import os
+import subprocess
+import multiprocessing
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 ip=get_info.get_ip()
 arglist=sys.argv
+
+def run(arg):
+    # subprocess.Popen(str(arg), stdout=open(logpath,"w"), stderr=subprocess.PIPE, shell=True)
+    subprocess.Popen(str(arg),shell=True)
+    # os.system(str(arg))
 
 if '-h' in arglist:
     outstr = '''
@@ -51,26 +59,35 @@ def start_server():
     global iport
     global ip
     global plat
-
-    result = manage_server.kill_port(aport)
-    manage_server.kill_port(bport)
-    currentpath = sys.path[0]
-
-    run_appium = 'start {3}\\mutil_test\\run_appium_server.bat {0} {1} {2}'.format(ip,aport,bport,currentpath)
-    aport += 1
-    bport += 1
-    if result == 1:
-        os.system(run_appium)
+    devicelist = get_info.get_devices()
+    lprocess = []
+    if devicelist == []:
+        print "NO Android Device Connect The PC!"
+        # lprocess = []
     else:
-        pass
+        for div in devicelist:
+            result = manage_server.kill_port(aport)
+            manage_server.kill_port(bport)
+            currentpath = sys.path[0]
+            devicename = get_info.get_devicename(div)
+            logpath = currentpath + "/Logoutput/{0}_appium.txt".format(devicename)
+            run_appium = 'appium -a {0} -p {1} -bp {2}'.format(ip,aport,bport)
+            aport += 1
+            bport += 1
+            if result == 1:
+                # os.system(run_appium)
+                # subprocess.Popen(run_appium, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+                p = multiprocessing.Process(target=run, args=(run_appium,))
+                lprocess.append(p)
+            else:                print "the appium server still running,skip"
+                # lprocess = []
+    return lprocess
 
-devicelist = get_info.get_devices()
+if __name__ == '__main__':
+    process = start_server()
+    if process:
+        for p in process:
+            p.daemon = True
+            p.start()
 
-if devicelist==[]:
-     print "NO Android Device Connect The PC!"
-
-else:
-    for div in devicelist:
-        start_server()
-
-time.sleep(3)
+    time.sleep(3)

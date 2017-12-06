@@ -6,9 +6,12 @@ from time import ctime,sleep
 import os
 import sys
 from mutil_test import get_info,manage_server
+import shutil
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+rootpath = sys.path[0]
+
 
 def run(arg):
     os.system(str(arg))
@@ -51,9 +54,10 @@ else:
 if "-path" in arglist:
     path=arglist[arglist.index('-path')+1]
 else:
-    print  'using delaut path "testcase"'
-    path='testcase'
-
+    print  'using delaut path "%s\\testcase"'%rootpath
+    path=rootpath+r'\\testcase'
+    # print  'using delaut path "testcase"'
+    # path = "testcase"
 if "-p" in arglist:
     aport=int(arglist[arglist.index('-p')+1])
     iport=int(arglist[arglist.index('-p')+1])
@@ -83,20 +87,20 @@ sd=int(startd)-1
 divtmp=get_info.get_devices()
 divlist=divtmp[sd:]
 
-cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport --output output.xml "
 
-currentpath = sys.path[0]
+currentpath = rootpath + "\\LogOutput\\TestResult\\"
+
+cmd3 = u"rebot --logtitle WhaleyVRApp_TestLog --reporttitle WhaleyVRApp_TestReport --output output.xml -d {0} ".format(currentpath)
+
 for one in range(len(divlist)):
   wdport=wdhost+str(aport)+"/wd/hub"
-  #print wdport
   booll = manage_server.check_appium(ipadress, aport)
   if booll == 0:
       print "the appium server by port:{0} is not start,please check it".format(wdport)
       sys.exit(0)
   devicename = get_info.get_devicename(divlist[i])
-  cmd=u'pybot --pythonpath . {0} {1} -o {5}\\resultDir_{4}\\output-of-{4}.xml -l {5}\\resultDir_{4}\\log-of-{4}.html -r {5}\\resultDir_{4}\\report-of-{4}.html --variable remote_url:{2} --variable udid:{3} {5}'.format(tags,suites,wdport,divlist[i],devicename,path,currentpath)
-
-  cmd3 = cmd3 + u'{1}\\resultDir_{0}\\output-of-{0}.xml '.format(devicename,currentpath)
+  cmd = u'pybot --pythonpath . {0} {1} -d {5} -o resultDir_{4}\\output-of-{4}.xml -l resultDir_{4}\\log-of-{4}.html -r resultDir_{4}\\report-of-{4}.html --variable remote_url:{2} --variable udid:{3} {6}'.format(tags, suites, wdport, divlist[i], devicename, currentpath, path)
+  cmd3 = cmd3 + u'{1}resultDir_{0}\\output-of-{0}.xml '.format(devicename,currentpath)
   p=multiprocessing.Process(target=run,args=(cmd,))
   lprocess.append(p)
   aport=aport+1
@@ -110,9 +114,8 @@ if __name__ == '__main__':
 
     for p in lprocess:
         p.join()
-    with open('combineoutputReport.bat','w') as f:
-        f.write(cmd3)
-    os.system(cmd3)
 
+    os.system(cmd3)
     sleep(2)
+
     print "test finished"
