@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 # from loginpage import *
 from loginpage import jump_to_login_or_register,jump_to_login_or_register_text,loginbutton,registerbutton
+from videodetailspage import downloadbutton,downloadtext,addtocollection
+from videodetailspage import videoname as vn
 __mtime__ = '2017/8/10'
 #底部首页button
 homepage = "com.snailvr.manager:id/rl_recommend"
@@ -213,13 +215,14 @@ video1 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[
 video2 ="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[2]"
 #综艺频道JHH视频3
 video3="//android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[3]"
+
 #半屏详情页视频名
-programname = "com.snailvr.manager:id/tv_program_name"
+programname = vn
 #缓存
-download = "com.snailvr.manager:id/layout_downlod"
+download = downloadbutton
 #已缓存字样
-downloadtext1 = "//*[@resource-id='com.snailvr.manager:id/layout_downlod']//android.widget.TextView" #xpath
+downloadtext1 = downloadtext #xpath
 
 """将视频加入播单"""
 # 加入播单s
-collectbodan="com.snailvr.manager:id/layout_collect"
+collectbodan = addtocollection
