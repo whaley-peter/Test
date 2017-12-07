@@ -341,7 +341,7 @@ class AppiumExtend(AppiumLibrary):
             if udid==None and testcasename==None:
                 logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-            elif udid!=None and testcasename != None:
+            elif udid!= None and testcasename != None:
                 logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 
