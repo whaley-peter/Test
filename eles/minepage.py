@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from loginpage import *
+# from loginpage import *
+from loginpage import jump_to_login_or_register,jump_to_login_or_register_text,loginbutton,registerbutton
 __mtime__ = '2017/8/10'
 #底部首页button
 homepage = "com.snailvr.manager:id/rl_recommend"
@@ -28,7 +29,7 @@ notlogin = "com.snailvr.manager:id/iv_avatar_not_login"
 """设置界面及二级目录"""
 #设置按钮
 settingbutton = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]" #xpath
-
+settingbutton_text = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]//android.widget.TextView"
 #清除缓存
 setting_clean_cache = "//android.support.v7.widget.RecyclerView//android.widget.FrameLayout[2]"  #xpath
 
@@ -42,8 +43,9 @@ logoutbutton = "com.snailvr.manager:id/btn_logout" #id
 """本地界面及二级目录"""
 #本地管理
 localmanagement = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]" #xpath
+localmanagement_text_left = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//android.widget.LinearLayout[1]//android.widget.TextView"
 #万能VR播放器
-tvtext="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//*[@resource-id='com.snailvr.manager:id/view_right']//android.widget.TextView"
+localmanagement_text_right="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[1]//*[@resource-id='com.snailvr.manager:id/view_right']//android.widget.TextView"
 #xpath
 #离线缓存\本地视频
 offlinecache = "android.support.v7.app.ActionBar$Tab"   #class
@@ -53,10 +55,10 @@ tvname = "com.snailvr.manager:id/tv_name"
 btndownload = "com.snailvr.manager:id/btn_download"
 
 #编辑
-bianji = "com.snailvr.manager:id/titlebar_right"
-bianjitext = "//*[@resource-id='com.snailvr.manager:id/titlebar_right']//android.widget.TextView"
+bianji = jump_to_login_or_register
+bianjitext = jump_to_login_or_register_text
 #右上角取消
-rightquxiao = bianji
+rightquxiao = jump_to_login_or_register
 
 #选择列表中的视频删除
 click = "com.snailvr.manager:id/iv_check"
@@ -109,6 +111,7 @@ qrcode = "com.snailvr.manager:id/btn_qrcode"
 """我的播单界面及二级目录"""
 #我的播单
 mycollection = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[2]" #xpath
+mycollection_text = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[2]//android.widget.TextView"
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
 #已加入播单字样
@@ -122,6 +125,8 @@ bodanname = "com.snailvr.manager:id/name"
 """我的券/兑换码及二级目录"""
 #我的券/兑换码
 mycoupen = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[2]" #xpath
+#我的券/兑换码文字标题
+mycoupen_text = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[2]//android.widget.TextView"
 #兑换码输入框
 mabox = "com.snailvr.manager:id/rl_redemption_box"
 #请输入兑换码字样
@@ -129,7 +134,8 @@ maname = "//*[@resource-id='com.snailvr.manager:id/rl_redemption_box']//android.
 #观看券中视频名
 quanname = "com.snailvr.manager:id/tv_name"
 #明细
-mingxi = "com.snailvr.manager:id/titlebar_right"
+mingxi = jump_to_login_or_register
+mingxitext = jump_to_login_or_register_text
 #明细中说明
 paynum="com.snailvr.manager:id/tv_pay_num"
 
@@ -137,6 +143,8 @@ paynum="com.snailvr.manager:id/tv_pay_num"
 """我的奖品及二级目录"""
 #我的奖品
 mygift = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[3]"
+#我的奖品文字标题
+mygift_text = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[3]//android.widget.TextView"
 #右上添加按钮
 address = "com.snailvr.manager:id/btn_address"
 #收货人字样
@@ -164,6 +172,11 @@ fulladdress = "com.snailvr.manager:id/et_full_address"
 #提交
 submit = "com.snailvr.manager:id/btn_submit"
 
+"""鲸币及二级目录"""
+whaleyCurrency = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[1]"
+whaleyCurrency_text = "//*[@resource-id='com.snailvr.manager:id/layout_card']//android.widget.RelativeLayout[1]//android.widget.TextView"
+
+
 """问题反馈及二级目录"""
 #问题反馈
 problemfeedback = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[5]"  #xpath
@@ -171,16 +184,18 @@ problemfeedback = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android
 
 #官方论坛
 forum = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[3]" #xpath
+forum_text = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[3]//android.widget.TextView"
 
 """使用帮助及二级目录"""
 #使用帮助
 usehelp = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]" #xpath
+usehelp_text = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[4]//android.widget.TextView"
 
 """关于及二级目录"""
 #关于
 about = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]" #xpath
-abouttext1 = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]//android.widget.TextView"
-abouttext2="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]//*[@resource-id='com.snailvr.manager:id/view_right']//android.widget.TextView"
+about_text_left = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]//android.widget.TextView"
+about_text_rigth="//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[6]//*[@resource-id='com.snailvr.manager:id/view_right']//android.widget.TextView"
 
 #图标
 icon = "com.snailvr.manager:id/iv_icon"

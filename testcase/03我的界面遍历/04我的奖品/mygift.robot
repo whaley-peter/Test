@@ -14,16 +14,16 @@ Force Tags      mygift
         click element       xpath=${mygift}
 #检查界面
         wait until element is visible   xpath=${title}      5
-        element should contain text         xpath=${title}             我的奖品
+        element should contain text in time         xpath=${title}             我的奖品
         page should contain element         id=${address}
         click element       id=${address}
 #  修改地址界面
         page should contain element         xpath=${title}
-        element should contain text         xpath=${title}             修改地址
-        element should contain text         xpath=${shouhuoren}        收货人
-        element should contain text         xpath=${dianhua}           联系电话
-        element should contain text         xpath=${dizhi}             所在地址
-        element should contain text         xpath=${xiangxi}           详细地址
+        element should contain text in time         xpath=${title}             修改地址
+        element should contain text in time         xpath=${shouhuoren}        收货人
+        element should contain text in time         xpath=${dianhua}           联系电话
+        element should contain text in time         xpath=${dizhi}             所在地址
+        element should contain text in time         xpath=${xiangxi}           详细地址
 #添加收货人
         page should contain element         id=${etname}
         click element       id=${etname}
@@ -35,7 +35,7 @@ Force Tags      mygift
         input text          id=${etnumber}      18701870187
 #选择所在地址
         click element       id=${etaddress}
-        element should contain text         id=${province}      选择所在省份
+        element should contain text in time         id=${province}      选择所在省份
         click element       xpath=${shanghai}
         click element       xpath=${changning}
         click element       xpath=${chengqu}
@@ -48,4 +48,4 @@ Force Tags      mygift
         wait until element is visible       id=${submit}                10
         click element       id=${submit}
         wait until element is visible   xpath=${title}      5
-        element should contain text         xpath=${title}             我的奖品
+        element should contain text in time         xpath=${title}             我的奖品

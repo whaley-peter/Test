@@ -12,4 +12,4 @@ Force Tags      usehelp
         click element       xpath=${usehelp}
 #检查界面
         wait until element is visible   xpath=${title}      5
-        element should contain text     xpath=${title}        帮助
+        element should contain text in time     xpath=${title}        帮助
