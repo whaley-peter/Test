@@ -12,6 +12,6 @@
 #        click element       xpath=${problemfeedback}
 ##检查界面
 #        wait until element is visible   xpath=${title}      5
-#        element should contain text     id=${title}        问题反馈
+#        element should contain text in time     id=${title}        问题反馈
 
 

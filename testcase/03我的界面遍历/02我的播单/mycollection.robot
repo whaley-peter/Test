@@ -52,7 +52,7 @@ Force Tags      wodebodan
     click element       id=${mybase}
     click element       xpath=${mycollection}
     wait until element is visible   xpath=${title}      5
-    element should contain text     xpath=${title}      我的播单
+    element should contain text in time     xpath=${title}      我的播单
     ${boname1}       get nth element text    id=${bodanname}   -1
     should be equal     ${tvdes1}       ${boname1}
 
@@ -61,8 +61,8 @@ Force Tags      wodebodan
 #取消删除播单
     page should contain element     id=${bianji}
     click element       id=${bianji}
-    element should contain text  id=${clickall}     全选
-    element should contain text  id=${delete}       删除
+    element should contain text in time  id=${clickall}     全选
+    element should contain text in time  id=${delete}       删除
     click nth element      id=${click}      1
     click element      id=${delete}
     page should contain element     id=${content}
@@ -82,7 +82,7 @@ Force Tags      wodebodan
     page should contain element     id=${bianji}
     delete all element
     Page Should Not Contain Element     id=${bodanvideo}
-    element should contain text         id=${mycollectionempty}         暂无视频加入播单
+    element should contain text in time         id=${mycollectionempty}         暂无视频加入播单
     click back nth
 
 退出登录从我的播单登录--testwodebodan004
@@ -98,7 +98,7 @@ Force Tags      wodebodan
     input text      id=${passwordinput}     ${password}
     click element   id=${loginbutton}
     wait until element is visible   xpath=${title}      5
-    element should contain text         xpath=${title}          我的播单
+    element should contain text in time         xpath=${title}          我的播单
 
 
 
