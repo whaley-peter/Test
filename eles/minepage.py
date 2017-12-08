@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # from loginpage import *
 from loginpage import jump_to_login_or_register,jump_to_login_or_register_text,loginbutton,registerbutton
-from videodetailspage import downloadbutton,downloadtext,addtocollection
+from videodetailspage import downloadbutton,downloadbuttontext,addtocollection
 from videodetailspage import videoname as vn
 __mtime__ = '2017/8/10'
 #底部首页button
@@ -221,7 +221,7 @@ programname = vn
 #缓存
 download = downloadbutton
 #已缓存字样
-downloadtext1 = downloadtext #xpath
+downloadtext1 = downloadbuttontext #xpath
 
 """将视频加入播单"""
 # 加入播单s
