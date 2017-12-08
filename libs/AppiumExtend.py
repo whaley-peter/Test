@@ -20,12 +20,14 @@ import sys
 import shutil
 from mutil_test import get_info
 from mutil_test import manage_environment
+from eles.videodetailspage import *
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # set default timeout
 TIMEOUT = 15
+SHARETIMEOUT = 10
 
 class AppiumExtend(AppiumLibrary):
 
@@ -470,7 +472,62 @@ class AppiumExtend(AppiumLibrary):
                 self._info("selected and all elemets are equal")
         else:
             self._info("element is not present by given locator {0}".format(locator))
+    #分享到微博
+    def share_to_weibo(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(sina_weibo,u'新浪微博',share_text_of_weibo,share_to_weibo,video_name,timeout)
 
+    #分享到微信好友
+    def share_to_wechat_friends(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(weixin_friend,u'微信好友',share_text_of_weixin_friend,share_to_weixin_friend,video_name,timeout,first_weixin_friend,back_to_whaley_from_weixin_friends)
+
+    #分享到微信朋友圈
+    def share_to_wechat_circle(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(weixin_circle,u'朋友圈',share_text_of_weixin_circle,share_to_weixin_circle,video_name,timeout)
+
+    #分享到qq空间
+    def share_to_qq_zone(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(qq_zone,u'QQ空间',share_text_of_qq_zone,share_to_zone,video_name,timeout)
+
+    #分享到qq好友
+    def share_to_qq_friends(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(qq_friend,u'QQ好友',share_text_of_qq_friend,share_to_qq,video_name,timeout,first_qq_friend,back_to_whaley_from_qq_friend)
+
+    def share_test(self,video_name):
+        # self.share_to_weibo(video_name)
+        # self.share_to_wechat_friends(video_name)
+        # self.share_to_wechat_circle(video_name)
+        self.share_to_qq_friends(video_name)
+        # self.share_to_qq_zone(video_name)
+
+    def share_func(self,share_to_where,share_way_text,share_page_text,share_to,video_name,timeout,first_friend=None,back_to_whaley=None):
+        shareclick = 'id=' + share
+        share_to_where1 = 'id=' + share_to_where
+        if share_way_text == u'QQ空间' or share_way_text == u'QQ好友':
+            share_page_text1 = 'xpath=' + share_page_text
+        else:
+            share_page_text1 = 'id=' + share_page_text
+        share_to1 = 'id='+ share_to
+
+        self.click_element_until_no_error(shareclick)
+        #选择的分享方式的名称
+        self.element_should_contain_text_in_time(share_to_where1,share_way_text)
+        #点击分享到第三方app
+        self.click_element_until_no_error(share_to_where1)
+        if first_friend != None:
+            first_friend1 = 'xpath=' + first_friend
+            self.wait_until_element_is_visible(first_friend1,10)
+            self.click_element_until_no_error(first_friend1)
+        #检查分享界面文案是否包含节目名称
+        self.wait_until_element_is_visible(share_page_text1,timeout)
+        a = self.get_text(share_page_text1)
+        self.element_should_contain_text_in_time(share_page_text1,video_name)
+        #分享到微信朋友圈
+        self.click_element_until_no_error(share_to1)
+        if back_to_whaley != None:
+            back_to_whaley1 = 'id=' + back_to_whaley
+            self.wait_until_element_is_visible(back_to_whaley1,10)
+            self.click_element_until_no_error(back_to_whaley1)
+        self._info('a=========is{0}'.format(a))
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
@@ -921,12 +978,6 @@ class AppiumExtend(AppiumLibrary):
                 break
             time.sleep(0.5)
 
-if __name__=="__main__":
-    a = AppiumExtend()
-    for one in range(5):
-        time.sleep(1)
-        a.logcat("5e321b32","test1")
-        # a.logcat()
-        time.sleep(3)
-        # print "kill========================"
-        a.save_log("5e321b32")
+# if __name__=="__main__":
+#     a = AppiumExtend()
+#     a.share_to_wechat_circle(u"我们哦")
