@@ -21,7 +21,8 @@ import shutil
 from mutil_test import get_info
 from mutil_test import manage_environment
 from eles.videodetailspage import *
-
+from eles.myattentionpage import *
+import datetime
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -327,26 +328,26 @@ class AppiumExtend(AppiumLibrary):
             else:
                 logger.console(killerr)
 
-
     def logcat(self,udid=None,testcasename=None):
+        current_time = datetime.datetime.strftime(datetime.datetime.now(),"%Y%m%d%H%M%S")
         self.kill_logcat(udid)
         devicename = get_info.get_devicename(udid)
         path = getProjectRootPath().split("\libs")[0]
         if udid==None:
-            dir= "{0}/LogOutput/Temp".format(getProjectRootPath().split("\libs")[0])
+            dir= "{0}/LogOutput/Logcat".format(getProjectRootPath().split("\libs")[0])
         else:
-            dir = "{0}/LogOutput/Temp_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
+            dir = "{0}/LogOutput/Logcat_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
         if os.path.isdir(dir):
             shutil.rmtree(dir)
         os.mkdir(dir)
         try:
             if udid==None and testcasename==None:
-                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
+                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Logcat/TestLog_{1}.txt'.format(path,current_time)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             elif udid!= None and testcasename != None:
-                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
+                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Logcat_{2}/{2}_{3}_{4}.txt'.format(udid,path,devicename,testcasename,current_time)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
+            time.sleep(5)
         except Exception,e:
             print "exception:",e
 
@@ -869,10 +870,52 @@ class AppiumExtend(AppiumLibrary):
         """
         return self._wait_until_not_value(timeout, 0, False, message, self.get_element_count, locator)
 
-    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=5):
+    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=SHARETIMEOUT):
         if not message:
             message = "element should have contained text '%s' in %s" % (expected, self._format_timeout(timeout))
         self._wait_until_no_error_fixed(timeout, True, message, self.element_should_contain_text, locator,expected,'NONE')
+
+    def nth_element_should_contain_text(self, locator, expected, nth=1, message=''):
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+        self._info("Verifying %sth element '%s' contains text '%s'." % (nth, locator, expected))
+        try:
+            elements = self.get_webelements(locator)
+            if nth > 0:
+                self.element_should_contain_text(elements[nth-1],expected,message)
+            if nth < 0:
+                self.element_should_contain_text(elements[nth],expected,message)
+        except:
+            self._info("can't get elements by given locator {0}".format(locator))
+
+    def nth_element_should_contain_text_in_time(self, locator, expected, nth=1, message='', timeout=SHARETIMEOUT):
+        self._wait_until_no_error_fixed(timeout, True, message, self.nth_element_should_contain_text, locator, expected,
+                                        nth, 'None')
+
+    def nth_element_should_not_contain_text(self, locator, expected, nth=1, message=''):
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+        self._info("Verifying %sth element '%s' contains text '%s'." % (nth, locator, expected))
+        try:
+            elements = self.get_webelements(locator)
+            if nth > 0:
+                self.element_should_not_contain_text(elements[nth-1],expected,message)
+            if nth < 0:
+                self.element_should_not_contain_text(elements[nth],expected,message)
+        except:
+            self._info("can't get elements by given locator {0}".format(locator))
+
+    def nth_element_should_not_contain_text_in_time(self, locator, expected, nth=1, message='', timeout=SHARETIMEOUT):
+        self._wait_until_no_error_fixed(timeout, True, message, self.nth_element_should_not_contain_text, locator, expected,
+                                        nth, 'None')
 
     def page_should_contain_text_in_time(self, text, message="", timeout=TIMEOUT):
         """Verifies text is not found on the current page in setting time.
@@ -899,6 +942,63 @@ class AppiumExtend(AppiumLibrary):
         if not message:
             message = "Page should have contained element '%s' in %s" % (locator, self._format_timeout(timeout))
         self._wait_until_no_error_fixed(timeout, True, message, self.page_should_contain_element, locator, 'NONE')
+
+    def delete_all_history(self):
+        """delete all history
+
+        :return:
+        """
+        homebase1 = 'id=' + homebase
+        history1 = 'id=' + history
+        self.back_to_homepage()
+        self.click_element_until_no_error(homebase1)
+        self.click_element_until_no_error(history1)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def delete_all_download(self):
+        """delete all download video
+
+        :return:
+        """
+        mybase1 = 'id=' + mybase
+        localmanagement1 = 'xpath=' + localmanagement
+        self.back_to_homepage()
+        self.click_element_until_no_error(mybase1)
+        self.click_element_until_no_error(localmanagement1)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def detete_all_collection(self):
+        """delete all collected video
+
+        :return:
+        """
+        mybase1 = 'id=' + mybase
+        mycollection1 = 'xpath=' + mycollection
+        self.back_to_homepage()
+        self.click_element_until_no_error(mybase1)
+        self.click_element_until_no_error(mycollection1)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def delete_all_attented_publishers(self):
+        myattention1 = 'id=' + myattention
+        self.back_to_homepage()
+        self.click_element_until_no_error(myattention1)
+        attented_publishers1 = 'id=' + attented_publishers
+        publicist1 = 'id=' + publicist
+        eles = self.get_webelements(attented_publishers1)
+        for one in range(eles):
+            self.click_element_until_no_error(eles[0])
+            self.click_element_until_no_error(publicist1)
+            self.go_back()
+
+    def swipe_nth_back_to_jingxuan_tab(self,nth):
+        homebase1 = 'id=' + homebase
+        self.back_to_homepage()
+        self.click_element_until_no_error(homebase1)
+        self.swipe_right_nth(nth)
 
     def wait_until_page_contains_elements(self, locator_list, message="", timeout=TIMEOUT):
         """Waits until any element specified with `locator_list` appears on current page.
