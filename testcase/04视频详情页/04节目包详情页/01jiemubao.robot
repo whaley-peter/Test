@@ -1,9 +1,11 @@
 *** Settings ***
-Library     libs/AppiumExtend.py
-Variables   eles/homepage.py
-Variables   eles/videodetailspage.py
+Library             libs/AppiumExtend.py
+Variables           eles/homepage.py
+Variables           eles/videodetailspage.py
 Suite Setup         back to homepage
-Suite Teardown      back to homepage
+Suite Teardown      swipe nth back to jingxuan tab      4
+Test Setup          kill logcat         ${udid}
+Test Teardown       run keyword if test failed       logcat     ${udid}     jiemubao
 Force Tags          jiemubao
 
 *** Test Cases ***

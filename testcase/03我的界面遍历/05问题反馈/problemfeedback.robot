@@ -8,8 +8,8 @@
 #
 #*** Test Cases ***
 #问题反馈--testfeedback001
-#        click element       id=${mybase}
-#        click element       xpath=${problemfeedback}
+#        click element until no error     id=${mybase}
+#        click element until no error     xpath=${problemfeedback}
 ##检查界面
 #        wait until element is visible   xpath=${title}      5
 #        element should contain text in time     id=${title}        问题反馈

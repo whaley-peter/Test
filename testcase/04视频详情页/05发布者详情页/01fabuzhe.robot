@@ -1,9 +1,11 @@
 *** Settings ***
-Library     libs/AppiumExtend.py
-Variables   eles/myattentionpage.py
-Variables   eles/videodetailspage.py
+Library             libs/AppiumExtend.py
+Variables           eles/myattentionpage.py
+Variables           eles/videodetailspage.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
+Test Setup          kill logcat         ${udid}
+Test Teardown       run keyword if test failed       logcat     ${udid}     fabuzhe
 Force Tags          fabuzhe
 
 *** Test Cases ***
@@ -17,7 +19,7 @@ Force Tags          fabuzhe
     ${val}  get nth element text        id=${publishers_name}
     click nth element until no error    id=${publishers_pic}
     ${val1}             get text        xpath=${publisher name}
-    should be equal                     ${val}      ${val1}
+    should be equal     ${val}          ${val1}
 
 发布者详情页---testfabuzhe003
     click nth element until no error        id=${publicist}

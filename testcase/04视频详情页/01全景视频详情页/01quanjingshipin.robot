@@ -3,13 +3,15 @@ Library             libs/AppiumExtend.py
 Variables           eles/homepage.py
 Variables           eles/videodetailspage.py
 Suite Setup         back to homepage
-Suite Teardown      back to homepage
+Suite Teardown      swipe nth back to jingxuan tab
+Test Setup          kill logcat         ${udid}
+Test Teardown       run keyword if test failed       logcat     ${udid}     qjspxqy
 Force Tags          qjspxqy
 
 *** Test Cases ***
 跳转到全景视频详情页--testqjspxqy001
     detete all collection
-    detete all download
+    delete all download
     delete all attented publishers
     wait until element is visible            id=${homebase}                 10
     click element until no error             id=${homebase}
@@ -31,12 +33,13 @@ Force Tags          qjspxqy
 
 判断关注及跳转发布者详情页--testqjspxqy005
     page should not contain element          id=${description}
-    element should contain text in time      id=${postername}               微鲸VR
+    ${name}     get text                     id=${postername}
     element should contain text in time      id=${posterfollow}             关注
     click element until no error             id=${posterfollow}
     element should contain text in time      id=${posterfollow}             已关注
     click element until no error             id=${postername}
-    element should contain text in time      xpath=${publisher name}        微鲸VR
+    ${name1}    get text                     xpath=${publisher name}
+    should be equal     ${name}              ${name1}
     element should contain text in time      xpath=${publisher fans}        粉丝
     element should contain text in time      id=${publicist}                已关注
     click element until no error             id=${publicist}
