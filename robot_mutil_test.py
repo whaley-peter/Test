@@ -6,7 +6,7 @@ from time import ctime,sleep
 import os
 import sys
 from mutil_test import get_info,manage_server
-import shutil
+import subprocess
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -116,6 +116,6 @@ if __name__ == '__main__':
         p.join()
 
     os.system(cmd3)
-    sleep(2)
-
+    sleep(10)
+    subprocess.Popen('taskkill /im node.exe -f')
     print "test finished"
