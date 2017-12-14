@@ -91,7 +91,6 @@ class AppiumExtend(AppiumLibrary):
             'udid': udid,
             'app': apppath1,
             'appPackage': 'com.snailvr.manager',
-            # 'appActivity': 'com.whaley.vr.module.launcher.activitys.SplashActivity',
             'appActivity': 'com.whaley.biz.launcher.activitys.LauncherActivity',
             'unicodeKeyboard' : True,
             'resetKeyboard' : True,
@@ -343,8 +342,8 @@ class AppiumExtend(AppiumLibrary):
         else:
             logcat_dir = "{0}/LogOutput/Logcat_{1}".format(rootpath,devicename)
             resultDir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
-            if os.path.isdir(resultDir):
-                shutil.rmtree(resultDir)
+            # if os.path.isdir(resultDir):
+            #     shutil.rmtree(resultDir)
 
         if os.path.isdir(logcat_dir):
             shutil.rmtree(logcat_dir)
