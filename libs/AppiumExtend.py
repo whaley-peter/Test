@@ -341,10 +341,6 @@ class AppiumExtend(AppiumLibrary):
             logcat_dir= "{0}/LogOutput/Logcat".format(rootpath)
         else:
             logcat_dir = "{0}/LogOutput/Logcat_{1}".format(rootpath,devicename)
-            resultDir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
-            # if os.path.isdir(resultDir):
-            #     shutil.rmtree(resultDir)
-
         if os.path.isdir(logcat_dir):
             shutil.rmtree(logcat_dir)
         os.mkdir(logcat_dir)
@@ -371,19 +367,20 @@ class AppiumExtend(AppiumLibrary):
             cmd = "adb shell ps |find " + r'"logcat"'
         else:
             cmd = "adb -s {0} shell ps |find ".format(udid) + r'"logcat"'
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out,err = p.communicate()
-        while out:
-            lines = out.split("\r\n")
-            for line in lines:
-                if line:
-                    pid = line.split()[1]
-                    if udid == None:
-                        kill = "adb shell kill " + pid
-                    else:
-                        kill = "adb -s {0} shell kill ".format(udid) + pid
-                    os.system(kill)
-            break
+        if cmd:
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            out,err = p.communicate()
+            while out:
+                lines = out.split("\r\n")
+                for line in lines:
+                    if line:
+                        pid = line.split()[1]
+                        if udid == None:
+                            kill = "adb shell kill " + pid
+                        else:
+                            kill = "adb -s {0} shell kill ".format(udid) + pid
+                        os.system(kill)
+                break
 
     def save_log(self,udid=None):
         time.sleep(1)
