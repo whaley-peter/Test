@@ -11,7 +11,6 @@ Force Tags          fabuzhe
 *** Test Cases ***
 跳转到我的关注并清空关注的发布者---testfabuzhe001
     wait until element is visible       id=${myattention}       10
-    click element until no error        id=${myattention}
     delete all attented publishers
 
 从推荐关注界面跳转到发布者详情页---testfabuzhe002

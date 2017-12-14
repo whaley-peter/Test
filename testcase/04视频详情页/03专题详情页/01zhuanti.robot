@@ -36,6 +36,7 @@ Force Tags           zhuanti
 播放专题最后一个视频--testzhuanti004
     nth element should contain text             id=${videos_name_in_topic}      蒙面唱将第二期：女帝驯鹿铁皮人    -1
     click nth element until no error            id=${videos_name_in_topic}      -1
+    sleep               5
     element should contain text in time         id=${videoname}                 蒙面唱将第二期：女帝驯鹿铁皮人
     go back
     swipe down nth      4

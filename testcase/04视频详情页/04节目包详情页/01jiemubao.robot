@@ -21,7 +21,7 @@ Force Tags          jiemubao
     element should contain text in time         id=${topic_video_num}                  5个视频
     page should not contain element             id=${topic_decription}
 #滑动界面到节目包底部
-    swipe up nth        3
+    swipe up nth        4
     element should contain text in time         xpath=${topic_name_in_titlebar}        pl节目包0703-3
 
 分享节目包--testjiemubao003
