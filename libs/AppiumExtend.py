@@ -345,7 +345,7 @@ class AppiumExtend(AppiumLibrary):
             cleanlogcat = u'del "{0}\*.txt"'.format(logcat_dir)
             subprocess.Popen(cleanlogcat,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             result_dir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
-            cleanlog = u'del "{0}\*.htlm"'.format(result_dir)
+            cleanlog = u'del "{0}\*.html"'.format(result_dir)
             cleanlog1 = u'del "{0}\*.xml"'.format(result_dir)
             cleanlog2 = u'del "{0}\*.png"'.format(result_dir)
             subprocess.Popen(cleanlog,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
