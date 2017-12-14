@@ -342,8 +342,18 @@ class AppiumExtend(AppiumLibrary):
         else:
             logcat_dir = "{0}/LogOutput/Logcat_{1}".format(rootpath,devicename)
         if os.path.isdir(logcat_dir):
-            shutil.rmtree(logcat_dir)
-        os.mkdir(logcat_dir)
+            cleanlogcat = u'del "{0}\*.txt"'.format(logcat_dir)
+            subprocess.Popen(cleanlogcat,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            result_dir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
+            cleanlog = u'del "{0}\*.htlm"'.format(result_dir)
+            cleanlog1 = u'del "{0}\*.xml"'.format(result_dir)
+            cleanlog2 = u'del "{0}\*.png"'.format(result_dir)
+            subprocess.Popen(cleanlog,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            subprocess.Popen(cleanlog1,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            subprocess.Popen(cleanlog2,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        else:
+            os.mkdir(logcat_dir)
 
 
     def logcat(self,udid=None,testcasename=None):
@@ -1096,6 +1106,6 @@ class AppiumExtend(AppiumLibrary):
                 break
             time.sleep(0.5)
 
-# if __name__=="__main__":
-#     a = AppiumExtend()
-#     a.share_to_wechat_circle(u"我们哦")
+if __name__=="__main__":
+    a = AppiumExtend()
+    a.create_log_dir('5e321b32')
