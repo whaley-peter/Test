@@ -23,6 +23,9 @@ from mutil_test import manage_environment
 from eles.videodetailspage import *
 from eles.myattentionpage import *
 import datetime
+from eles.sharepage import *
+
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
@@ -65,13 +68,13 @@ class AppiumExtend(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=iOS      | platformVersion=7.0            | deviceName='iPhone Simulator'           | app=your.app                         |
         | Open Application | http://localhost:4723/wd/hub | platformName=Android | platformVersion=4.2.2 | deviceName=192.168.56.101:5555 | app=${CURDIR}/demoapp/OrangeDemoApp.apk | appPackage=com.netease.qa.orangedemo | appActivity=MainActivity |
         """
-        self.kill_uiautomator()
+        self.kill_uiautomator_and_logcat()
+        self.create_log_dir()
         preinstallThread = threading.Thread(target=self.install_alert)
         preinstallThread.start()
 
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
-
         return self._cache.register(application, alias)
 
     def open_mutilapplications(self,remote_url,udid,alias=None):
@@ -80,7 +83,8 @@ class AppiumExtend(AppiumLibrary):
         | open mutilapplications | ${remote_url} | ${udid} |
         """
         # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
-        apppath1 = r"E:\CI\Jenkins\workspace\App\launcher-debug.apk"
+        rootpath = getProjectRootPath().split("\libs")[0]
+        apppath1 = r"{0}\App\launcher-debug.apk".format(rootpath)
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
@@ -96,7 +100,8 @@ class AppiumExtend(AppiumLibrary):
             'autoGrantPermissions': True,
             'sessonOverride': True
         }
-        self.kill_uiautomator(udid)
+        self.kill_uiautomator_and_logcat(udid)
+        self.create_log_dir(udid)
         thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
 
@@ -104,8 +109,6 @@ class AppiumExtend(AppiumLibrary):
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
-
-
 
     def login(self,username=username,password=password):
         """login app
@@ -117,7 +120,6 @@ class AppiumExtend(AppiumLibrary):
         login = 'id='+loginbutton
         nickname1 = 'id=' + nickname
         leapforg1 = "id=" +leapfrog
-        self.back_to_homepage()
         def login_app():
             self.click_element(login)
             locator1 = 'id=' + usernameinput
@@ -328,18 +330,32 @@ class AppiumExtend(AppiumLibrary):
             else:
                 logger.console(killerr)
 
+    def kill_uiautomator_and_logcat(self,udid=None):
+        self.kill_logcat(udid)
+        self.kill_uiautomator(udid)
+
+
+    def create_log_dir(self,udid=None):
+        devicename = get_info.get_devicename(udid)
+        rootpath =   getProjectRootPath().split("\libs")[0]
+        if udid==None:
+            logcat_dir= "{0}/LogOutput/Logcat".format(rootpath)
+        else:
+            logcat_dir = "{0}/LogOutput/Logcat_{1}".format(rootpath,devicename)
+            resultDir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
+            if os.path.isdir(resultDir):
+                shutil.rmtree(resultDir)
+
+        if os.path.isdir(logcat_dir):
+            shutil.rmtree(logcat_dir)
+        os.mkdir(logcat_dir)
+
+
     def logcat(self,udid=None,testcasename=None):
         current_time = datetime.datetime.strftime(datetime.datetime.now(),"%Y%m%d%H%M%S")
         self.kill_logcat(udid)
         devicename = get_info.get_devicename(udid)
         path = getProjectRootPath().split("\libs")[0]
-        if udid==None:
-            dir= "{0}/LogOutput/Logcat".format(getProjectRootPath().split("\libs")[0])
-        else:
-            dir = "{0}/LogOutput/Logcat_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
-        os.mkdir(dir)
         try:
             if udid==None and testcasename==None:
                 logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Logcat/TestLog_{1}.txt'.format(path,current_time)
@@ -436,8 +452,6 @@ class AppiumExtend(AppiumLibrary):
             checkall1 = "id=" + clickall
             self.click_element_until_no_error(checkall1)
             self.is_all_selected()
-            self.click_element_until_no_error("id="+delete)
-            self.click_element_until_no_error("id="+quxiao)
             self.click_element_until_no_error("id="+delete)
             self.click_element_until_no_error("id=" + confirm)
         else:
@@ -979,6 +993,9 @@ class AppiumExtend(AppiumLibrary):
         self.back_to_homepage()
         self.click_element_until_no_error(mybase1)
         self.click_element_until_no_error(mycollection1)
+        content1 = 'id=' + content
+        if self.is_element_present(content1):
+            self.login(username,password)
         self.delete_all_element()
         self.back_to_homepage()
 
@@ -988,13 +1005,18 @@ class AppiumExtend(AppiumLibrary):
         self.click_element_until_no_error(myattention1)
         attented_publishers1 = 'id=' + attented_publishers
         publicist1 = 'id=' + publicist
-        eles = self.get_webelements(attented_publishers1)
-        for one in range(eles):
-            self.click_element_until_no_error(eles[0])
-            self.click_element_until_no_error(publicist1)
-            self.go_back()
+        attented_publishers_empty1 = 'id=' + attented_publishers_empty
+        loginbutton1 = 'id=' + loginbutton
+        if self.is_element_present(loginbutton1):
+            self.login(username,password)
+        if not self.is_element_present(attented_publishers_empty1):
+            eles = self.get_webelements(attented_publishers1)
+            for one in range(len(eles)):
+                self.click_element_until_no_error(eles[0])
+                self.click_element_until_no_error(publicist1)
+                self.go_back()
 
-    def swipe_nth_back_to_jingxuan_tab(self,nth):
+    def swipe_nth_back_to_jingxuan_tab(self,nth=1):
         homebase1 = 'id=' + homebase
         self.back_to_homepage()
         self.click_element_until_no_error(homebase1)
