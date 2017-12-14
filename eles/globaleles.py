@@ -25,7 +25,7 @@ apppath = getProjectRootPath()+ r"\app\launcher-debug.apk"
 
 desired_caps = {
     'platformName':'Android',
-    'platformVersion' : '5.1',
+    'platformVersion' : '7.0',
     'deviceName' :'test',
     # 'udid':'5e321b32',
     'app' : apppath,

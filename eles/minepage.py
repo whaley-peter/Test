@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # from loginpage import *
 from loginpage import jump_to_login_or_register,jump_to_login_or_register_text,loginbutton,registerbutton
-from videodetailspage import downloadbutton,downloadbuttontext,addtocollection
+from videodetailspage import downloadbutton,downloadbuttontext,addtocollection,collectiontext
 from videodetailspage import videoname as vn
 __mtime__ = '2017/8/10'
 #底部首页button
@@ -82,6 +82,7 @@ quxiao = "com.snailvr.manager:id/tv_cancel"
 
 #相册视频导入
 xiangce = "com.snailvr.manager:id/btn_gallery"
+xiangce_text = "//*[@resource-id='com.snailvr.manager:id/btn_gallery']//android.widget.TextView"
 #相册中视频
 layout = "com.snailvr.manager:id/pic_layout"
 #相册中视频名
@@ -90,6 +91,7 @@ layname = "com.snailvr.manager:id/name"
 daoru = "com.snailvr.manager:id/tv_import"
 #导入框(底部）
 daocheck = "com.snailvr.manager:id/layout_check"
+
 #导入完成提示框/删除本地视频确认框
 content = "com.snailvr.manager:id/dialog_textview_name"
 #确定
@@ -99,6 +101,7 @@ videoname = "com.snailvr.manager:id/name"
 
 #链接导入
 link = "com.snailvr.manager:id/btn_link"
+link_text = "//*[@resource-id='com.snailvr.manager:id/btn_link']//android.widget.TextView"
 #链接导入框
 suggestion ="com.snailvr.manager:id/suggestion"
 #链接导入
@@ -108,7 +111,7 @@ picvideo="com.snailvr.manager:id/pic_layout"
 
 #二维码导入
 qrcode = "com.snailvr.manager:id/btn_qrcode"
-
+qrcode_text = "//*[@resource-id='com.snailvr.manager:id/btn_qrcode']//android.widget.TextView"
 
 """我的播单界面及二级目录"""
 #我的播单
@@ -116,8 +119,10 @@ mycollection = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.wi
 mycollection_text = "//*[@resource-id='com.snailvr.manager:id/me_layout']//android.widget.FrameLayout[2]//android.widget.TextView"
 #我的播单为空
 mycollectionempty = "com.snailvr.manager:id/tv_error"
+# 将视频加入播单
+collectbodan = addtocollection
 #已加入播单字样
-collecttext1 = "//*[@resource-id='com.snailvr.manager:id/layout_collect']//android.widget.TextView" #xpath
+collecttext1 = collectiontext #xpath
 #播单中视频
 bodanvideo ="com.snailvr.manager:id/pic"
 #播单中视频名
@@ -223,6 +228,4 @@ download = downloadbutton
 #已缓存字样
 downloadtext1 = downloadbuttontext #xpath
 
-"""将视频加入播单"""
-# 加入播单s
-collectbodan = addtocollection
+
