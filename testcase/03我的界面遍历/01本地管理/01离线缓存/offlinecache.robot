@@ -4,13 +4,15 @@ Variables       eles/minepage.py
 Variables       eles/videodetailspage.py
 Variables       eles/globaleles.py
 Suite Setup     back to homepage
-Suite Teardown  back to homepage
+Suite Teardown  swipe nth back to jingxuan tab  3
 Test Setup          kill logcat         ${udid}
 Test Teardown       run keyword if test failed       logcat     ${udid}     localcache
 Force Tags      localcache
 
 *** Test Cases ***
-选择视频进行缓存-testlocalcache001
+清空离线缓存---testlocalcache001
+    delete all download
+选择视频进行缓存---testlocalcache002
     [Documentation]  选择视频进行缓存后进入本地管理-离线缓存检查视频
     click element until no error     id=${homepage}
     click element until no error     xpath=${zongyi}
@@ -44,13 +46,13 @@ Force Tags      localcache
     swipe right nth     3
     click element until no error             id=${mybase}
     click element until no error             xpath=${localmanagement}
-    element should contain text in time      id=${title}     本地
+    element should contain text in time      xpath=${title}     本地
     ${tvname1}       get nth element text    id=${tvname}    -1
     should be equal     ${tvdes1}            ${tvname1}
 
-取消和删除离线缓存-testlocalcache002
+取消和删除离线缓存---testlocalcache003
     [Documentation]  对离线缓存进行删除一个或多个的操作
-    ${tvnamea}       get nth element text   id=${tvname}        1
+    ${tvnamea}     get nth element text     id=${tvname}        1
     click element until no error            id=${bianji}
     element should contain text in time     id=${clickall}      全选
     click nth element                       id=${click}         1
@@ -59,6 +61,8 @@ Force Tags      localcache
     click element until no error            id=${delete}
     click element until no error            id=${quxiao}
     go back
+    go back
+    click element until no error            xpath=${localmanagement}
     ${tvnameb}    get nth element text      id=${tvname}        1
     should be equal     ${tvnamea}          ${tvnameb}
 #编辑——逐个选中所有视频
@@ -68,7 +72,7 @@ Force Tags      localcache
     click nth element                       id=${click}         3
     element should contain text in time     id=${clickall}      取消全选
     element should contain text in time     id=${delete}        删除 (3/3)
-    click element until no error            id=${rightquxiao}
+    go back
 #删除离线缓存
     delete nth element      1
 

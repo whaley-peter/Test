@@ -10,8 +10,8 @@ Force Tags          usehelp
 
 *** Test Cases ***
 使用帮助--testfeedback001
-        click element until no error            id=${mybase}
-        click element until no error            xpath=${usehelp}
+    click element until no error            id=${mybase}
+    click element until no error            xpath=${usehelp}
 #检查界面
-        wait until element is visible           xpath=${title}        5
-        element should contain text in time     xpath=${title}        帮助
+    wait until element is visible           xpath=${title}        5
+    element should contain text in time     xpath=${title}        帮助

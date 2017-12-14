@@ -8,22 +8,25 @@ Test Teardown       run keyword if test failed       logcat     ${udid}     loca
 Force Tags          localvideo
 
 *** Test Cases ***
-相册视频导入-testlocalvideo001
-    [Documentation]   导入相册中的视频
-#检查界面
-    click element until no error   id=${mybase}
-    page should contain element     xpath=${localmanagement}
-    click element until no error   xpath=${localmanagement}
-    wait until element is visible   xpath=${title}      5
-    element should contain text in time     xpath=${title}      本地
+清空本地视频---testlocalvideo001
+    click element until no error            id=${mybase}
+    click element until no error            xpath=${localmanagement}
     sleep   3
     swipe left nth
     delete all element
-    page should contain element     id=${xiangce}
-    click element until no error   id=${xiangce}
-    element should contain text in time         xpath=${title}          相册视频导入
-    element should contain text in time     id=${clickall}      全选
-    element should contain text in time     id=${daoru}     导入
+
+检查本地视频界面元素---testlocalvideo002
+    element should contain text in time     xpath=${title}          本地
+    element should contain text in time     xpath=${xiangce_text}   相册视频导入
+    element should contain text in time     xpath=${link_text}      链接导入
+    element should contain text in time     xpath=${qrcode_text}    二维码导入
+
+相册视频导入---testlocalvideo003
+#检查界面
+    click element until no error            id=${xiangce}
+    element should contain text in time     xpath=${title}          相册视频导入
+    element should contain text in time     id=${clickall}          全选
+    element should contain text in time     id=${daoru}             导入
 
 #导入一个视频
     click nth element                           id=${layout}        2
@@ -44,7 +47,7 @@ Force Tags          localvideo
     click element until no error                id=${daoru}
     click element until no error                id=${ok}
 
-删除操作1-testlocalvideo002
+删除操作1-testlocalvideo004
     [Documentation]   取消删除和删除一个操作
 #取消删除
     element should contain text in time     xpath=${bianjitext}    编辑
@@ -58,19 +61,20 @@ Force Tags          localvideo
     click element until no error            id=${quxiao}
     go back
 #删除一个
-    element should contain text in time     xpath=${bianjitext}      编辑
-    ${videonamea}      get nth element text     id=${videoname}      1
-    delete nth element      1
-    ${videonameb}      get nth element text     id=${videoname}      1
+    element should contain text in time         xpath=${bianjitext}      编辑
+    ${videonamea}      get nth element text     id=${videoname}
+    delete nth element
+    ${videonameb}      get nth element text     id=${videoname}
     should not be equal     ${videonamea}       ${videonameb}
 
-删除操作2-testlocalvideo003
+删除操作2-testlocalvideo005
     [Documentation]     删除所有操作
     element should contain text in time     xpath=${bianjitext}    编辑
     delete all element
     page should not contain element         id=${bianji}
     element should contain text in time     id=${localempty}      没有本地视频
-链接导入-testlocalvideo004
+
+链接导入-testlocalvideo006
     [Documentation]     检查链接导入界面
     back to homepage
     click element until no error            xpath=${localmanagement}
