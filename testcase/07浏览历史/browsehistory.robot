@@ -3,17 +3,17 @@ Library             libs/AppiumExtend.py
 Variables           eles/history.py
 Variables           eles/globaleles.py
 Variables           eles/minepage.py
-Suite Setup         back to homepage
+Suite Setup         login and switch to debug mode
 Suite Teardown      back to homepage
 Test Setup          kill logcat         ${udid}
 Test Teardown       run keyword if test failed       logcat     ${udid}     history
-Force Tags          history
+Force Tags           history
 
 *** Test Cases ***
 清空浏览历史--testhistory001
     delete all history
 
-浏览历史1--testhistory002
+将视频加入到浏览历史--testhistory002
     [Documentation]  检查浏览历史
 #浏览第一个视频
     wait until element is visible       id=${homepage}      10
@@ -42,20 +42,25 @@ Force Tags          history
     click element until no error        id=${history}
     page should contain element         xpath=${title}
     element should contain text         xpath=${title}       浏览历史
-    ${hname}    get nth element text    id=${hname}    -1
+    ${hname}    get nth element text    id=${hname}          -1
     should be equal     ${tvdes1}       ${hname}
-浏览历史2--testhistory003
+
+删除浏览历史--testhistory003
     [Documentation]  进行删除操作
 #检查全选
-    page should contain element         id=${bianji}
-    click element until no error        id=${bianji}
-    element should contain text         id=${clickall}        全选
-    click element until no error        id=${clickall}
+    element should contain text in time     xpath=${bianjitext}     编辑
+    click element until no error            id=${bianji}
+    element should contain text             id=${clickall}          全选
+    click element until no error            id=${clickall}
     is all selected
-    click element until no error        id=${rightquxiao}
+    click element until no error            id=${rightquxiao}
 #删除一个
     delete nth element
 #删除所有
+    click back nth
+    click element until no error            id=${history}
     delete all element
-    Page Should Not Contain Element     id=${hname}
-    element should contain text         id=${hempty}       浏览记录为空
+    click back nth
+    click element until no error            id=${history}
+    Page Should Not Contain Element         id=${hname}
+    element should contain text in time     id=${hempty}       浏览记录为空
