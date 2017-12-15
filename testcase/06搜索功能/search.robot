@@ -88,9 +88,9 @@ Force Tags          search
     page should not contain element          id=${description}
     element should contain text in time      id=${postername}            微鲸VR
     element should contain text in time      id=${posterfollow}          关注
-    wait until element is visible            id=${switch branch left}     20
-    page should contain element              id=${switch branch middle}
-    page should contain element              id=${switch branch right}
+#    wait until element is visible            id=${switch branch left}     20
+#    page should contain element              id=${switch branch middle}
+#    page should contain element              id=${switch branch right}
     click back nth
 
 查看并清空搜索历史----testsearch006
