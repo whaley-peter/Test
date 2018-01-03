@@ -1,9 +1,11 @@
 *** Settings ***
-Library         libs/AppiumExtend.py
-Variables       eles/minepage.py
-Variables       eles/globaleles.py
-Suite Setup     back to homepage
-Force Tags      mypagescan
+Library             libs/AppiumExtend.py
+Variables           eles/minepage.py
+Variables           eles/globaleles.py
+Suite Setup         back to homepage
+Test Setup          kill logcat         ${udid}
+Test Teardown       run keyword if test failed       logcat     ${udid}     mypagescan
+Force Tags          mypagescan
 
 *** Test Cases ***
 遍历我的界面所有元素

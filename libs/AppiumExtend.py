@@ -20,12 +20,18 @@ import sys
 import shutil
 from mutil_test import get_info
 from mutil_test import manage_environment
+from eles.videodetailspage import *
+from eles.myattentionpage import *
+import datetime
+from eles.sharepage import *
+
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 # set default timeout
 TIMEOUT = 15
+SHARETIMEOUT = 10
 
 class AppiumExtend(AppiumLibrary):
 
@@ -62,13 +68,13 @@ class AppiumExtend(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=iOS      | platformVersion=7.0            | deviceName='iPhone Simulator'           | app=your.app                         |
         | Open Application | http://localhost:4723/wd/hub | platformName=Android | platformVersion=4.2.2 | deviceName=192.168.56.101:5555 | app=${CURDIR}/demoapp/OrangeDemoApp.apk | appPackage=com.netease.qa.orangedemo | appActivity=MainActivity |
         """
-        self.kill_uiautomator()
+        self.kill_uiautomator_and_logcat()
+        self.create_log_dir()
         preinstallThread = threading.Thread(target=self.install_alert)
         preinstallThread.start()
 
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
-
         return self._cache.register(application, alias)
 
     def open_mutilapplications(self,remote_url,udid,alias=None):
@@ -77,23 +83,24 @@ class AppiumExtend(AppiumLibrary):
         | open mutilapplications | ${remote_url} | ${udid} |
         """
         # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
-        apppath1 = r"E:\CI\Jenkins\workspace\App\launcher-debug.apk"
+        rootpath = getProjectRootPath().split("\libs")[0]
+        apppath1 = r"{0}\App\launcher-debug.apk".format(rootpath)
         desired_caps = {
             'platformName': 'Android',
             'deviceName': 'test',
             'udid': udid,
             'app': apppath1,
             'appPackage': 'com.snailvr.manager',
-            # 'appActivity': 'com.whaley.vr.module.launcher.activitys.SplashActivity',
             'appActivity': 'com.whaley.biz.launcher.activitys.LauncherActivity',
-            'unicodeKeyborad': True,
-            'resetKeyborad': True,
+            'unicodeKeyboard' : True,
+            'resetKeyboard' : True,
             'noReset': True,
             'commandTimeout': 60,
             'autoGrantPermissions': True,
             'sessonOverride': True
         }
-        self.kill_uiautomator(udid)
+        self.kill_uiautomator_and_logcat(udid)
+        self.create_log_dir(udid)
         thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
 
@@ -101,8 +108,6 @@ class AppiumExtend(AppiumLibrary):
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
-
-
 
     def login(self,username=username,password=password):
         """login app
@@ -114,7 +119,6 @@ class AppiumExtend(AppiumLibrary):
         login = 'id='+loginbutton
         nickname1 = 'id=' + nickname
         leapforg1 = "id=" +leapfrog
-        self.back_to_homepage()
         def login_app():
             self.click_element(login)
             locator1 = 'id=' + usernameinput
@@ -325,26 +329,46 @@ class AppiumExtend(AppiumLibrary):
             else:
                 logger.console(killerr)
 
+    def kill_uiautomator_and_logcat(self,udid=None):
+        self.kill_logcat(udid)
+        self.kill_uiautomator(udid)
+
+
+    def create_log_dir(self,udid=None):
+        devicename = get_info.get_devicename(udid)
+        rootpath =   getProjectRootPath().split("\libs")[0]
+        if udid==None:
+            logcat_dir= "{0}/LogOutput/Logcat".format(rootpath)
+        else:
+            logcat_dir = "{0}/LogOutput/Logcat_{1}".format(rootpath,devicename)
+        if os.path.isdir(logcat_dir):
+            cleanlogcat = u'del "{0}\*.txt"'.format(logcat_dir)
+            subprocess.Popen(cleanlogcat,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            result_dir = "{0}/LogOutput/TestResult/resultDir_{1}".format(rootpath,devicename)
+            cleanlog = u'del "{0}\*.html"'.format(result_dir)
+            cleanlog1 = u'del "{0}\*.xml"'.format(result_dir)
+            cleanlog2 = u'del "{0}\*.png"'.format(result_dir)
+            subprocess.Popen(cleanlog,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            subprocess.Popen(cleanlog1,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            subprocess.Popen(cleanlog2,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        else:
+            os.mkdir(logcat_dir)
+
 
     def logcat(self,udid=None,testcasename=None):
+        current_time = datetime.datetime.strftime(datetime.datetime.now(),"%Y%m%d%H%M%S")
         self.kill_logcat(udid)
         devicename = get_info.get_devicename(udid)
         path = getProjectRootPath().split("\libs")[0]
-        if udid==None:
-            dir= "{0}/LogOutput/Temp".format(getProjectRootPath().split("\libs")[0])
-        else:
-            dir = "{0}/LogOutput/Temp_{1}".format(getProjectRootPath().split("\libs")[0],devicename)
-        if os.path.isdir(dir):
-            shutil.rmtree(dir)
-        os.mkdir(dir)
         try:
             if udid==None and testcasename==None:
-                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Temp/TestLog_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(path)
+                logcat = r'adb logcat "| grep com.snailvr.manager" >{0}/LogOutput/Logcat/TestLog_{1}.txt'.format(path,current_time)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
             elif udid!= None and testcasename != None:
-                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Temp_{2}/{2}_{3}_%date:~0,4%%date:~5,2%%date:~8,2%0%time:~1,1%%time:~3,2%%time:~6,2%.txt'.format(udid,path,devicename,testcasename)
+                logcat = 'adb -s {0} logcat "| grep com.snailvr.manager" >{1}/LogOutput/Logcat_{2}/{2}_{3}_{4}.txt'.format(udid,path,devicename,testcasename,current_time)
                 subprocess.Popen(logcat, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-
+            time.sleep(5)
         except Exception,e:
             print "exception:",e
 
@@ -353,19 +377,20 @@ class AppiumExtend(AppiumLibrary):
             cmd = "adb shell ps |find " + r'"logcat"'
         else:
             cmd = "adb -s {0} shell ps |find ".format(udid) + r'"logcat"'
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        out,err = p.communicate()
-        while out:
-            lines = out.split("\r\n")
-            for line in lines:
-                if line:
-                    pid = line.split()[1]
-                    if udid == None:
-                        kill = "adb shell kill " + pid
-                    else:
-                        kill = "adb -s {0} shell kill ".format(udid) + pid
-                    os.system(kill)
-            break
+        if cmd:
+            p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+            out,err = p.communicate()
+            while out:
+                lines = out.split("\r\n")
+                for line in lines:
+                    if line:
+                        pid = line.split()[1]
+                        if udid == None:
+                            kill = "adb shell kill " + pid
+                        else:
+                            kill = "adb -s {0} shell kill ".format(udid) + pid
+                        os.system(kill)
+                break
 
     def save_log(self,udid=None):
         time.sleep(1)
@@ -434,8 +459,6 @@ class AppiumExtend(AppiumLibrary):
             self.click_element_until_no_error(checkall1)
             self.is_all_selected()
             self.click_element_until_no_error("id="+delete)
-            self.click_element_until_no_error("id="+quxiao)
-            self.click_element_until_no_error("id="+delete)
             self.click_element_until_no_error("id=" + confirm)
         else:
             self._info("no element to delete")
@@ -470,7 +493,62 @@ class AppiumExtend(AppiumLibrary):
                 self._info("selected and all elemets are equal")
         else:
             self._info("element is not present by given locator {0}".format(locator))
+    #分享到微博
+    def share_to_weibo(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(sina_weibo,u'新浪微博',share_text_of_weibo,share_to_weibo,video_name,timeout)
 
+    #分享到微信好友
+    def share_to_wechat_friends(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(weixin_friend,u'微信好友',share_text_of_weixin_friend,share_to_weixin_friend,video_name,timeout,first_weixin_friend,back_to_whaley_from_weixin_friends)
+
+    #分享到微信朋友圈
+    def share_to_wechat_circle(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(weixin_circle,u'朋友圈',share_text_of_weixin_circle,share_to_weixin_circle,video_name,timeout)
+
+    #分享到qq空间
+    def share_to_qq_zone(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(qq_zone,u'QQ空间',share_text_of_qq_zone,share_to_zone,video_name,timeout)
+
+    #分享到qq好友
+    def share_to_qq_friends(self,video_name,timeout=SHARETIMEOUT):
+        self.share_func(qq_friend,u'QQ好友',share_text_of_qq_friend,share_to_qq,video_name,timeout,first_qq_friend,back_to_whaley_from_qq_friend)
+
+    def share_test(self,video_name):
+        # self.share_to_weibo(video_name)
+        # self.share_to_wechat_friends(video_name)
+        # self.share_to_wechat_circle(video_name)
+        self.share_to_qq_friends(video_name)
+        # self.share_to_qq_zone(video_name)
+
+    def share_func(self,share_to_where,share_way_text,share_page_text,share_to,video_name,timeout,first_friend=None,back_to_whaley=None):
+        shareclick = 'id=' + share
+        share_to_where1 = 'id=' + share_to_where
+        if share_way_text == u'QQ空间' or share_way_text == u'QQ好友':
+            share_page_text1 = 'xpath=' + share_page_text
+        else:
+            share_page_text1 = 'id=' + share_page_text
+        share_to1 = 'id='+ share_to
+
+        self.click_element_until_no_error(shareclick)
+        #选择的分享方式的名称
+        self.element_should_contain_text_in_time(share_to_where1,share_way_text)
+        #点击分享到第三方app
+        self.click_element_until_no_error(share_to_where1)
+        if first_friend != None:
+            first_friend1 = 'xpath=' + first_friend
+            self.wait_until_element_is_visible(first_friend1,10)
+            self.click_element_until_no_error(first_friend1)
+        #检查分享界面文案是否包含节目名称
+        self.wait_until_element_is_visible(share_page_text1,timeout)
+        a = self.get_text(share_page_text1)
+        self.element_should_contain_text_in_time(share_page_text1,video_name)
+        #分享到微信朋友圈
+        self.click_element_until_no_error(share_to1)
+        if back_to_whaley != None:
+            back_to_whaley1 = 'id=' + back_to_whaley
+            self.wait_until_element_is_visible(back_to_whaley1,10)
+            self.click_element_until_no_error(back_to_whaley1)
+        self._info('a=========is{0}'.format(a))
 
     def getsize(self):
         """get the max X,Y coordinate of srceen
@@ -812,10 +890,52 @@ class AppiumExtend(AppiumLibrary):
         """
         return self._wait_until_not_value(timeout, 0, False, message, self.get_element_count, locator)
 
-    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=5):
+    def element_should_contain_text_in_time(self, locator, expected, message='',timeout=SHARETIMEOUT):
         if not message:
             message = "element should have contained text '%s' in %s" % (expected, self._format_timeout(timeout))
         self._wait_until_no_error_fixed(timeout, True, message, self.element_should_contain_text, locator,expected,'NONE')
+
+    def nth_element_should_contain_text(self, locator, expected, nth=1, message=''):
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+        self._info("Verifying %sth element '%s' contains text '%s'." % (nth, locator, expected))
+        try:
+            elements = self.get_webelements(locator)
+            if nth > 0:
+                self.element_should_contain_text(elements[nth-1],expected,message)
+            if nth < 0:
+                self.element_should_contain_text(elements[nth],expected,message)
+        except:
+            self._info("can't get elements by given locator {0}".format(locator))
+
+    def nth_element_should_contain_text_in_time(self, locator, expected, nth=1, message='', timeout=SHARETIMEOUT):
+        self._wait_until_no_error_fixed(timeout, True, message, self.nth_element_should_contain_text, locator, expected,
+                                        nth, 'None')
+
+    def nth_element_should_not_contain_text(self, locator, expected, nth=1, message=''):
+        try:
+            nth = int(nth)
+        except ValueError, e:
+            raise ValueError(u"'%s' is not a number" % nth)
+        if nth == 0:
+            raise ValueError(u"'nth' must not equal 0")
+        self._info("Verifying %sth element '%s' contains text '%s'." % (nth, locator, expected))
+        try:
+            elements = self.get_webelements(locator)
+            if nth > 0:
+                self.element_should_not_contain_text(elements[nth-1],expected,message)
+            if nth < 0:
+                self.element_should_not_contain_text(elements[nth],expected,message)
+        except:
+            self._info("can't get elements by given locator {0}".format(locator))
+
+    def nth_element_should_not_contain_text_in_time(self, locator, expected, nth=1, message='', timeout=SHARETIMEOUT):
+        self._wait_until_no_error_fixed(timeout, True, message, self.nth_element_should_not_contain_text, locator, expected,
+                                        nth, 'None')
 
     def page_should_contain_text_in_time(self, text, message="", timeout=TIMEOUT):
         """Verifies text is not found on the current page in setting time.
@@ -842,6 +962,71 @@ class AppiumExtend(AppiumLibrary):
         if not message:
             message = "Page should have contained element '%s' in %s" % (locator, self._format_timeout(timeout))
         self._wait_until_no_error_fixed(timeout, True, message, self.page_should_contain_element, locator, 'NONE')
+
+    def delete_all_history(self):
+        """delete all history
+
+        :return:
+        """
+        homebase1 = 'id=' + homebase
+        history1 = 'id=' + history
+        self.back_to_homepage()
+        self.click_element_until_no_error(homebase1)
+        self.click_element_until_no_error(history1)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def delete_all_download(self):
+        """delete all download video
+
+        :return:
+        """
+        mybase1 = 'id=' + mybase
+        localmanagement1 = 'xpath=' + localmanagement
+        self.back_to_homepage()
+        self.click_element_until_no_error(mybase1)
+        self.click_element_until_no_error(localmanagement1)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def detete_all_collection(self):
+        """delete all collected video
+
+        :return:
+        """
+        mybase1 = 'id=' + mybase
+        mycollection1 = 'xpath=' + mycollection
+        self.back_to_homepage()
+        self.click_element_until_no_error(mybase1)
+        self.click_element_until_no_error(mycollection1)
+        content1 = 'id=' + content
+        if self.is_element_present(content1):
+            self.login(username,password)
+        self.delete_all_element()
+        self.back_to_homepage()
+
+    def delete_all_attented_publishers(self):
+        myattention1 = 'id=' + myattention
+        self.back_to_homepage()
+        self.click_element_until_no_error(myattention1)
+        attented_publishers1 = 'id=' + attented_publishers
+        publicist1 = 'id=' + publicist
+        attented_publishers_empty1 = 'id=' + attented_publishers_empty
+        loginbutton1 = 'id=' + loginbutton
+        if self.is_element_present(loginbutton1):
+            self.login(username,password)
+        if not self.is_element_present(attented_publishers_empty1):
+            eles = self.get_webelements(attented_publishers1)
+            for one in range(len(eles)):
+                self.click_element_until_no_error(eles[0])
+                self.click_element_until_no_error(publicist1)
+                self.go_back()
+
+    def swipe_nth_back_to_jingxuan_tab(self,nth=1):
+        homebase1 = 'id=' + homebase
+        self.back_to_homepage()
+        self.click_element_until_no_error(homebase1)
+        self.swipe_right_nth(nth)
 
     def wait_until_page_contains_elements(self, locator_list, message="", timeout=TIMEOUT):
         """Waits until any element specified with `locator_list` appears on current page.
@@ -923,10 +1108,4 @@ class AppiumExtend(AppiumLibrary):
 
 if __name__=="__main__":
     a = AppiumExtend()
-    for one in range(5):
-        time.sleep(1)
-        a.logcat("5e321b32","test1")
-        # a.logcat()
-        time.sleep(3)
-        # print "kill========================"
-        a.save_log("5e321b32")
+    a.create_log_dir('5e321b32')

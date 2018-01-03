@@ -3,10 +3,12 @@ Library     libs/AppiumExtend.py
 Variables   eles/loginpage.py
 Variables   eles/globaleles.py
 Variables   eles/minepage.py
-Suite Setup     back to homepage
-Suite Teardown  back to homepage
-Force Tags  zhuce
-Documentation   测试从开机屏跳转到注册界面、从注册界面跳转到登录界面功能
+Suite Setup         back to homepage
+Suite Teardown      back to homepage
+Test Setup          kill logcat         ${udid}
+Test Teardown       run keyword if test failed       logcat     ${udid}     zhuce
+Force Tags          zhuce
+Documentation       测试从开机屏跳转到注册界面、从注册界面跳转到登录界面功能
 
 *** Test Cases ***
 检查注册界面文字显示--testregister001
