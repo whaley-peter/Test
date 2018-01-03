@@ -5,7 +5,7 @@ Variables           eles/videodetailspage.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
 Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     fabuzhe
+#Test Teardown       run keyword if test failed       logcat     ${udid}     fabuzhe
 Force Tags          fabuzhe
 
 *** Test Cases ***

@@ -6,8 +6,8 @@ Variables  eles/globaleles.py
 Variables  eles/minepage.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     denglu
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     denglu
 Force Tags          denglu
 Documentation       测试登录功能、登录界面跳转到其他界面功能
 

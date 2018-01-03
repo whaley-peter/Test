@@ -5,8 +5,8 @@ Variables           eles/globaleles.py
 Variables           eles/videodetailspage.py
 Suite Setup         login and switch to debug mode
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     search
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     search
 Force Tags          search
 
 *** Test Cases ***

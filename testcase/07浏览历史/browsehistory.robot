@@ -5,8 +5,8 @@ Variables           eles/globaleles.py
 Variables           eles/minepage.py
 Suite Setup         login and switch to debug mode
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     history
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     history
 Force Tags           history
 
 *** Test Cases ***

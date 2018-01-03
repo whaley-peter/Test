@@ -5,8 +5,8 @@ Variables           eles/globaleles.py
 Variables           eles/loginpage.py
 Suite Setup         back to homepage
 Suite Teardown      swipe nth back to jingxuan tab      3
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     wodebodan
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     wodebodan
 Force Tags          wodebodan
 
 *** Test Cases ***

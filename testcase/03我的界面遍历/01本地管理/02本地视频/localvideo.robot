@@ -3,8 +3,8 @@ Library             libs/AppiumExtend.py
 Variables           eles/minepage.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     localvideo
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     localvideo
 Force Tags          localvideo
 
 *** Test Cases ***

@@ -5,8 +5,8 @@ Variables       eles/videodetailspage.py
 Variables       eles/globaleles.py
 Suite Setup     back to homepage
 Suite Teardown  swipe nth back to jingxuan tab  3
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     localcache
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     localcache
 Force Tags      localcache
 
 *** Test Cases ***

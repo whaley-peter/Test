@@ -4,8 +4,8 @@ Variables           eles/homepage.py
 Variables           eles/videodetailspage.py
 Suite Setup         back to homepage
 Suite Teardown      swipe nth back to jingxuan tab      3
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     qjspxqy
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     qjspxqy
 Force Tags          qjspxqy
 
 *** Test Cases ***

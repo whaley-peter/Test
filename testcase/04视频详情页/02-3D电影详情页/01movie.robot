@@ -4,8 +4,8 @@ Variables            eles/homepage.py
 Variables            eles/videodetailspage.py
 Suite Setup          back to homepage
 Suite Teardown       swipe nth back to jingxuan tab   5
-Test Setup           kill logcat         ${udid}
-Test Teardown        run keyword if test failed       logcat     ${udid}     movie
+#Test Setup           kill logcat         ${udid}
+#Test Teardown        run keyword if test failed       logcat     ${udid}     movie
 Force Tags           movie
 Documentation        测试3D电影详情页
 

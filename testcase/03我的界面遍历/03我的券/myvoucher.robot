@@ -5,8 +5,8 @@ Variables           eles/globaleles.py
 Variables           eles/loginpage.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     myvoucher
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     myvoucher
 Force Tags          myvoucher
 
 *** Test Cases ***

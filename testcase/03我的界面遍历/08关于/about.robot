@@ -4,8 +4,8 @@ Variables           eles/minepage.py
 Variables           eles/globaleles.py
 Suite Setup         back to homepage
 Suite Teardown      back to homepage
-Test Setup          kill logcat         ${udid}
-Test Teardown       run keyword if test failed       logcat     ${udid}     about
+#Test Setup          kill logcat         ${udid}
+#Test Teardown       run keyword if test failed       logcat     ${udid}     about
 Force Tags          about
 
 *** Test Cases ***
