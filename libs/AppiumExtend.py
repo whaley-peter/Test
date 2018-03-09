@@ -41,8 +41,10 @@ class AppiumExtend(AppiumLibrary):
     def __init__(self):
         AppiumLibrary.__init__(self)
 
+    #处理应用安装过程中的弹框
     def install_alert(self,udid=None):
         watcherpath = getProjectRootPath() + r"\libs\UIWatcher.jar"
+        #将uiwatcher测试脚本push到app内，通过脚本运行uiautomator测试，监控弹窗
         if udid==None:
             cmd1 = "adb push " + watcherpath + " data/local/tmp"
             cmd2 = u"adb shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers"
@@ -50,6 +52,7 @@ class AppiumExtend(AppiumLibrary):
             cmd1 = 'adb -s {0} push '.format(udid) + watcherpath + " data/local/tmp"
             cmd2 = u"adb -s {0} shell uiautomator runtest UIWatcher.jar -c com.whaleytest.UiWatchers".format(udid)
 
+        #通过subprocess调用外部程序
         push = subprocess.Popen(cmd1,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         run = subprocess.Popen(cmd2,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         outter, err = push.communicate()
@@ -57,6 +60,7 @@ class AppiumExtend(AppiumLibrary):
         logger.console(outter)
         logger.console(outter1)
 
+    #针对单个设备启动测试的方法
     def open_application(self, remote_url,desired_caps,alias=None):
         """Opens a new application to given Appium server.
         Capabilities of appium server, Android and iOS,
@@ -68,22 +72,29 @@ class AppiumExtend(AppiumLibrary):
         | Open Application | http://localhost:4723/wd/hub | alias=Myapp1         | platformName=iOS      | platformVersion=7.0            | deviceName='iPhone Simulator'           | app=your.app                         |
         | Open Application | http://localhost:4723/wd/hub | platformName=Android | platformVersion=4.2.2 | deviceName=192.168.56.101:5555 | app=${CURDIR}/demoapp/OrangeDemoApp.apk | appPackage=com.netease.qa.orangedemo | appActivity=MainActivity |
         """
+        #测试环境清理，杀掉uiautomator进程和logcat
         self.kill_uiautomator_and_logcat()
+        #创建日志文件夹
         self.create_log_dir()
+        #多线程调用处理弹框，并且运行
         preinstallThread = threading.Thread(target=self.install_alert)
         preinstallThread.start()
 
+        #启动测试
         application = webdriver.Remote(str(remote_url), desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
         return self._cache.register(application, alias)
 
+    #多设备并发测试方法
     def open_mutilapplications(self,remote_url,udid,alias=None):
         """a method used for mutil test
 
         | open mutilapplications | ${remote_url} | ${udid} |
         """
         # apppath1 = r"D:\Jenkins\workspace\App\WhaleyVR\launcher\build\outputs\apk\launcher-debug.apk"
+        #获取当前的根目录
         rootpath = getProjectRootPath().split("\libs")[0]
+        #获取app所在路径
         apppath1 = r"{0}\App\launcher-debug.apk".format(rootpath)
         desired_caps = {
             'platformName': 'Android',
@@ -99,16 +110,19 @@ class AppiumExtend(AppiumLibrary):
             'autoGrantPermissions': True,
             'sessonOverride': True
         }
+        #清理环境并启动uiwatcher监视器
         self.kill_uiautomator_and_logcat(udid)
         self.create_log_dir(udid)
         thraed0 = threading.Thread(target=self.install_alert, args=(udid,))
         thraed0.start()
 
+        #启动测试服务
         application = webdriver.Remote(remote_url, desired_caps)
         self._debug('Opened application with session id %s' % application.session_id)
 
         return self._cache.register(application, alias)
 
+    #登录功能
     def login(self,username=username,password=password):
         """login app
 
@@ -119,6 +133,7 @@ class AppiumExtend(AppiumLibrary):
         login = 'id='+loginbutton
         nickname1 = 'id=' + nickname
         leapforg1 = "id=" +leapfrog
+        #登录函数
         def login_app():
             self.click_element(login)
             locator1 = 'id=' + usernameinput
@@ -128,17 +143,24 @@ class AppiumExtend(AppiumLibrary):
             self.click_element(loginbutton)
             self.wait_until_element_is_visible('id=' + homebase)
 
+        #判断是否在开机页
         if self.is_element_present(leapforg1):
+            #如果在开机页，则直接登录
             login_app()
         else:
+            #如果不在登录页，则先回到app主页
             self.back_to_homepage()
             self.click_element("id="+mybase)
+            #判断用户是否已经登录
             if not self.is_element_present(nickname1):
+                #未登录，则执行登录
                 self.click_element(login)
                 login_app()
             else:
+                #已经登录，则直接打印日志
                 print "app already login"
 
+    #app启动过成功跳过登录
     def skip_login(self):
         try:
             self.click_element_until_no_error("id="+leapfrog)
@@ -146,6 +168,7 @@ class AppiumExtend(AppiumLibrary):
         except :
             raise   logger.console("can't find element by given locator %s"%leapfrog)
 
+    #退出登录
     def logout(self):
         """logout app
 
@@ -153,17 +176,22 @@ class AppiumExtend(AppiumLibrary):
         Example:
         | logout |
         """
+        #首选回到app主页面
         self.back_to_homepage()
         nickname1 = 'id=' + nickname
         try:
+            #切换界面到我的界面，查看用户是否已退出登录
             self.click_element("id="+mybase)
+            #通过查看用户名元素是否存在，判断用户是否已退出登录
             if self.is_element_present(nickname1):
+                #未退出登录，则退出登录
                 self.click_element("id="+info)
                 self.click_element("id="+logoutbutton)
                 self.click_element("id=" + confirmbutton)
         except:
             raise self._info("can't find element by given locator %s or %s or %s or %s"%(mybase,settingbutton,logoutbutton, confirmbutton))
 
+    #将app从生产环境切换到测试环境
     def switch_to_debug_mode(self,udid=None):
         """swith the app to debug mode
         for mulittest you maust set the udid Variables
@@ -171,20 +199,27 @@ class AppiumExtend(AppiumLibrary):
         | swith to debug mode |
         | swith to debug mode | ${udid} |
         """
+        #先回到app主界面，跳转到我的界面
         self.back_to_homepage()
         self.wait_until_element_is_visible("id=" + mybase,10)
         self.click_element("id=" + mybase)
+        #进入设置，查看当前是否已经在测试环境
         self.click_element("xpath=" + settingbutton)
         debugbutton = "xpath=" + debugswitch
         time.sleep(3)
         debug = self.get_text(debugbutton)
+        #判断设置界面，debug元素的值是否为“是”，判断用户是否登录
         if debug == u'是':
+            #已经在测试环境，则返回app home界面
             self.back_to_homepage()
         elif debug == u'否':
+            #否则，切换到测试环境
             self.click_element(debugbutton)
+            #切换到测试环境后，回到手机主界面，重启app，让设置生效
             self.go_back()
             self.go_back()
             self.go_back()
+            #重新启动app
             if udid == None:
                 cmd = "adb shell am start -n com.snailvr.manager/com.whaley.biz.launcher.activitys.LauncherActivity"
             else:
@@ -192,6 +227,7 @@ class AppiumExtend(AppiumLibrary):
             subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             time.sleep(TIMEOUT)
 
+    #登录并且切换app到测试环境
     def login_and_switch_to_debug_mode(self,username=username,password=password,udid=None):
         """login app adn swith app to debugmode
         if loginOrnot is False,then swith app to debugmode without login
@@ -204,6 +240,7 @@ class AppiumExtend(AppiumLibrary):
 
         self.switch_to_debug_mode(udid)
 
+    #启动app过程跳过登录，并切换到测试环境
     def skip_login_and_switch_to_debug_mode(self,message="",timeout=TIMEOUT):
         """skip login app and swith to debug mode
 
@@ -218,6 +255,7 @@ class AppiumExtend(AppiumLibrary):
         locator = 'id='+leapfrog
         self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
 
+    #从app任何界面，回到app的home界面
     def back_to_homepage(self,message="",timeout=TIMEOUT):
         """click backbutton go back to homepage using for setup or treadown test
 
@@ -226,19 +264,25 @@ class AppiumExtend(AppiumLibrary):
         """
         locator = "id=" + backbutton
         while True:
+            #判断是否已经在home界面
             if self.is_element_present("id="+homebase):
+                #是，跳出循环
                 break
+            #当前不在home界面，则回到home界面
             elif not self.is_element_present("id="+homebase):
                 if self.is_element_present(locator):
+                    # 如果当前界面有返回按钮，则点击返回按钮，然后跳出本次循环
                     self._wait_until_no_error_fixed(timeout, True, message, self.click_element, locator)
                     continue
                 elif not self.is_element_present(locator):
+                    #如果当前界面没有返回按钮，但是有登录按钮，说明目前在app启动页，跳出循环
                     if self.is_element_present('id='+loginbutton):
                         break
                     else:
+                    #如果当前界面没有返回按钮，而且也不在app启动页，说明可能在播放界面而且播放界面的返回按钮自动隐藏了，则点击物理返回键返回
                         self._current_application().back()
                         continue
-
+    #多次点击返回按钮
     def click_back_nth(self,nth=1,message="",timeout=TIMEOUT):
         """click backbutton nth times
         :param nth:
@@ -252,53 +296,39 @@ class AppiumExtend(AppiumLibrary):
         locator = "id=" + backbutton
         nth = int(nth)
         for one in range(nth):
+            #判断界面上是否存在返回按钮
             if self.is_element_present(locator):
+                #界面存在返回按钮，点击返回按钮
                 self._wait_until_no_error_fixed(timeout,True,message,self.click_element,locator)
             else:
                 if not self.is_element_present("id="+homebase):
+                    # 不存在返回按钮，且不在app主页，则点击物理返回键
                     self._current_application().back()
                 elif self.is_element_present("id="+homebase):
+                    # 不存在返回按钮，且已经在app主页，则跳出循环
                     break
 
+    #检查app的toast弹窗
+    def check_toast(self,toasttext):
+        """check whether the toast of element is the same as the giving one
 
-    # def check_toast(self,toasttext):
-    #     """check whether the toast of element is the same as the giving one
+        :param toasttext:
+        :return:
+        Example:
+        | check toast | 加入播单成功 |
+        """
+        toasttext = str(toasttext)
+        message = '//*[@text=\'%s\']'%toasttext
+        element = WebDriverWait(self._current_application(),10).until(EC.presence_of_element_located((By.XPATH,message)))
+        try:
+            if element.text == toasttext:
+                self._info('find toast and matched')
+            else:
+                raise self._info('toast does not match with the giving one')
+        except:
+            raise  AssertionError('element does not find exception')
+
     #
-    #     :param toasttext:
-    #     :return:
-    #     Example:
-    #     | check toast | 加入播单成功 |
-    #     """
-    #     toasttext = str(toasttext)
-    #     message = '//*[@text=\'%s\']'%toasttext
-    #     element = WebDriverWait(self._current_application(),10).until(EC.presence_of_element_located((By.XPATH,message)))
-    #     try:
-    #         if element.text == toasttext:
-    #             self._info('find toast and matched')
-    #         else:
-    #             raise self._info('toast does not match with the giving one')
-    #     except:
-    #         raise  AssertionError('element does not find exception')
-
-    # def input_text(self, locator,text,udid=None):
-    #     """override the input text method to fix problem of sendkeys function in appium+uiautomator2
-    #         udid is required for mutil test
-    #     :param locator:
-    #     :param text:
-    #     :return:
-    #     Example:
-    #     | input text | id=${passwordinput} | a123456 |
-    #     | input text | id=${passwordinput} | a123456 | ${udid} |
-    #     """
-    #     time.sleep(1)
-    #     self.click_element_until_no_error(locator)
-    #     time.sleep(1)
-    #     if udid==None:
-    #         cmd = 'adb shell input text {0}'.format(text)
-    #     else:
-    #         cmd = 'adb -s {0} shell input text {1}'.format(udid,text)
-    #     subprocess.Popen(cmd,shell=True)
-    #     time.sleep(1)
     def kill_uiautomator(self,udid=None):
         """kill uiautomator after test
         for mutil test,you must put the udid Variables
